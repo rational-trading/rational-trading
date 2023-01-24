@@ -1,12 +1,32 @@
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+	extends: ['airbnb-base', 'plugin:@typescript-eslint/recommended'],
 	plugins: ['svelte3', '@typescript-eslint'],
-	ignorePatterns: ['*.cjs'],
 	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
+	rules: {
+		"import/no-extraneous-dependencies": "off",
+		"import/no-mutable-exports": "off",
+		"import/prefer-default-export": "off",
+		"import/extensions": ["error", { "ts": "never", "svelte": "always" }],
+		"quotes": ["error", "double"],
+		"no-return-assign": ["error", "except-parens"],
+	},
 	settings: {
-		'svelte3/typescript': () => require('typescript')
+		'svelte3/typescript': () => require('typescript'),
+		'import/resolver': {
+			"eslint-import-resolver-custom-alias": {
+			  "alias": {
+				  "$lib": "./src/lib",
+				  "$components": "./src/components",
+				  "$common": "../common/src/"
+			  },
+			  "extensions": [".ts", ".svelte"],
+			  "packages": [
+				"packages/*"
+			  ]
+			}
+		  }
 	},
 	parserOptions: {
 		sourceType: 'module',

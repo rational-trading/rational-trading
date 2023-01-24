@@ -1,11 +1,11 @@
 <script lang="ts">
+    import Counter from "$components/Counter.svelte";
     import data from "$lib/data";
     import { double } from "$common";
     import type { Post } from "$common";
-    import Counter from "$components/Counter.svelte";
 
-    let p: Post = { title: "GME Crashes", id: 4 };
-    let items = ["Apples", "Bananas", "Oranges"];
+    const p: Post = { title: "GME Crashes", id: 4 };
+    const items = ["Apples", "Bananas", "Oranges"];
 </script>
 
 <div class="columns m-6">

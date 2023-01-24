@@ -7,10 +7,10 @@
     <h2 class="title is-3">{label}: {counter}</h2>
     <button
         class="button is-primary"
-        on:click={() => counter++}
+        on:click={() => (counter += 1)}
         disabled={counter >= 10}>Increment</button>
     <button
         class="button is-danger"
-        on:click={() => counter--}
+        on:click={() => (counter -= 1)}
         disabled={counter <= 0}>Decrement</button>
 </div>
