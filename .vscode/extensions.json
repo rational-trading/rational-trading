@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "svelte.svelte-vscode",
+        "syler.sass-indented",
+        "Zignd.html-css-class-completion"
+    ]
+}
