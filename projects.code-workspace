@@ -1,0 +1,27 @@
+{
+    "folders": [
+        {
+            "name": "backend",
+            "path": "backend",
+        },
+        {
+            "name": "common",
+            "path": "common",
+        },
+        {
+            "name": "frontend",
+            "path": "frontend",
+        },
+    ],
+    "settings": {
+        "editor.formatOnSave": true,
+    },
+    "extensions": {
+        "recommendations": [
+            "dbaeumer.vscode-eslint",
+            "svelte.svelte-vscode",
+            "syler.sass-indented",
+            "Zignd.html-css-class-completion"
+        ]
+    }
+}
