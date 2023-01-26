@@ -55,7 +55,7 @@ Make some changes to the code, ensuring you have saved as you go along. You don'
 
 ### 4. Stage Your Changes
 
-VSCode should have a handy `git` tool integrated into it, which should show in the sidebar whenever you open the workspace. When you want to make a commit, you should click the "+" icon next to the files you want to commit, which should move them into "staged changes". Once you are happy with the changes, enter a short description of the change into the "message" box, and click commit.
+VSCode should have a handy "Source Control" pane integrated into it, which should show in the sidebar whenever you open the workspace. When you want to make a commit, you should click the "+" icon next to the files you want to commit, which should move them into "staged changes". Once you are happy with the changes, enter a short description of the change into the "message" box, and click commit.
 
 ### 5. Ensure Your Changes Have Synced
 
@@ -85,13 +85,17 @@ Go to the repo page on GH, and open the "Pull requests" tab. Click "new pull req
 
 Next, post a link to the PR in the discord with the format:
 `@everyone [PR TITLE] [PR LINK]`
-Anyone that wants to review the change should react with 👀, and then remove that and react with 👍 when they are happy with the changes. You can merge the PR once:
- - all tests pass
- - all 👀 have been removed
- - all discussions have been resolved
- - and once you have received at least two tick reactions
+Anyone that wants to review the change should react with 👀, and then remove that and react with 👍 when they are happy with the changes.
 
-Once you have merged the change to main, react to your message with ✅. If a reviewer has a question or qualm with the code, they can either leave a comment on the main PR itself, add a one-off comment to a portion of the code, or start a review. 
+If a reviewer has a question or qualm with the code, they can either leave a comment on the main PR itself, add a one-off comment to a portion of the code, or start a review. 
+
+You can merge the PR once:
+ - all tests pass
+ - all 👀 reactions have been removed
+ - all discussions have been resolved
+ - and once you have received at least two 👍 reactions
+
+Once you have merged the change to main, react to your message with ✅. 
 
 ### How often should I commit?
 
