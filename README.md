@@ -81,7 +81,17 @@ If the operation succeeds, click the "sync" button and continue to the next step
 
 ### 8. Make a Pull Request
 
-Go to the repo page on GH, and open the "Pull requests" tab. Click "new pull request", and ensure that the branches are `base: main <- compare: [issue-branch]`.
+Go to the repo page on GH, and open the "Pull requests" tab. Click "new pull request", and ensure that the branches are `base: main <- compare: [issue-branch]`. Click "Create pull request", give it a name and a description referencing the issue (e.g. "Resolves #12"), and then click "Create Pull Request" again.
+
+Next, post a link to the PR in the discord with the format:
+`@everyone [PR TITLE] [PR LINK]`
+Anyone that wants to review the change should react with 👀, and then remove that and react with 👍 when they are happy with the changes. You can merge the PR once:
+ - all tests pass
+ - all 👀 have been removed
+ - all discussions have been resolved
+ - and once you have received at least two tick reactions
+
+Once you have merged the change to main, react to your message with ✅. If a reviewer has a question or qualm with the code, they can either leave a comment on the main PR itself, add a one-off comment to a portion of the code, or start a review. 
 
 ### How often should I commit?
 
@@ -89,7 +99,7 @@ Whilst coding, you should commit often. A good guideline is to commit whenever y
 
 ### What if multiple people are working on the same issue?
 
-If there are multiple members of the team collaborating on a single issue, you should all create spin-off branches from the issue branch. For example, I might create the branch `1-create-template-for-frontend-miles`. Any changes you make should be done on your personal branch, and then synced with the feature branch in the manner described above (replacing any occurences of `main` with the feature branch). Once all team members are happy that the feature branch is finished, you can then sync it with `main` in the manner described above. 
+If there are multiple members of the team collaborating on a single issue, you should all create spin-off branches from the issue branch. For example, I might create the branch `1-create-template-for-frontend-miles` as a spin-off of `1-create-template-for-frontend-miles`. Any changes you make should be done on your personal branch, and then synced with the feature branch in the manner described above (replacing any occurences of `main` with the feature branch). Once all team members are happy that the feature branch is finished, you can then sync it with `main` in the manner described above. 
 
 
 
