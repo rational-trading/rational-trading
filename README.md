@@ -83,11 +83,11 @@ If the operation succeeds, click the "sync" button and continue to the next step
 
 Go to the repo page on GH, and open the "Pull requests" tab. Click "new pull request", and ensure that the branches are `base: main <- compare: [issue-branch]`. Click "Create pull request", give it a name and a description referencing the issue (e.g. "Resolves #12"), and then click "Create Pull Request" again.
 
-Next, post a link to the PR in the discord with the format:
+Next, post a link to the PR in the `code-review` Discord channel with the format:
 `@everyone [PR TITLE] [PR LINK]`
 Anyone that wants to review the change should react with 👀, and then remove that and react with 👍 when they are happy with the changes.
 
-If a reviewer has a question or qualm with the code, they can either leave a comment on the main PR itself, add a one-off comment to a portion of the code, or start a review. 
+If a reviewer has a question or qualm with the code, they can either leave a comment on the main PR itself, add a one-off comment to a portion of the code, or start a review. Any discussion in the Discord should be within a message thread, and not in the main `code-review` channel.
 
 You can merge the PR once:
  - all tests pass
