@@ -17,7 +17,8 @@
             "dbaeumer.vscode-eslint",
             "svelte.svelte-vscode",
             "syler.sass-indented",
-            "Zignd.html-css-class-completion"
+            "Zignd.html-css-class-completion",
+            "eamodio.gitlens"
         ]
     }
 }
