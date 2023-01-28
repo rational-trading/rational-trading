@@ -28,7 +28,7 @@ https://code.visualstudio.com/Download
 
 Once you have opened the workspace, select the extensions tab on the right and search `@recommended`. This will bring a list of extensions I recommend you install.
 
-Once you have done this, use `Cmd+shift+p` on MacOS or `Ctrl+shift+p` on other platforms to open the command pallet. Type "Reload" and select the "Developer: Reload Window" option. It's worth remembering this shortcut, as it's incredibly useful when the editor gets confusde (which will be a lot).
+Once you have done this, use `Cmd+shift+p` on MacOS or `Ctrl+shift+p` on other platforms to open the command pallet. Type "Reload" and select the "Developer: Reload Window" option. It's worth remembering this shortcut, as it's incredibly useful when the editor gets confused (which will be a lot).
 
 ### 6. Follow the individual READMEs
 
@@ -61,7 +61,7 @@ VSCode should have a handy "Source Control" pane integrated into it, which shoul
 
 Make sure that your changes have synced with the server by clicking the "sync" icon in the bottom left of VSCode. 
 
-### 6. Repeat Until Feature Complete
+### 6. Repeat Until Feature Complete
 
 Repeat steps 3-5 until you have completed the feature, and are ready to merge it into the main branch. 
 
