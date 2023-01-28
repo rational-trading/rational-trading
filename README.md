@@ -75,6 +75,7 @@ You should now ensure that your feature branch is up-to-date with any changes th
  - Clicking the "sync" icon in the bottom left of VSCode to ensure all changes are synced
  - Opening the VSCode Source Control pane
  - Expanding the "branches" section near the bottom of the Source Control pane
+ - Clicking the "fetch" button on the main branch, if there are unsynced changes
  - Right clicking main (NOT YOUR BRANCH), and then selecting "Merge Branch Into Current Branch"
 
 If the operation succeeds, click the "sync" button and continue to the next step. If you get a merge conflict, then carefully resolve the conflicts (making sure you don't break your code or anyone else's), stage the files, and commit the changes. Once you've done this, click the "sync" button and continue to the next step.
