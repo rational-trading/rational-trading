@@ -1,0 +1,28 @@
+name: Build Frontend
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  checkout-lint-build:
+  
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
+     
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      
+      - name: Lint (TS)
+        uses: icrawl:action-eslint@v1
+      
+      - name: Build
+        run: |
+              yarn install
+              yarn build
+    
+             
+        
