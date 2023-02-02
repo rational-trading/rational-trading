@@ -1,6 +1,6 @@
 from ninja import Router
 
-from auth.bearer import AuthBearer
+from endpoints.auth import AuthBearer
 
 router = Router(auth=AuthBearer())
 
