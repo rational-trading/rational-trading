@@ -29,9 +29,12 @@ Note: Commands should be ran from this current folder.
 
 3) If installed a new library - i.e. matplotlib, update the requirements.txt file\
     `pip freeze > requirements.txt`\
-and make sure you commit the new requirements file!
+    and make sure you commit the new requirements file!
 
-1) Running the webserver\
-    `python manage.py runserver`
+4) You can run the webserver with\
+    `python manage.py runserver`.\
+    It should automatically restart whenever you make changes.
 
-2) Deactivate venv when finished working.
+5) View the Swagger API docs by going to http://127.0.0.1:8000/api/docs#/. This page will allow you to view the available endpoints and make test requests in browser.
+
+6) Deactivate venv when finished working.
