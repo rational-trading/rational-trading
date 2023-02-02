@@ -4,7 +4,7 @@ router = Router()
 
 
 @router.get("/")
-def hello(request, name="world"):
+def hello_get(request, name="world"):
     print(request.user)
     return f"Hello {name}! You can specify your name by appending '?name=' to the url."
 
@@ -14,5 +14,5 @@ class HelloSchema(Schema):
 
 
 @router.post("/")
-def hello(request, data: HelloSchema):
+def hello_post(request, data: HelloSchema):
     return f"Hello {data.name}"
