@@ -2,7 +2,7 @@
     import api from "$lib/api";
     import type { MathsResponse } from "$lib/api/maths";
 
-    let token: string = "";
+    let token = "";
     let a = 0;
     let b = 0;
     let request: Promise<MathsResponse | undefined> =

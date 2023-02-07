@@ -13,6 +13,7 @@ module.exports = {
         quotes: ["error", "double"],
         "no-return-assign": ["error", "except-parens"],
         "class-methods-use-this": "off",
+        "operator-linebreak": ["error", "after"],
     },
     settings: {
         // eslint-disable-next-line global-require

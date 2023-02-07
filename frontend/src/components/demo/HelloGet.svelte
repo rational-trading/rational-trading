@@ -1,7 +1,7 @@
 <script lang="ts">
     import api from "$lib/api";
 
-    let name: string = "";
+    let name = "";
     let request: Promise<string> = Promise.resolve("");
 </script>
 
