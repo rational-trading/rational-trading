@@ -16,18 +16,19 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
       
-      - name: Lint (TS)
+      - name: Build
         working-directory: ./frontend
         run: |
               yarn run
               yarn install --frozen-lockfile
               yarn build
-              yarn lint
+
       
-      - name: Build
+      - name: Lint
+        working-directory: ./frontend
         run: |
-              yarn install --frozen-lockfile
-              yarn build
+              yarn lint
+              
     
              
         
