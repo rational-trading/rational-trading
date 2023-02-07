@@ -2,4 +2,19 @@
 /* https://github.com/jgthms/bulma/issues/1293 */
 $body-overflow-y: auto;
 
-$primary: #ad34cb;
+/* 
+    For the color scheme described below, the default is dark mode
+    Will define light mode colors later...
+*/
+
+/* The primary color; should only use for navbar */
+$primary: #5727b0;
+
+/* Neutral color; everything that 1. Is not related to price going up / down and 2. Needs some color */
+$info: #276bb0;
+
+/* Price going up */
+$success: #60c689;
+
+/* Price going down */
+$danger: #e91e63;

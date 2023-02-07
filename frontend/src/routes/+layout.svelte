@@ -3,10 +3,10 @@
 </script>
 
 <!-- the navbar -->
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar is-primary">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
-      <img src="../lib/logo.png" width="112" height="28" />
+      <img src="/logo.png" width="177" height="50" />
     </a>
 
     <!-- mobile burger ignore for now
@@ -21,10 +21,10 @@
       <span aria-hidden="true" />
       <span aria-hidden="true" />
     </a>
-    -->
+  -->
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+  <div class="navbar-menu">
     <div class="navbar-start">
       <a class="navbar-item" href="/"> Home </a>
 
@@ -36,10 +36,12 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
+          <a class="button is-info">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light"> Log in </a>
+          <a class="button is-light">
+            <strong>Log in</strong>
+          </a>
         </div>
       </div>
     </div>
