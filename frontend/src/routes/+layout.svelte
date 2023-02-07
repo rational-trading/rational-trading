@@ -5,9 +5,9 @@
 <!-- the navbar -->
 <nav class="navbar is-primary">
   <div class="navbar-brand">
-    <a class="navbar-item" href="/">
-      <img src="/logo.png" width="177" height="50" />
-    </a>
+    <div class="navbar-item">
+      <img src="/logo.png" width="177" height="50" alt="logo" />
+    </div>
 
     <!-- mobile burger ignore for now
     <a
@@ -48,22 +48,4 @@
   </div>
 </nav>
 
-<div class="columns m-6">
-  <div class="column is-one-third" />
-  <div class="column is-one-third">
-    <div class="level">
-      <div class="level-item">
-        <h1 class="title is-0">Rational Trading</h1>
-      </div>
-    </div>
-    <div class="level">
-      <div class="level-item"><a href="/">Home</a></div>
-      <div class="level-item"><a href="/shopping">Shopping</a></div>
-      <div class="level-item"><a href="/explore">Explore</a></div>
-    </div>
-    <br />
-    <br />
-    <slot />
-  </div>
-  <div class="column is-one-third" />
-</div>
+<slot />
