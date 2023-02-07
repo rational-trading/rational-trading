@@ -18,6 +18,6 @@ jobs:
         with:
           python-version: "3.x"
       - name: Install dependencies
-        run: pip install -r backend/requirements.txt # you can pin your preferred version
+        run: cd backend && pip install -r requirements.txt # you can pin your preferred version
       - name: Run type checks
-        run: mypy backend
+        run: mypy .
