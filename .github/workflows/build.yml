@@ -20,6 +20,8 @@ jobs:
         working-directory: ./frontend
         run: |
               yarn run
+              yarn install --frozen-lockfile
+              yarn build
               yarn lint
       
       - name: Build
