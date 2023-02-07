@@ -2,6 +2,50 @@
   import "../app.scss";
 </script>
 
+<!-- the navbar -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="../lib/logo.png" width="112" height="28" />
+    </a>
+
+    <!-- mobile burger ignore for now
+    <a
+      role="button"
+      class="navbar-burger"
+      aria-label="menu"
+      aria-expanded="false"
+      data-target="navbarBasicExample"
+    >
+      <span aria-hidden="true" />
+      <span aria-hidden="true" />
+      <span aria-hidden="true" />
+    </a>
+    -->
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="/"> Home </a>
+
+      <a class="navbar-item" href="/explore"> Explore </a>
+
+      <a class="navbar-item" href="/portfolio"> Portfolio </a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light"> Log in </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
 <div class="columns m-6">
   <div class="column is-one-third" />
   <div class="column is-one-third">
@@ -13,6 +57,7 @@
     <div class="level">
       <div class="level-item"><a href="/">Home</a></div>
       <div class="level-item"><a href="/shopping">Shopping</a></div>
+      <div class="level-item"><a href="/explore">Explore</a></div>
     </div>
     <br />
     <br />
