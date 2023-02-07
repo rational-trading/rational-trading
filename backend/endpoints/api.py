@@ -1,5 +1,5 @@
 from ninja import NinjaAPI
-from ninja.errors import AuthenticationError
+from ninja.errors import AuthenticationError, ValidationError
 
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
@@ -17,4 +17,14 @@ def authentication_error(request, e):
         request,
         {"error": "Could not authenticate. Hint: You need to add 'Authorization: Bearer supersecret;' to your HTTP headers. This can be done in Swagger UI using the lock icon in the top right of the endpoint."},
         status=401
+    )
+
+
+@api.exception_handler(ValidationError)
+def validation_error(request, e: ValidationError):
+    print(e)
+    return api.create_response(
+        request,
+        {"error": "Request validation failed. Please use the correct input format."},
+        status=422
     )
