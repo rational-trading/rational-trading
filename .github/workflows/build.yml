@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Lint (TS)
-        run: yarn lint
+        run: yarn lint --cwd frontend/
       
       - name: Build
         run: |
