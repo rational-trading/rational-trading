@@ -20,4 +20,4 @@ jobs:
       - name: Install dependencies
         run: cd backend && pip install -r requirements.txt
       - name: Run type checks
-        run: mypy .
+        run: cd backend && mypy .
