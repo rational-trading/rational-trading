@@ -1,7 +1,7 @@
 <script lang="ts">
-    import data from "$lib/data";
+    import ApiDemo from "$components/demo/ApiDemo.svelte";
 </script>
 
 <div class="content">
-    <p>Some data is: {data}</p>
+    <ApiDemo />
 </div>
