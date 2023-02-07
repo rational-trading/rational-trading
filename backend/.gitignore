@@ -1,2 +1,4 @@
 __pycache__/
 rational-trading-django-env/
+static/
+db.sqlite3
