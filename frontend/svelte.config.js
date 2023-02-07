@@ -16,7 +16,10 @@ const config = {
     }),
   ],
   kit: {
-    adapter: adapter(),
+    adapter: adapter({
+      pages: '../backend/static',
+      assets: '../backend/static'
+    }),
     alias: {
       $lib: 'src/lib/',
       $components: 'src/components/',
