@@ -12,9 +12,9 @@ max_score = sum(ratios_weights.values())
 
 
 def normaliseValue(value: float, mapping: Dict[float, float]) -> float:
-    greaterThanValue = filter(
+    keysGreaterThanValue = filter(
         lambda k: k > value, mapping.keys())
-    return mapping[min(greaterThanValue)]
+    return mapping[min(keysGreaterThanValue)]
 
 
 def evaluate_current_ratio(value: float) -> float:
