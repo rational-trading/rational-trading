@@ -1,14 +1,14 @@
 <script lang="ts">
+    import News from "$components/News.svelte";
     import data from "$lib/data";
 </script>
 
 <!-- this fixes the issue of weird extra space to the right of the page -->
 <div
     class="columns my-0"
-    style="width: calc(100vw + 12px); height: calc(100vh - 56px);"
->
+    style="width: calc(100vw + 12px); height: calc(100vh - 56px);">
     <div class="column is-one-quarter has-background-grey-darker px-0">
-        <nav class="level ml-5 mr-4 my-0">
+        <nav class="level is-mobile ml-5 mr-4 my-0">
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-5">Watchlist</h1>
@@ -39,8 +39,8 @@
                     <tr class="is-selected">
                         <th class="has-text-left">AAPL</th>
                         <td class="has-text-right">151.66</td>
-                        <td class="has-text-right has-text-danger">-2.99</td>
-                        <td class="has-text-right has-text-danger">-1.93%</td>
+                        <td class="has-text-right has-text-warning">-2.99</td>
+                        <td class="has-text-right has-text-warning">-1.93%</td>
                     </tr>
                     <tr>
                         <th class="has-text-left">TSLA</th>
@@ -51,8 +51,8 @@
                     <tr>
                         <th class="has-text-left">NFLX</th>
                         <td class="has-text-right">361.54</td>
-                        <td class="has-text-right has-text-danger">-1.41</td>
-                        <td class="has-text-right has-text-danger">-0.39%</td>
+                        <td class="has-text-right has-text-warning">-1.41</td>
+                        <td class="has-text-right has-text-warning">-0.39%</td>
                     </tr>
                 </tbody>
             </table>
@@ -83,8 +83,7 @@
         </nav>
         <div
             class="block mx-2"
-            style="height: 50vh; display: flex; justify-content: center; align-items: center;"
-        >
+            style="height: 50vh; display: flex; justify-content: center; align-items: center;">
             Graph
         </div>
 
@@ -96,46 +95,43 @@
         </div>
     </div>
 
-    <div class="column is-one-quarter has-background-grey-darker">
-        <div class="block mx-2" style="height: 40vh;">
-            <h1 class="title is-5">News</h1>
-            <div class="card">
-                <header class="card-header">
-                    <p class="card-header-title">9 hours ago · MT Newswires</p>
-                    <div class="card-header-icon has-text-danger">
-                        <span class="icon">
-                            <i class="fas fa-arrow-down" />
-                        </span>
-                    </div>
-                </header>
-
-                <div class="card-content">
-                    <p class="title is-3">
-                        Apple's Latest iPhones Offered With Discounts of More
-                        Than $100 by Retailers in China
-                    </p>
+    <div class="column is-one-quarter has-background-grey-darker p-5">
+        <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
+            <div class="block">
+                <h1 class="title is-5">News</h1>
+                <News
+                    data={{
+                        title: "Some Positive News About Apple",
+                        source: "Newswires",
+                        time: "1 hour ago",
+                        positive: true,
+                    }} />
+                <News
+                    data={{
+                        title: "Some Negative News About Apple",
+                        source: "Newswires",
+                        time: "2 hours ago",
+                        positive: false,
+                    }} />
+                <div class="block is-flex is-justify-content-center">
+                    <button class="button is-dark is-small is-rounded"
+                        >More news</button>
                 </div>
             </div>
-            <div class="block mt-6 is-flex is-justify-content-center">
-                <button class="button is-dark is-small is-rounded"
-                    >More news</button
-                >
+            <br />
+            <div class="block">
+                <h1 class="title is-5">Financials</h1>
+                <p>Sample</p>
+                <div class="block mt-6 is-flex is-justify-content-center">
+                    <button class="button is-dark is-small is-rounded"
+                        >More financials</button>
+                </div>
             </div>
         </div>
-
-        <div class="block mx-2" style="height: 40vh;">
-            <h1 class="title is-5">Financials</h1>
-            <p>Sample</p>
-            <div class="block mt-6 is-flex is-justify-content-center">
-                <button class="button is-dark is-small is-rounded"
-                    >More financials</button
-                >
-            </div>
-        </div>
-
+        <hr />
         <div class="block is-flex is-justify-content-center">
             <button class="button is-medium is-info">
-                <strong>Order Panel</strong>
+                <strong>Make a Rational Trade</strong>
             </button>
         </div>
     </div>
