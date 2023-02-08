@@ -1,0 +1,70 @@
+<script lang="ts">
+    import data from "$lib/data";
+</script>
+
+<div class="columns">
+    <div class="column is-one-quarter has-background-grey-darker ">
+        <nav class="level m-4">
+            <div class="level-left">
+                <div class="level-item">
+                    <span class="icon">
+                        <i class="fas fa-eye" />
+                    </span>
+                </div>
+                <div class="level-item">
+                    <h1 class="title is-5">Watchlist</h1>
+                </div>
+            </div>
+
+            <div class="level-right">
+                <div class="level-item">
+                    <span class="icon">
+                        <a href="/"><i class="fas fa-plus" /></a>
+                    </span>
+                </div>
+            </div>
+        </nav>
+        <slot />
+    </div>
+
+    <div class="column">
+        <nav class="level m-4">
+            <div class="level-left">
+                <div class="level-item">
+                    <h1 class="subtitle is-5">Apple Inc.</h1>
+                </div>
+                <div class="level-item">
+                    <h1 class="subtitle is-5">NASDAQ</h1>
+                </div>
+            </div>
+
+            <div class="level-right">
+                <div class="level-item">
+                    <span class="icon">
+                        <a href="/"><i class="fas fa-magnifying-glass" /></a>
+                    </span>
+                </div>
+            </div>
+        </nav>
+        <div class="block m-4">Graph</div>
+
+        <div class="block m-4">
+            <h1 class="title is-5">Key Stats</h1>
+            <slot />
+        </div>
+
+        <div class="content">
+            <p>{data}</p>
+        </div>
+    </div>
+    <div class="column is-one-quarter has-background-grey-darker">
+        <div class="block m-4">
+            <h1 class="title is-5">News</h1>
+        </div>
+        <slot />
+        <div class="block m-4">
+            <h1 class="title is-5">Financials</h1>
+        </div>
+        <slot />
+    </div>
+</div>
