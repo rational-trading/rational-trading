@@ -6,7 +6,6 @@
 </div>
 
 <div class="bg-img" />
-<slot />
 
 <style>
     .bg-img {
@@ -14,7 +13,7 @@
         height: 100%;
         width: 100%;
         top: 0;
-        background-image: url(home.jpeg);
+        background-image: url("/home.jpeg");
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;

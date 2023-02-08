@@ -5,9 +5,9 @@
 <!-- the navbar -->
 <nav class="navbar is-primary">
   <div class="navbar-brand">
-    <div class="navbar-item">
+    <a class="navbar-item" href="/">
       <img src="/logo.png" width="177" height="50" alt="logo" />
-    </div>
+    </a>
 
     <!-- mobile burger ignore for now
     <a

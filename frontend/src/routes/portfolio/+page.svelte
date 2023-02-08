@@ -36,9 +36,40 @@
     </div>
     <div class="column">
         <h2 class="title is-5 ml-5">Recent Activities</h2>
-        <div class="box mx-5 has-background-grey-darker" style="height: 25vh;">
-            Sample
-            <slot />
+        <div
+            class="box mx-5 py-2 has-background-grey-darker"
+            style="height: 25vh;"
+        >
+            <div class="table-container">
+                <table class="table is-fullwidth is-dark" style="height: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="has-text-left">Time</th>
+                            <th class="has-text-left">Symbol</th>
+                            <th class="has-text-left">Side</th>
+                            <th class="has-text-left"
+                                ><abbr title="Quantity">Qty</abbr></th
+                            >
+                            <th>Price</th>
+                            <th>Total value</th>
+                            <th class="has-text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="has-text-left">2023-02-08 21:09:19</td>
+                            <th class="has-text-left">AAPL</th>
+                            <td class="has-text-left">Buy</td>
+                            <td class="has-text-left">10</td>
+                            <td class="has-text-right">151.66</td>
+                            <td class="has-text-right">1516.63</td>
+                            <td class="has-text-left has-text-danger"
+                                >Rejected</td
+                            >
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -47,6 +78,5 @@
     <h2 class="title is-5 ml-5">Details</h2>
     <div class="box mx-5 has-background-grey-darker" style="height: 40vh;">
         Sample
-        <slot />
     </div>
 </div>

@@ -1,5 +1,6 @@
 /* Variables and mixins declared here will be available in all other SCSS files */
 /* https://github.com/jgthms/bulma/issues/1293 */
+$body-overflow-x: hidden;
 $body-overflow-y: auto;
 
 /* The color scheme is implemented to support dark mode by default */
@@ -8,13 +9,15 @@ $body-overflow-y: auto;
 $primary: #5727b0;
 
 /* Neutral color; everything that 1. Is not related to price going up / down and 2. Needs some color */
-$info: #276bb0;
-
+$info: #276cb0;
+$info-dark: #133658;
 /* Price going up */
 $success: #60c689;
+$success-dark: #276d43;
 
 /* Price going down */
 $danger: #e91e63;
+$danger-dark: #790c30;
 
 $black: #0a0a0a;
 $black-bis: #121212;
@@ -52,3 +55,14 @@ $link-active: $grey-lightest;
 $link-active-border: $grey-lighter;
 
 $body-background-color: $background;
+
+/* All of the table related variables */
+$table-background-color: transparent;
+$table-row-hover-background-color: $grey-dark;
+$table-cell-text-align: right;
+$table-row-active-background-color: $info-dark;
+$table-row-active-color: $text;
+$table-head-cell-color: $text-light;
+
+/* All of the card related variables */
+$card-background-color: $grey-dark;
