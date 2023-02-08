@@ -2,10 +2,10 @@
     <h1 class="title is-2">Portfolio</h1>
 </div>
 
-<div class="columns mt-5">
+<div class="columns mt-5" style="width: calc(100vw + 12px);">
     <div class="column is-two-fifths">
         <h2 class="title is-5 ml-5">Summary</h2>
-        <div class="block mx-5 has-background-grey-darker">
+        <div class="box mx-5 has-background-grey-darker" style="height: 25vh;">
             <nav class="level">
                 <div class="level-item has-text-centered">
                     <div>
@@ -36,7 +36,7 @@
     </div>
     <div class="column">
         <h2 class="title is-5 ml-5">Recent Activities</h2>
-        <div class="block mx-5 has-background-grey-darker">
+        <div class="box mx-5 has-background-grey-darker" style="height: 25vh;">
             Sample
             <slot />
         </div>
@@ -45,7 +45,7 @@
 
 <div class="block my-5">
     <h2 class="title is-5 ml-5">Details</h2>
-    <div class="block mx-5 has-background-grey-darker">
+    <div class="box mx-5 has-background-grey-darker" style="height: 40vh;">
         Sample
         <slot />
     </div>

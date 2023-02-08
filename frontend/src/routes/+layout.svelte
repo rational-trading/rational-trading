@@ -36,12 +36,12 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-info" href="/">
+          <button class="button is-info">
             <strong>Sign up</strong>
-          </a>
-          <a class="button is-light" href="/">
+          </button>
+          <button class="button is-light">
             <strong>Log in</strong>
-          </a>
+          </button>
         </div>
       </div>
     </div>
