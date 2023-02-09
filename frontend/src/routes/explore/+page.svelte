@@ -135,6 +135,7 @@
                         source: "Newswires",
                         time: "1 hour ago",
                         positive: true,
+                        url: "/",
                     }}
                 />
                 <News
@@ -143,6 +144,7 @@
                         source: "Newswires",
                         time: "2 hours ago",
                         positive: false,
+                        url: "/",
                     }}
                 />
                 <News
@@ -151,6 +153,7 @@
                         source: "Newswires",
                         time: "3 hours ago",
                         positive: false,
+                        url: "/",
                     }}
                 />
                 <News
@@ -159,6 +162,7 @@
                         source: "Newswires",
                         time: "5 hours ago",
                         positive: true,
+                        url: "/",
                     }}
                 />
                 <div class="block is-flex is-justify-content-center">
