@@ -36,7 +36,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a href="/" class="button is-primary">
+          <a href="/" class="button is-light">
             <strong>Log in</strong>
           </a>
           <a href="/" class="button is-info">
