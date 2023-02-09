@@ -8,7 +8,7 @@
 
     export let data: News;
 
-    let sentiment = data.positive ? "success" : "warning";
+    const sentiment = data.positive ? "success" : "warning";
 </script>
 
 <div class="block card">
