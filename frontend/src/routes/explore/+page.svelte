@@ -39,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="is-selected">
+                        <tr class="is-selected" style="cursor: pointer;">
                             <th class="has-text-left">AAPL</th>
                             <td class="has-text-right">151.66</td>
                             <td class="has-text-right has-text-warning"
@@ -47,7 +47,7 @@
                             <td class="has-text-right has-text-warning"
                                 >-1.93%</td>
                         </tr>
-                        <tr>
+                        <tr style="cursor: pointer;">
                             <th class="has-text-left">TSLA</th>
                             <td class="has-text-right">199.68</td>
                             <td class="has-text-right has-text-success"
@@ -55,7 +55,7 @@
                             <td class="has-text-right has-text-success"
                                 >1.45%</td>
                         </tr>
-                        <tr>
+                        <tr style="cursor: pointer;">
                             <th class="has-text-left">NFLX</th>
                             <td class="has-text-right">361.54</td>
                             <td class="has-text-right has-text-warning"
