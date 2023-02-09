@@ -1,3 +1,7 @@
+<script>
+    import Activity from "$components/Activity.svelte";
+</script>
+
 <div class="block mt-5 ml-5">
     <h1 class="title is-2">Portfolio</h1>
 </div>
@@ -54,83 +58,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
-                        <tr>
-                            <td class="has-text-left">2023-02-08 21:09:19</td>
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-left">Buy</td>
-                            <td class="has-text-left">10</td>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right">1516.63</td>
-                            <td class="has-text-left has-text-danger"
-                                >Rejected</td
-                            >
-                        </tr>
+                        <Activity
+                            data={{
+                                time: "2023-02-08 21:09:19",
+                                symbol: "AAPL",
+                                side: "Buy",
+                                qty: 10,
+                                price: 151.66,
+                                totalVal: 1516.63,
+                                status: "Pending",
+                            }}
+                        />
+                        <Activity
+                            data={{
+                                time: "2023-02-08 21:09:19",
+                                symbol: "AAPL",
+                                side: "Buy",
+                                qty: 10,
+                                price: 151.66,
+                                totalVal: 1516.63,
+                                status: "Success",
+                            }}
+                        />
+                        <Activity
+                            data={{
+                                time: "2023-02-08 21:09:19",
+                                symbol: "AAPL",
+                                side: "Buy",
+                                qty: 10,
+                                price: 151.66,
+                                totalVal: 1516.63,
+                                status: "Rejected",
+                            }}
+                        />
                     </tbody>
                 </table>
             </div>

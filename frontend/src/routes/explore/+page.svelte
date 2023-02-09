@@ -1,5 +1,7 @@
 <script lang="ts">
+    import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
+
     import data from "$lib/data";
 </script>
 
@@ -41,35 +43,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="is-selected" style="cursor: pointer;">
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right has-text-warning"
-                                >-2.99</td
-                            >
-                            <td class="has-text-right has-text-warning"
-                                >-1.93%</td
-                            >
-                        </tr>
-                        <tr style="cursor: pointer;">
-                            <th class="has-text-left">TSLA</th>
-                            <td class="has-text-right">199.68</td>
-                            <td class="has-text-right has-text-success">2.87</td
-                            >
-                            <td class="has-text-right has-text-success"
-                                >1.45%</td
-                            >
-                        </tr>
-                        <tr style="cursor: pointer;">
-                            <th class="has-text-left">NFLX</th>
-                            <td class="has-text-right">361.54</td>
-                            <td class="has-text-right has-text-warning"
-                                >-1.41</td
-                            >
-                            <td class="has-text-right has-text-warning"
-                                >-0.39%</td
-                            >
-                        </tr>
+                        <Watchlist
+                            data={{
+                                symbol: "AAPL",
+                                last: 151.66,
+                                chg: -2.99,
+                                percentChg: -1.93,
+                            }}
+                        />
+                        <Watchlist
+                            data={{
+                                symbol: "TSLA",
+                                last: 199.68,
+                                chg: 2.87,
+                                percentChg: 1.45,
+                            }}
+                        />
+                        <Watchlist
+                            data={{
+                                symbol: "NFLX",
+                                last: 361.54,
+                                chg: -1.41,
+                                percentChg: -0.39,
+                            }}
+                        />
+                        <Watchlist
+                            data={{
+                                symbol: "NKE",
+                                last: 122.91,
+                                chg: -2.42,
+                                percentChg: -1.93,
+                            }}
+                        />
                     </tbody>
                 </table>
             </div>
@@ -122,7 +127,7 @@
 
     <div class="column is-one-quarter has-background-grey-darker p-5">
         <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
-            <div class="block pr-4">
+            <div class="block">
                 <h1 class="title is-5">News</h1>
                 <News
                     data={{
