@@ -10,7 +10,7 @@
 <br />
 <br />
 <button
-    class="button"
+    class="button is-info"
     on:click={() => (request = api.hello().get(name === "" ? undefined : name))}
     >Send</button>
 <br />

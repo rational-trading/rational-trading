@@ -9,8 +9,9 @@
 <input class="input" bind:value={name} />
 <br />
 <br />
-<button class="button" on:click={() => (request = api.hello().post(name))}
-    >Send</button>
+<button
+    class="button is-info"
+    on:click={() => (request = api.hello().post(name))}>Send</button>
 <br />
 <br />
 {#await request}
