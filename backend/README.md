@@ -47,8 +47,8 @@ Note: Commands should be ran from this current folder.
 
 2) To create a login for the admin interface (at `/admin`), use `python manage.py createsuperuser`
 
-3) If you make a change to the model, create a migration using `python manage.py makemigrations`
+3) If you make a change to the model, create a migration using `python manage.py makemigrations models`
 
 4) If there are any unapplied migrations, re-run `python manage.py migrate`
 
-5) In the worst case, delete `db.sqlite3` and re-initialise.
+5) In the worst case, delete `db.sqlite3` (and possible `models/migrations`) and re-initialise.
