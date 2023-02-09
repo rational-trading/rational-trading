@@ -26,40 +26,50 @@
 
         <div class="block pl-3 mt-3">
             <!-- Went very explicit on the alignment because it's never what you expect -->
-            <table class="table is-hoverable is-fullwidth is-dark">
-                <thead>
-                    <tr>
-                        <th class="has-text-left ml-5">Symbol</th>
-                        <th>Last</th>
-                        <th><abbr title="Change">Chg</abbr></th>
-                        <th><abbr title="Percent Change">Chg%</abbr></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="is-selected">
-                        <th class="has-text-left">AAPL</th>
-                        <td class="has-text-right">151.66</td>
-                        <td class="has-text-right has-text-warning">-2.99</td>
-                        <td class="has-text-right has-text-warning">-1.93%</td>
-                    </tr>
-                    <tr>
-                        <th class="has-text-left">TSLA</th>
-                        <td class="has-text-right">199.68</td>
-                        <td class="has-text-right has-text-success">2.87</td>
-                        <td class="has-text-right has-text-success">1.45%</td>
-                    </tr>
-                    <tr>
-                        <th class="has-text-left">NFLX</th>
-                        <td class="has-text-right">361.54</td>
-                        <td class="has-text-right has-text-warning">-1.41</td>
-                        <td class="has-text-right has-text-warning">-0.39%</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div
+                class="table-container"
+                style="height: 100%; overflow-y: scroll;">
+                <table class="table is-hoverable is-fullwidth is-dark">
+                    <thead>
+                        <tr>
+                            <th class="has-text-left ml-5">Symbol</th>
+                            <th>Last</th>
+                            <th><abbr title="Change">Chg</abbr></th>
+                            <th><abbr title="Percent Change">Chg%</abbr></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="is-selected">
+                            <th class="has-text-left">AAPL</th>
+                            <td class="has-text-right">151.66</td>
+                            <td class="has-text-right has-text-warning"
+                                >-2.99</td>
+                            <td class="has-text-right has-text-warning"
+                                >-1.93%</td>
+                        </tr>
+                        <tr>
+                            <th class="has-text-left">TSLA</th>
+                            <td class="has-text-right">199.68</td>
+                            <td class="has-text-right has-text-success"
+                                >2.87</td>
+                            <td class="has-text-right has-text-success"
+                                >1.45%</td>
+                        </tr>
+                        <tr>
+                            <th class="has-text-left">NFLX</th>
+                            <td class="has-text-right">361.54</td>
+                            <td class="has-text-right has-text-warning"
+                                >-1.41</td>
+                            <td class="has-text-right has-text-warning"
+                                >-0.39%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div class="column">
+    <div class="column" style="height: calc(100vh - 56px); overflow: auto;">
         <nav class="level mx-2">
             <div class="level-left">
                 <div class="level-item">
@@ -87,7 +97,14 @@
             Graph
         </div>
 
-        <hr style="background: #4a4a4a;" />
+        <div class="tabs">
+            <ul>
+                <li class="is-active">
+                    <a>Key Stats</a>
+                </li>
+                <li><a>Finances</a></li>
+            </ul>
+        </div>
 
         <div class="block mx-2">
             <h1 class="title is-5">Key Stats</h1>
@@ -97,7 +114,7 @@
 
     <div class="column is-one-quarter has-background-grey-darker p-5">
         <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
-            <div class="block">
+            <div class="block pr-4">
                 <h1 class="title is-5">News</h1>
                 <News
                     data={{
@@ -113,18 +130,23 @@
                         time: "2 hours ago",
                         positive: false,
                     }} />
+                <News
+                    data={{
+                        title: "Some Negative News About Apple",
+                        source: "Newswires",
+                        time: "3 hours ago",
+                        positive: false,
+                    }} />
+                <News
+                    data={{
+                        title: "Some Positive News About Apple",
+                        source: "Newswires",
+                        time: "5 hours ago",
+                        positive: true,
+                    }} />
                 <div class="block is-flex is-justify-content-center">
                     <button class="button is-dark is-small is-rounded"
                         >More news</button>
-                </div>
-            </div>
-            <br />
-            <div class="block">
-                <h1 class="title is-5">Financials</h1>
-                <p>Sample</p>
-                <div class="block mt-6 is-flex is-justify-content-center">
-                    <button class="button is-dark is-small is-rounded"
-                        >More financials</button>
                 </div>
             </div>
         </div>
