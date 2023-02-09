@@ -16,3 +16,4 @@ class Trade(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     units = models.DecimalField(max_digits=15, decimal_places=6)
     total_cost = models.DecimalField(max_digits=11, decimal_places=2)
+    time = models.DateTimeField()
