@@ -37,4 +37,6 @@ Note: Commands should be ran from this current folder.
 
 5) View the Swagger API docs by going to http://127.0.0.1:8000/api/docs#/. This page will allow you to view the available endpoints and make test requests in browser.
 
-6) Deactivate venv when finished working.
+6) Typecheck your Python code with `mypy .`
+
+7) Deactivate venv when finished working.
