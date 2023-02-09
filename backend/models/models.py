@@ -13,7 +13,7 @@ class Stock(models.Model):
 
 class Trade(models.Model):  # type: ignore
     """
-    Type ignore required until https://github.com/typeddjango/django-stubs/pull/1339 is resolved.
+    Type ignore required until https://github.com/typeddjango/django-stubs/issues/64 is resolved.
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
