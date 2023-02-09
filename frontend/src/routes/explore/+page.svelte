@@ -76,7 +76,7 @@
                     <h1 class="subtitle is-5">Apple Inc.</h1>
                 </div>
                 <div class="level-item">
-                    <h1 class="subtitle is-5">·</h1>
+                    <h1 class="subtitle is-5">•</h1>
                 </div>
                 <div class="level-item">
                     <h1 class="subtitle is-5">NASDAQ</h1>
