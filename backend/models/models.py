@@ -11,7 +11,10 @@ class Stock(models.Model):
     ticker = models.CharField(max_length=255, primary_key=True)
 
 
-class Trade(models.Model):
+class Trade(models.Model):  # type: ignore
+    """
+    Type ignore required until https://github.com/typeddjango/django-stubs/pull/1339 is resolved.
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     units = models.DecimalField(max_digits=15, decimal_places=6)
