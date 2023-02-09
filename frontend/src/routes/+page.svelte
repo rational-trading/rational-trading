@@ -1,7 +1,6 @@
 <div class="block" style="margin-top: 15vh; margin-left: 10vh;">
     <h1 class="title is-1">Whatever topic.</h1>
     <h2 class="subtitle is-3">And maybe a little elaboration.</h2>
-    <p>Testing out text color.</p>
     <a class="button is-large is-info" href="/"><strong>Get started</strong></a>
 </div>
 
