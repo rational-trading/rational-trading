@@ -1,5 +1,6 @@
 <script lang="ts">
   import "../app.scss";
+  import Login from "../components/Login.svelte"
 </script>
 
 <!-- the navbar -->
@@ -36,9 +37,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a href="/" class="button is-light">
-            <strong>Log in</strong>
-          </a>
+          <Login />
           <a href="/" class="button is-info">
             <strong>Sign up</strong>
           </a>
