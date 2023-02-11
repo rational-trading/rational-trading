@@ -172,7 +172,7 @@
                 </div>
             </div>
         </div>
-        <hr />
+        <hr style="background: #4a4a4a;" />
         <div class="block is-flex is-justify-content-center">
             <button class="button is-medium is-info">
                 <strong>Make a Rational Trade</strong>
