@@ -6,17 +6,16 @@ ratios_weights = {
     "current_ratio": 0.5,
     "roic": 0.9,
     "debt_to_equity": 0.7
-    }
+}
 
 max_score = sum(ratios_weights.values())
 
-def normaliseValue(value: float, mapping: Dict[float, float]):
-    score = -1
-    for key in mapping:
-        if key > value:
-            score = mapping[key]
-            return score
-    raise Exception("Should be impossible.")
+
+def normaliseValue(value: float, mapping: Dict[float, float]) -> float:
+    keysGreaterThanValue = filter(
+        lambda k: k > value, mapping.keys())
+    return mapping[min(keysGreaterThanValue)]
+
 
 def evaluate_current_ratio(value: float) -> float:
     # input: ratio value
@@ -31,7 +30,7 @@ def evaluate_current_ratio(value: float) -> float:
         1.2: 0.7,
         1.5: 0.9,
         float("inf"): 1
-        }
+    }
     return normaliseValue(value, mapping)
 
 
@@ -46,7 +45,7 @@ def evaluate_roic(value: float) -> float:
         20: 0.7,
         30: 0.9,
         float("inf"): 1
-        }
+    }
     return normaliseValue(value, mapping)
 
 
@@ -62,21 +61,24 @@ def evaluate_debt_to_equity(value: float) -> float:
         5: 0.1,
         7: 0,
         float("inf"): 0
-        }
+    }
     return normaliseValue(value, mapping)
 
 
 def scoring(current_ratio: float, roic: float, debt_to_equity: float) -> float:
     # input: ratios and their values
     # output: a score between 0 and 1
-    score = 0
-    score += evaluate_current_ratio(current_ratio) * ratios_weights["current_ratio"]
-    score += evaluate_roic(roic) * ratios_weights["roic"]
-    score += evaluate_debt_to_equity(debt_to_equity) * ratios_weights["debt_to_equity"]
-    return(score / max_score)
+    weighted_scores = [
+        evaluate_current_ratio(current_ratio) *
+        ratios_weights["current_ratio"],
+        evaluate_roic(roic) * ratios_weights["roic"],
+        evaluate_debt_to_equity(debt_to_equity) *
+        ratios_weights["debt_to_equity"]
+    ]
+    return sum(weighted_scores) / max_score
 
 
-def main():
+if __name__ == "__main__":
 
     # make use of polygon API to get the variable values
     current_assets = 1
@@ -93,7 +95,3 @@ def main():
 
     # use the scoring system
     print(scoring(current_ratio, roic, debt_to_equity))
-
-
-if __name__ == "__main__":
-    main()

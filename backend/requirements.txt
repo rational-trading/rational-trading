@@ -4,4 +4,7 @@ django-ninja==0.20.0
 sqlparse==0.4.3
 textblob==0.17.1
 whitenoise==6.3.0
+django-cors-headers==3.13.0
+mypy==1.0.0
+django-stubs==1.14.0
 polygon-api-client==1.7.1
