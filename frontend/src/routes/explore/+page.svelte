@@ -1,15 +1,12 @@
 <script lang="ts">
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
-
-    import data from "$lib/data";
 </script>
 
 <!-- this fixes the issue of weird extra space to the right of the page -->
 <div
     class="columns my-0"
-    style="width: calc(100vw + 12px); height: calc(100vh - 56px);"
->
+    style="width: calc(100vw + 12px); height: calc(100vh - 56px);">
     <div class="column is-one-quarter has-background-grey-darker px-0">
         <nav class="level is-mobile ml-5 mr-4 my-0">
             <div class="level-left">
@@ -31,8 +28,7 @@
             <!-- Went very explicit on the alignment because it's never what you expect -->
             <div
                 class="table-container"
-                style="height: 100%; overflow-y: scroll;"
-            >
+                style="height: 100%; overflow-y: scroll;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <thead>
                         <tr>
@@ -105,8 +101,7 @@
         </nav>
         <div
             class="block mx-2"
-            style="height: 50vh; display: flex; justify-content: center; align-items: center;"
-        >
+            style="height: 50vh; display: flex; justify-content: center; align-items: center;">
             Graph
         </div>
 
@@ -121,7 +116,7 @@
 
         <div class="block mx-2">
             <h1 class="title is-5">Key Stats</h1>
-            <p>{data}</p>
+            <p>Here is some text.</p>
         </div>
     </div>
 
@@ -167,8 +162,7 @@
                 />
                 <div class="block is-flex is-justify-content-center">
                     <button class="button is-dark is-small is-rounded"
-                        >More news</button
-                    >
+                        >More news</button>
                 </div>
             </div>
         </div>
