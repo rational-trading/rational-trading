@@ -24,7 +24,7 @@
     }
 </style>
 
-<button class="button is-light" on:click={() => active = true}>
+<button class="button is-light" on:click={() => { active = true; }}>
     <strong>Log in</strong>
 </button>
 
@@ -34,7 +34,7 @@
     <div class="modal-content">
         <div class="is-flex is-flex-direction-column">
             <div class="is-align-self-flex-end">
-                <button class="delete is-large" style="background: #D9D9D9" aria-label="close" on:click={() => active = false}></button>
+                <button class="delete is-large" style="background: #D9D9D9" aria-label="close" on:click={() => { active = false; }}></button>
             </div>
             <div class="is-flex is-flex-direction-column pt-4" id="login-contents">
                 <p class="title is-1 has-text-black">Log in</p>

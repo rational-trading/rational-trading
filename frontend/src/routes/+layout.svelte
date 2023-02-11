@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../app.scss";
-  import Login from "../components/Login.svelte"
+  import Login from "../components/Login.svelte";
 </script>
 
 <!-- the navbar -->
