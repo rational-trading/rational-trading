@@ -52,3 +52,7 @@ Note: Commands should be ran from this current folder.
 4) If there are any unapplied migrations, re-run `python manage.py migrate`
 
 5) In the worst case, delete `db.sqlite3` (and possible `models/migrations`) and re-initialise.
+
+# Polygon API
+
+1) To use the API, create a new file named `.env` in `/polygon`, with all the variables specified in `.env.example` filled in.

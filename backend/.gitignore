@@ -4,3 +4,4 @@ static/
 models/migrations/
 db.sqlite3
 polygon/config.py
+polygon/.env
