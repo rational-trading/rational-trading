@@ -4,7 +4,7 @@ https://polygon.io/docs/stocks/
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
 from polygon import RESTClient # type: ignore
-import environ
+import environ # type: ignore
 
 class TickerArticle():
     def __init__(self, title: str, description: str, url: str, published: str) -> None:
@@ -45,8 +45,11 @@ class PolygonAPI():
             ret.append(t)
         return ret
 
+
 # Testing
 if __name__ == "__main__":
     api = PolygonAPI()
     n = api.get_news("AAPL", 1)
+    f = api.get_financials("AAPL")
     print(n)
+    print(f)
