@@ -1,5 +1,6 @@
 __pycache__/
 rational-trading-django-env/
 static/
+models/migrations/
 db.sqlite3
 polygon/config.py
