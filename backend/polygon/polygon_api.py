@@ -8,7 +8,7 @@ import config #contains API_KEY
 
 class PolygonAPI():
     def __init__(self) -> None:
-        self.client = RESTClient(api_key=config.API_KEY)
+        self.client = RESTClient(api_key=config.API_KEY) #type:ignore
 
     def get_financials(self, ticker: str) -> object:
         financials = self.client.vx.list_stock_financials(ticker=ticker, limit=1, timeframe="annual", include_sources=True)
