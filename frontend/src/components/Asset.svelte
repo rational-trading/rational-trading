@@ -14,8 +14,8 @@
 
     export let data: Asset;
 
-    let colorToday = data.glToday >= 0 ? "success" : "warning";
-    let colorOverall = data.glOverall >= 0 ? "success" : "warning";
+    const colorToday = data.glToday >= 0 ? "success" : "warning";
+    const colorOverall = data.glOverall >= 0 ? "success" : "warning";
 </script>
 
 <div class="block">

@@ -12,9 +12,9 @@
     export let data: Activity;
 
     let color = "warning";
-    if (data.status == "Success") {
+    if (data.status === "Success") {
         color = "success";
-    } else if (data.status == "Rejected") {
+    } else if (data.status === "Rejected") {
         color = "danger";
     }
 </script>

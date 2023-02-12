@@ -8,7 +8,7 @@
 
     export let data: Watchlist;
 
-    let color = data.chg >= 0 ? "success" : "warning";
+    const color = data.chg >= 0 ? "success" : "warning";
     let selected = false;
 
     function click() {
