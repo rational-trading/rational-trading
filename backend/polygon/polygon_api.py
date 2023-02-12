@@ -1,13 +1,19 @@
+"""
+Polygon API class to get stock financials and news articles
+https://polygon.io/docs/stocks/
+https://polygon-api-client.readthedocs.io/en/latest/index.html
+"""
 from polygon import RESTClient
 import config #contains API_KEY
-import json
 
-def main():
-    client = RESTClient(api_key=config.API_KEY)
-    ticker = "GOOG"
+class PolygonAPI():
+    def __init__(self) -> None:
+        self.client = RESTClient(api_key=config.API_KEY)
 
-    news = client.list_ticker_news(ticker=ticker, limit=2)
-    print([n for n in news])
-
-if __name__ == "__main__":
-    main()
+    def get_financials(self, ticker: str):
+        financials = self.client.vx.list_stock_financials(ticker=ticker, limit=1, timeframe="annual", include_sources=True)
+        return financials
+    
+    def get_news(self, ticker: str):
+        news = self.client.list_ticker_news(ticker=ticker, limit=1)
+        return news  # use next(news) to iterate over
