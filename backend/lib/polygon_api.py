@@ -32,8 +32,8 @@ class TickerFinancials():
 class PolygonAPI():
     def __init__(self) -> None:
         # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
-        API_KEY = env("API_KEY")
-        self.client = RESTClient(api_key=API_KEY)  # type: ignore
+        POLYGON_API_KEY = env("POLYGON_API_KEY")
+        self.client = RESTClient(api_key=POLYGON_API_KEY)  # type: ignore
 
     def get_financials(self, ticker: str) -> TickerFinancials:
         financials: Iterator[StockFinancial] | HTTPResponse = self.client.vx.list_stock_financials(
