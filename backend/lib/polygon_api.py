@@ -4,7 +4,7 @@ https://polygon.io/docs/stocks/
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
 from http.client import HTTPResponse
-from typing import Iterator
+from typing import Iterator, Optional
 from polygon import RESTClient
 from polygon.rest.models import StockFinancial
 from polygon.rest.models import TickerNews
@@ -42,15 +42,23 @@ class PolygonAPI():
         return f
 
     def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
-        news: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
+        news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
             ticker=ticker, limit=1)
-        ret = []
+        articles = []
         for _ in range(max_items):
-            n = next(news)
-            t = TickerArticle(n.title, n.description,
-                              n.article_url, n.published_utc)
-            ret.append(t)
-        return ret
+            n = news_generator.__next__()
+            # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
+            assert isinstance(n, TickerNews)
+
+            assert n.title is not None
+            assert n.description is not None
+            assert n.article_url is not None
+            assert n.published_utc is not None
+
+            article = TickerArticle(n.title, n.description,
+                                    n.article_url, n.published_utc)
+            articles.append(article)
+        return articles
 
 
 # Testing
