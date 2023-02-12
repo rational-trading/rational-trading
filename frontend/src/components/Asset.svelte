@@ -49,7 +49,7 @@
                 <p class="heading">Today's gain/loss</p>
                 <p class="title is-5 has-text-{colorToday}">
                     {data.glToday >= 0 ? "" : "-"}£{Math.abs(data.glToday)} ({round(
-                        (data.glToday / (data.currentVal - data.glToday)) * 100
+                        (data.glToday / (data.currentVal - data.glToday)) * 100,
                     )}%)
                 </p>
             </div>
@@ -60,7 +60,7 @@
                 <p class="title is-5 has-text-{colorOverall}">
                     {data.glOverall >= 0 ? "" : "-"}£{Math.abs(data.glOverall)} ({round(
                         (data.glOverall / (data.currentVal - data.glOverall)) *
-                            100
+                            100,
                     )}%)
                 </p>
             </div>
