@@ -40,3 +40,15 @@ Note: Commands should be ran from this current folder.
 6) Typecheck your Python code with `mypy .`
 
 7) Deactivate venv when finished working.
+
+# Database
+
+1) To initialise the database, use `python manage.py migrate`
+
+2) To create a login for the admin interface (at `/admin`), use `python manage.py createsuperuser`
+
+3) If you make a change to the model, create a migration using `python manage.py makemigrations models`
+
+4) If there are any unapplied migrations, re-run `python manage.py migrate`
+
+5) In the worst case, delete `db.sqlite3` (and possible `models/migrations`) and re-initialise.
