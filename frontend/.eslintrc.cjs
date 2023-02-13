@@ -14,6 +14,9 @@ module.exports = {
         "no-return-assign": ["error", "except-parens"],
         "class-methods-use-this": "off",
         "operator-linebreak": ["error", "after"],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        "import/first": "off",
     },
     settings: {
         // eslint-disable-next-line global-require

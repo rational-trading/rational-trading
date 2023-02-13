@@ -1,36 +1,29 @@
 <script lang="ts">
     import Activity from "$components/Activity.svelte";
     import Asset from "$components/Asset.svelte";
+    import type { Activity as ActivityData } from "$lib/types";
 
-    import { Status } from "$types/status";
-
-    const activities = [
+    const activities: ActivityData[] = [
         {
             time: "2023-02-08 21:09:19",
             symbol: "AAPL",
-            side: "Buy",
-            qty: 10,
+            quantity_bought: 10,
             price: 151.66,
-            totalVal: 1516.63,
-            status: Status.Pending,
+            status: "Pending",
         },
         {
             time: "2023-02-08 21:09:19",
             symbol: "AAPL",
-            side: "Buy",
-            qty: 10,
+            quantity_bought: 10,
             price: 151.66,
-            totalVal: 1516.63,
-            status: Status.Filled,
+            status: "Filled",
         },
         {
             time: "2023-02-08 21:09:19",
             symbol: "AAPL",
-            side: "Buy",
-            qty: 10,
+            quantity_bought: 10,
             price: 151.66,
-            totalVal: 1516.63,
-            status: Status.Rejected,
+            status: "Rejected",
         },
     ];
     const assets = [
