@@ -63,7 +63,7 @@
 <!-- this fixes the issue of weird extra space to the right of the page -->
 <div
     class="columns my-0"
-    style="width: calc(100vw + 12px); height: calc(100vh - 56px);">
+    style="width: calc(100vw + 12px); height: calc(100vh - 53px);">
     <div class="column is-one-quarter has-background-grey-darker px-0">
         <nav class="level ml-5 mr-4 mt-2 mb-0">
             <div class="level-left">
@@ -105,8 +105,9 @@
         </div>
     </div>
 
-    <div class="column" style="height: calc(100vh - 56px); overflow: auto;">
-        <nav class="level mx-2">
+    <div class="column">
+        <!--- right side header bar -->
+        <nav class="level mx-2 mt-2">
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="subtitle is-5">Apple Inc.</h1>
@@ -127,46 +128,52 @@
                 </div>
             </div>
         </nav>
-        <div
-            class="block mx-2"
-            style="height: 50vh; display: flex; justify-content: center; align-items: center;">
-            Graph
-        </div>
 
-        <div class="tabs">
-            <ul>
-                <li class="is-active">
-                    <a href="/">Key Stats</a>
-                </li>
-                <li><a href="/">Finances</a></li>
-            </ul>
-        </div>
+        <hr style="background: #4a4a4a; height: 1px" />
 
-        <div class="block mx-2">
-            <h1 class="title is-5">Key Stats</h1>
-            <p>Here is some text.</p>
-        </div>
-    </div>
+        <div class="columns" style="height: calc(100vh - 53px - 5.5rem)">
+            <div class="column" style="height: 100%;">
+                <div
+                    class="block mx-2"
+                    style="height: 50vh; display: flex; justify-content: center; align-items: center;">
+                    Graph
+                </div>
 
-    <div class="column is-one-quarter has-background-grey-darker p-5">
-        <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
-            <div class="block">
-                <h1 class="title is-5">News</h1>
-                {#each news as item}
-                    <News data={item} />
-                {/each}
+                <div class="tabs">
+                    <ul>
+                        <li class="is-active">
+                            <a href="/">Key Stats</a>
+                        </li>
+                        <li><a href="/">Finances</a></li>
+                    </ul>
+                </div>
 
-                <div class="block is-flex is-justify-content-center">
-                    <button class="button is-dark is-small is-rounded"
-                        >More news</button>
+                <div class="block mx-2">
+                    <p>Here is some text.</p>
                 </div>
             </div>
-        </div>
-        <hr style="background: #4a4a4a;" />
-        <div class="block is-flex is-justify-content-center">
-            <button class="button is-medium is-info">
-                <strong>Make a Rational Trade</strong>
-            </button>
+
+            <div
+                class="column is-one-third"
+                style="height: 100%; border-left: 1px solid #4a4a4a;">
+                <div class="block px-2" style="height: 85%; overflow: auto;">
+                    <h1 class="title is-5">News</h1>
+                    {#each news as item}
+                        <News data={item} />
+                    {/each}
+
+                    <div class="block is-flex is-justify-content-center">
+                        <button class="button is-small is-rounded"
+                            >More news</button>
+                    </div>
+                </div>
+                <hr style="background: #4a4a4a; height: 1px" />
+                <div class="block is-flex is-justify-content-center">
+                    <button class="button is-medium is-info">
+                        <strong>Make a Rational Trade</strong>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
