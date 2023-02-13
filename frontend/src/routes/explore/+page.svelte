@@ -65,7 +65,7 @@
     class="columns my-0"
     style="width: calc(100vw + 12px); height: calc(100vh - 56px);">
     <div class="column is-one-quarter has-background-grey-darker px-0">
-        <nav class="level is-mobile ml-5 mr-4 my-0">
+        <nav class="level ml-5 mr-4 mt-2 mb-0">
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-5">Watchlist</h1>
