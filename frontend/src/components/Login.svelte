@@ -1,9 +1,5 @@
 <script lang="ts">
     let active = false;
-
-    function isActive() {
-        return active ? "is-active" : "";
-    }
 </script>
 
 <style>
