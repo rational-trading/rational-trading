@@ -15,8 +15,7 @@
 <tr>
     <td class="has-text-left">{data.time}</td>
     <th class="has-text-left">{data.symbol}</th>
-    <td class="has-text-left"
-        >{data.quantity_bought >= 0 ? "bought" : "sold"}</td>
+    <td class="has-text-left">{data.quantity_bought >= 0 ? "Buy" : "Sell"}</td>
     <td class="has-text-left">{data.quantity_bought}</td>
     <td class="has-text-right">{data.price}</td>
     <td class="has-text-right">{data.price * data.quantity_bought}</td>
