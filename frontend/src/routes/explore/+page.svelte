@@ -85,7 +85,7 @@
             <!-- Went very explicit on the alignment because it's never what you expect -->
             <div
                 class="table-container"
-                style="height: 100%; overflow-y: scroll;">
+                style="height: 100%; overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <thead>
                         <tr>
