@@ -1,6 +1,4 @@
 <script lang="ts">
-    import type { Status } from "$types/status";
-
     interface Activity {
         time: string;
         symbol: string;
@@ -8,7 +6,7 @@
         qty: number;
         price: number;
         totalVal: number;
-        status: Status;
+        status: "Filled" | "Pending" | "Rejected";
     }
 
     export let data: Activity;
