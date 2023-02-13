@@ -1,6 +1,63 @@
 <script lang="ts">
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
+
+    const watchlist = [
+        {
+            symbol: "AAPL",
+            last: 151.66,
+            chg: -2.99,
+            percentChg: -1.93,
+        },
+        {
+            symbol: "TSLA",
+            last: 199.68,
+            chg: 2.87,
+            percentChg: 1.45,
+        },
+        {
+            symbol: "NFLX",
+            last: 361.54,
+            chg: -1.41,
+            percentChg: -0.39,
+        },
+        {
+            symbol: "NKE",
+            last: 122.91,
+            chg: -2.42,
+            percentChg: -1.93,
+        },
+    ];
+    const news = [
+        {
+            title: "Some Positive News About Apple",
+            source: "Newswires",
+            time: "1 hour ago",
+            positive: true,
+            url: "/",
+        },
+        {
+            title: "Some Negative News About Apple",
+            source: "Newswires",
+            time: "2 hours ago",
+            positive: false,
+            url: "/",
+        },
+        {
+            title: "Some Negative News About Apple",
+            source: "Newswires",
+            time: "3 hours ago",
+            positive: false,
+            url: "/",
+        },
+        {
+            title: "Some Positive News About Apple",
+            source: "Newswires",
+            time: "5 hours ago",
+            positive: true,
+            url: "/",
+        },
+    ];
 </script>
 
 <!-- this fixes the issue of weird extra space to the right of the page -->
@@ -39,38 +96,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <Watchlist
-                            data={{
-                                symbol: "AAPL",
-                                last: 151.66,
-                                chg: -2.99,
-                                percentChg: -1.93,
-                            }}
-                        />
-                        <Watchlist
-                            data={{
-                                symbol: "TSLA",
-                                last: 199.68,
-                                chg: 2.87,
-                                percentChg: 1.45,
-                            }}
-                        />
-                        <Watchlist
-                            data={{
-                                symbol: "NFLX",
-                                last: 361.54,
-                                chg: -1.41,
-                                percentChg: -0.39,
-                            }}
-                        />
-                        <Watchlist
-                            data={{
-                                symbol: "NKE",
-                                last: 122.91,
-                                chg: -2.42,
-                                percentChg: -1.93,
-                            }}
-                        />
+                        {#each watchlist as item}
+                            <Watchlist data={item} />
+                        {/each}
                     </tbody>
                 </table>
             </div>
@@ -124,42 +152,10 @@
         <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
             <div class="block">
                 <h1 class="title is-5">News</h1>
-                <News
-                    data={{
-                        title: "Some Positive News About Apple",
-                        source: "Newswires",
-                        time: "1 hour ago",
-                        positive: true,
-                        url: "/",
-                    }}
-                />
-                <News
-                    data={{
-                        title: "Some Negative News About Apple",
-                        source: "Newswires",
-                        time: "2 hours ago",
-                        positive: false,
-                        url: "/",
-                    }}
-                />
-                <News
-                    data={{
-                        title: "Some Negative News About Apple",
-                        source: "Newswires",
-                        time: "3 hours ago",
-                        positive: false,
-                        url: "/",
-                    }}
-                />
-                <News
-                    data={{
-                        title: "Some Positive News About Apple",
-                        source: "Newswires",
-                        time: "5 hours ago",
-                        positive: true,
-                        url: "/",
-                    }}
-                />
+                {#each news as item}
+                    <News data={item} />
+                {/each}
+
                 <div class="block is-flex is-justify-content-center">
                     <button class="button is-dark is-small is-rounded"
                         >More news</button>

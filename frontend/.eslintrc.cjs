@@ -23,6 +23,7 @@ module.exports = {
                 alias: {
                     $lib: "./src/lib",
                     $components: "./src/components",
+                    $types: "./src/types"
                 },
                 extensions: [".ts", ".svelte"],
                 packages: [

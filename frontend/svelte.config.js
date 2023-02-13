@@ -23,6 +23,7 @@ const config = {
     alias: {
       $lib: 'src/lib/',
       $components: 'src/components/',
+      $types: 'src/types/',
     },
   },
 };

@@ -16,11 +16,7 @@
     }
 </script>
 
-<tr
-    class={selected ? "is-selected" : ""}
-    style="cursor: pointer;"
-    on:click={() => click()}
->
+<tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
     <th class="has-text-left">{data.symbol}</th>
     <td class="has-text-right">{data.last}</td>
     <td class="has-text-right has-text-{color}">{data.chg}</td>

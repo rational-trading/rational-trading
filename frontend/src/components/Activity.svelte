@@ -1,4 +1,7 @@
 <script lang="ts">
+    /* eslint-disable import/first */
+    import type { Status } from "$types/status";
+
     interface Activity {
         time: string;
         symbol: string;
@@ -6,17 +9,18 @@
         qty: number;
         price: number;
         totalVal: number;
-        status: string;
+        status: Status;
     }
 
     export let data: Activity;
 
-    let color = "warning";
-    if (data.status === "Success") {
-        color = "success";
-    } else if (data.status === "Rejected") {
-        color = "danger";
-    }
+    const statusColors = {
+        Filled: "success",
+        Pending: "warning",
+        Rejected: "danger",
+    };
+
+    $: color = statusColors[data.status];
 </script>
 
 <tr>
