@@ -4,6 +4,7 @@
         source: string;
         time: string;
         title: string;
+        url: string;
     }
 
     export let data: News;
@@ -13,9 +14,9 @@
 
 <div class="block card">
     <header class="card-header">
-        <p class="card-header-title has-text-{sentiment} pr-0">
+        <a class="card-header-title has-text-{sentiment} pr-0" href={data.url}>
             {data.time} · {data.source}
-        </p>
+        </a>
         <div class="card-header-icon has-text-{sentiment} pl-0">
             <span class="icon">
                 <i class="fas fa-thumbs-{data.positive ? 'up' : 'down'}" />
