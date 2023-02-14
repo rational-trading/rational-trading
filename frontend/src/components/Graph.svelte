@@ -1,32 +1,51 @@
-<script>
+<script lang="ts">
     import { ColorType, CrosshairMode } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
+
+    let observer;
+    let width = 600;
+    let height = 300;
+    let ref = (element) => {
+        if (observer) {
+            observer.disconnect();
+        }
+        if (!element) {
+            return;
+        }
+        observer = new ResizeObserver(([entry]) => {
+            width = entry.contentRect.width;
+            height = entry.contentRect.height;
+        });
+        observer.observe(element);
+    };
+
     const options = {
-        width: 600,
-        height: 300,
+        width: width,
+        height: height,
+        container: { ref },
         layout: {
             background: {
                 type: ColorType.Solid,
-                color: "#000000",
+                color: "#f5f5f5",
             },
-            textColor: "rgba(255, 255, 255, 0.9)",
+            textColor: "#242424",
         },
         grid: {
             vertLines: {
-                color: "rgba(197, 203, 206, 0.5)",
+                color: "#b5b5b5",
             },
             horzLines: {
-                color: "rgba(197, 203, 206, 0.5)",
+                color: "#b5b5b5",
             },
         },
         crosshair: {
             mode: CrosshairMode.Normal,
         },
         rightPriceScale: {
-            borderColor: "rgba(197, 203, 206, 0.8)",
+            borderColor: "#242424",
         },
         timeScale: {
-            borderColor: "rgba(197, 203, 206, 0.8)",
+            borderColor: "#242424",
         },
     };
     const data = [
@@ -1079,10 +1098,10 @@
 <Chart {...options}>
     <CandlestickSeries
         {data}
-        upColor="rgba(255, 144, 0, 1)"
-        downColor="#000"
-        borderDownColor="rgba(255, 144, 0, 1)"
-        borderUpColor="rgba(255, 144, 0, 1)"
-        wickDownColor="rgba(255, 144, 0, 1)"
-        wickUpColor="rgba(255, 144, 0, 1)" />
+        upColor="#60c689"
+        borderUpColor="#60c689"
+        wickUpColor="#60c689"
+        downColor="#e91e63"
+        borderDownColor="#e91e63"
+        wickDownColor="#e91e63" />
 </Chart>

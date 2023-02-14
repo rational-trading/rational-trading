@@ -173,7 +173,7 @@
                 {/each}
 
                 <div class="block is-flex is-justify-content-center">
-                    <button class="button is-dark is-small is-rounded"
+                    <button class="button is-outline is-small is-rounded"
                         >More news</button>
                 </div>
             </div>
