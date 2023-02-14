@@ -107,7 +107,7 @@
 
     <div class="column">
         <!--- right side header bar -->
-        <nav class="level mx-2 mt-2">
+        <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="subtitle is-5">Apple Inc.</h1>
@@ -120,16 +120,26 @@
                 </div>
             </div>
 
-            <div class="level-right">
-                <div class="level-item">
-                    <span class="icon">
-                        <a href="/"><i class="fas fa-magnifying-glass" /></a>
-                    </span>
+            <div class="level-right" style="width: 60%">
+                <div class="level-item mr-3" style="width: 100%">
+                    <button class="button is-rounded" style="width: 100%">
+                        <div class="level" style="width: 100%">
+                            <div class="level-left">
+                                <p
+                                    class="has-text-grey-lighter has-text-weight-light">
+                                    Search for a stock to display...
+                                </p>
+                            </div>
+                            <div class="level-right">
+                                <span class="icon">
+                                    <i class="fas fa-magnifying-glass" />
+                                </span>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </nav>
-
-        <hr style="background: #4a4a4a; height: 1px" />
 
         <div class="columns" style="height: calc(100vh - 53px - 5.5rem)">
             <div class="column" style="height: 100%;">
