@@ -107,43 +107,46 @@
     </div>
 
     <div class="column">
-        <!--- right side header bar -->
-        <nav class="level mx-2" style="width: 100%">
-            <div class="level-left">
-                <div class="level-item">
-                    <h1 class="subtitle is-5">Apple Inc.</h1>
-                </div>
-                <div class="level-item">
-                    <h1 class="subtitle is-5">•</h1>
-                </div>
-                <div class="level-item">
-                    <h1 class="subtitle is-5">NASDAQ</h1>
-                </div>
-            </div>
-
-            <div class="level-right" style="width: 60%">
-                <div class="level-item mr-3" style="width: 100%">
-                    <button class="button is-rounded" style="width: 100%">
-                        <div class="level" style="width: 100%">
-                            <div class="level-left">
-                                <p
-                                    class="has-text-grey-lighter has-text-weight-light">
-                                    Search for a stock to display...
-                                </p>
-                            </div>
-                            <div class="level-right">
-                                <span class="icon">
-                                    <i class="fas fa-magnifying-glass" />
-                                </span>
-                            </div>
-                        </div>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
         <div class="columns" style="height: calc(100vh - 53px - 5.5rem)">
-            <div class="column" style="height: 100%;">
+            <div class="column is-two-third" style="height: 100%;">
+                <!--- graph side header bar -->
+                <nav class="level mx-2" style="width: 100%">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <h1 class="subtitle is-5">Apple Inc.</h1>
+                        </div>
+                        <div class="level-item">
+                            <h1 class="subtitle is-5">•</h1>
+                        </div>
+                        <div class="level-item">
+                            <h1 class="subtitle is-5">NASDAQ</h1>
+                        </div>
+                    </div>
+
+                    <div class="level-right" style="width: 60%">
+                        <div class="level-item mr-3" style="width: 100%">
+                            <button
+                                class="button is-rounded"
+                                style="width: 100%">
+                                <div class="level" style="width: 100%">
+                                    <div class="level-left">
+                                        <p
+                                            class="has-text-grey-lighter has-text-weight-light">
+                                            Search for a stock to display...
+                                        </p>
+                                    </div>
+                                    <div class="level-right">
+                                        <span class="icon">
+                                            <i
+                                                class="fas fa-magnifying-glass" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
                 <div
                     class="block mx-2"
                     style="height: 50vh; display: flex; justify-content: center; align-items: center;">
@@ -165,9 +168,9 @@
             </div>
 
             <div
-                class="column is-one-third"
+                class="column is-one-third mt-3"
                 style="height: 100%; border-left: 1px solid #4a4a4a;">
-                <div class="block px-2" style="height: 85%; overflow: auto;">
+                <div class="block px-2" style="height: 90%; overflow: auto;">
                     <h1 class="title is-5">News</h1>
                     {#each news as item}
                         <News data={item} />
