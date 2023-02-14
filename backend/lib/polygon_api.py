@@ -8,6 +8,7 @@ from typing import Iterator, Optional
 from polygon import RESTClient
 from polygon.rest.models import StockFinancial
 from polygon.rest.models import TickerNews
+from polygon.rest.models import Publisher
 
 from config.env import env
 
@@ -15,11 +16,12 @@ from lib.nlp import get_text_score
 
 
 class TickerArticle():
-    def __init__(self, title: str, description: str, url: str, published: str) -> None:
+    def __init__(self, title: str, description: str, url: str, date: str, publisher: str) -> None:
         self.title = title
         self.description = description
         self.url = url
-        self.published = published
+        self.date = date
+        self.publisher = publisher
         self.score = get_text_score(" ".join([title, description]))
 
     def __repr__(self) -> str:
@@ -51,17 +53,26 @@ class PolygonAPI():
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
             ticker=ticker, limit=1)
         articles = []
-        count = 0
-        while count < max_items:
+
+        for _ in range(max_items):
             n = news_generator.__next__()
             # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
             assert isinstance(n, TickerNews)
             
-            if (n.title and n.description and n.article_url and n.published_utc):        
-                article = TickerArticle(n.title, n.description,
-                                        n.article_url, n.published_utc)
-                articles.append(article)
-                count += 1
+            assert isinstance(n.title, str)
+            assert isinstance(n.article_url, str)
+            assert isinstance(n.published_utc, str)
+            
+            desc = n.description if n.description else ""
+            publisher = n.publisher.name if n.publisher else ""
+
+            assert isinstance(desc, str)
+            assert isinstance(publisher, str)
+
+            article = TickerArticle(n.title, desc, n.article_url,
+                                    n.published_utc, publisher)
+            articles.append(article)
+
         return articles
 
 
@@ -70,4 +81,4 @@ if __name__ == "__main__":
     api = PolygonAPI()
     news = api.get_news("AAPL", 10)
     for n in news:
-        print(f"{n.score:.2f} || {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
+        print(f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
