@@ -1,6 +1,7 @@
 <script lang="ts">
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
+    import Graph from "$components/Graph.svelte";
 
     const watchlist = [
         {
@@ -146,7 +147,7 @@
                 <div
                     class="block mx-2"
                     style="height: 50vh; display: flex; justify-content: center; align-items: center;">
-                    Graph
+                    <Graph />
                 </div>
 
                 <div class="tabs">
