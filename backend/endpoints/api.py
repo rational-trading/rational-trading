@@ -61,19 +61,6 @@ def create_token(username):
     encoded_access_jwt = jwt.encode(to_encode_access, JWT_SIGNING_KEY, algorithm="HS256")
     return encoded_access_jwt
 
-class AuthBearer(HttpBearer):
-    def authenticate(self, request, token):
-        try:
-            #JWT secret key is set up in .env
-            load_dotenv()
-            JWT_SIGNING_KEY = os.getenv(JWT_SIGNING_KEY)
-            payload = jwt.decode(token, JWT_SIGNING_KEY, algorithms=["HS256"])
-            username: str = payload.get("sub")
-            if username is None:
-                return None
-        except jwt.PyJWTError as e:
-            return None
-        return username
 
 
 """example
