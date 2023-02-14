@@ -1,3 +1,5 @@
+from datetime import datetime
+from typing import List
 from django.db import models
 from django.db.models import Model
 
@@ -7,14 +9,26 @@ class UserModel(Model):
     password = models.CharField(max_length=255)
     balance = models.DecimalField(max_digits=11, decimal_places=2)
 
+    @staticmethod
+    def create_typed(username: str, password: str, balance: float) -> 'UserModel':
+        return UserModel.objects.create(username=username, password=password, balance=balance)
+
 
 class StockModel(Model):
     ticker = models.CharField(max_length=255, primary_key=True)
+
+    @staticmethod
+    def create_typed(ticker: str) -> 'StockModel':
+        return StockModel.objects.create(ticker=ticker)
 
 
 class PublisherModel(Model):
     name = models.CharField(max_length=255, primary_key=True)
     reputation = models.FloatField()
+
+    @staticmethod
+    def create_typed(name: str, reputation: float) -> 'PublisherModel':
+        return PublisherModel.objects.create(name=name, reputation=reputation)
 
 
 class ArticleModel(Model):  # type: ignore
@@ -25,6 +39,13 @@ class ArticleModel(Model):  # type: ignore
     description = models.TextField()
     published = models.DateTimeField()
     stocks = models.ManyToManyField(StockModel)
+
+    @staticmethod
+    def create_typed(article_id: str, publisher: PublisherModel, url: str, title: str, description: str, published: datetime, stocks: List[StockModel]) -> 'ArticleModel':
+        article = ArticleModel.objects.create(article_id=article_id, publisher=publisher, url=url,
+                                              title=title, description=description, published=published)
+        article.stocks.set(stocks)
+        return article
 
 
 class HoldingModel(Model):
@@ -38,6 +59,10 @@ class HoldingModel(Model):
                 fields=['user', 'stock'], name='no_duplicate_holdings')
         ]
 
+    @staticmethod
+    def create_typed(user: UserModel, stock: StockModel, units: float) -> 'HoldingModel':
+        return HoldingModel.objects.create(user=user, stock=stock, units=units)
+
 
 class TradeModel(Model):  # type: ignore
     """
@@ -50,4 +75,10 @@ class TradeModel(Model):  # type: ignore
     time = models.DateTimeField()
     text_evidence = models.TextField()
     article_evidence = models.ManyToManyField(ArticleModel)
-    pass
+
+    @staticmethod
+    def create_typed(user: UserModel, stock: StockModel, units: float, total_cost: float, time: datetime, text_evidence: str, article_evidence: List[ArticleModel]) -> 'TradeModel':
+        trade = TradeModel.objects.create(
+            user=user, stock=stock, units=units, total_cost=total_cost, time=time, text_evidence=text_evidence)
+        trade.article_evidence.set(article_evidence)
+        return trade
