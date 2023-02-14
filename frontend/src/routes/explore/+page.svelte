@@ -106,88 +106,83 @@
         </div>
     </div>
 
-    <div class="column">
-        <div class="columns" style="height: calc(100vh - 53px - 5.5rem)">
-            <div class="column is-two-third" style="height: 100%;">
-                <!--- graph side header bar -->
-                <nav class="level mx-2" style="width: 100%">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <h1 class="subtitle is-5">Apple Inc.</h1>
-                        </div>
-                        <div class="level-item">
-                            <h1 class="subtitle is-5">•</h1>
-                        </div>
-                        <div class="level-item">
-                            <h1 class="subtitle is-5">NASDAQ</h1>
-                        </div>
-                    </div>
-
-                    <div class="level-right" style="width: 60%">
-                        <div class="level-item mr-3" style="width: 100%">
-                            <button
-                                class="button is-rounded"
-                                style="width: 100%">
-                                <div class="level" style="width: 100%">
-                                    <div class="level-left">
-                                        <p
-                                            class="has-text-grey-lighter has-text-weight-light">
-                                            Search for a stock to display...
-                                        </p>
-                                    </div>
-                                    <div class="level-right">
-                                        <span class="icon">
-                                            <i
-                                                class="fas fa-magnifying-glass" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </nav>
-
-                <div
-                    class="block mx-2"
-                    style="height: 50vh; display: flex; justify-content: center; align-items: center;">
-                    <Graph />
+    <div class="column is-one-half" style="height: 100%;">
+        <!--- graph side header bar -->
+        <nav class="level mx-2" style="width: 100%">
+            <div class="level-left">
+                <div class="level-item">
+                    <h1 class="subtitle is-5">Apple Inc.</h1>
                 </div>
-
-                <div class="tabs">
-                    <ul>
-                        <li class="is-active">
-                            <a href="/">Key Stats</a>
-                        </li>
-                        <li><a href="/">Finances</a></li>
-                    </ul>
+                <div class="level-item">
+                    <h1 class="subtitle is-5">•</h1>
                 </div>
-
-                <div class="block mx-2">
-                    <p>Here is some text.</p>
+                <div class="level-item">
+                    <h1 class="subtitle is-5">NASDAQ</h1>
                 </div>
             </div>
 
-            <div
-                class="column is-one-third mt-3"
-                style="height: 100%; border-left: 1px solid #4a4a4a;">
-                <div class="block px-2" style="height: 90%; overflow: auto;">
-                    <h1 class="title is-5">News</h1>
-                    {#each news as item}
-                        <News data={item} />
-                    {/each}
-
-                    <div class="block is-flex is-justify-content-center">
-                        <button class="button is-small is-rounded"
-                            >More news</button>
-                    </div>
-                </div>
-                <hr style="background: #4a4a4a; height: 1px" />
-                <div class="block is-flex is-justify-content-center">
-                    <button class="button is-medium is-info">
-                        <strong>Make a Rational Trade</strong>
+            <div class="level-right" style="width: 60%">
+                <div class="level-item mr-3" style="width: 100%">
+                    <button class="button is-rounded" style="width: 100%">
+                        <div class="level" style="width: 100%">
+                            <div class="level-left">
+                                <p
+                                    class="has-text-grey-lighter has-text-weight-light">
+                                    Search for a stock to display...
+                                </p>
+                            </div>
+                            <div class="level-right">
+                                <span class="icon">
+                                    <i class="fas fa-magnifying-glass" />
+                                </span>
+                            </div>
+                        </div>
                     </button>
                 </div>
             </div>
+        </nav>
+
+        <div
+            class="block mx-2"
+            style="height: 50vh; display: flex; justify-content: center; align-items: center;">
+            <Graph />
+        </div>
+
+        <div class="tabs">
+            <ul>
+                <li class="is-active">
+                    <a href="/">Key Stats</a>
+                </li>
+                <li><a href="/">Finances</a></li>
+            </ul>
+        </div>
+
+        <div class="block mx-2">
+            <p>Here is some text.</p>
+        </div>
+    </div>
+
+    <div
+        class="column is-one-quarter mt-2"
+        style="border-left: 1px solid #4a4a4a;">
+        <div style="height: calc(100vh - 53px - 10rem); overflow: auto;">
+            <div class="block">
+                <h1 class="title is-5">News</h1>
+                {#each news as item}
+                    <News data={item} />
+                {/each}
+
+                <div class="block is-flex is-justify-content-center">
+                    <button class="button is-dark is-small is-rounded"
+                        >More news</button>
+                </div>
+            </div>
+        </div>
+        <hr style="background: #4a4a4a; height: 1px" />
+        <div class="block is-flex is-justify-content-center">
+            <button class="button is-medium is-info">
+                <strong>Make a Rational Trade</strong>
+            </button>
         </div>
     </div>
 </div>
