@@ -37,7 +37,7 @@ Note: Commands should be ran from this current folder.
 
 5) View the Swagger API docs by going to http://127.0.0.1:8000/api/docs#/. This page will allow you to view the available endpoints and make test requests in browser.
 
-6) Typecheck your Python code with `mypy .`
+6) Typecheck your Python code with `python check.py`
 
 7) Deactivate venv when finished working.
 
@@ -52,3 +52,7 @@ Note: Commands should be ran from this current folder.
 4) If there are any unapplied migrations, re-run `python manage.py migrate`
 
 5) In the worst case, delete `db.sqlite3` (and possible `models/migrations`) and re-initialise.
+
+# Polygon API
+
+1) To use the API, create a new file named `.env` in `/config`, with all the variables specified in `.env.example` filled in.

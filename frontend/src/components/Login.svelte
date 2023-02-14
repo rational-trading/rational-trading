@@ -7,7 +7,7 @@
     on:click={() => {
         active = true;
     }}>
-    Log in
+    <strong>Log in</strong>
 </button>
 
 {#if active}

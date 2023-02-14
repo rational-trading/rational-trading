@@ -14,6 +14,9 @@ module.exports = {
         "no-return-assign": ["error", "except-parens"],
         "class-methods-use-this": "off",
         "operator-linebreak": ["error", "after"],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        "import/first": "off",
     },
     settings: {
         // eslint-disable-next-line global-require
@@ -22,8 +25,7 @@ module.exports = {
             "eslint-import-resolver-custom-alias": {
                 alias: {
                     $lib: "./src/lib",
-                    $components: "./src/components",
-                    $types: "./src/types"
+                    $components: "./src/components"
                 },
                 extensions: [".ts", ".svelte"],
                 packages: [
