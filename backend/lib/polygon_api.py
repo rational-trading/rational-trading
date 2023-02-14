@@ -11,6 +11,8 @@ from polygon.rest.models import TickerNews
 
 from config.env import env
 
+from lib.nlp import get_text_score
+
 
 class TickerArticle():
     def __init__(self, title: str, description: str, url: str, published: str) -> None:
@@ -18,7 +20,7 @@ class TickerArticle():
         self.description = description
         self.url = url
         self.published = published
-        self.score = 0.
+        self.score = get_text_score(" ".join([title, description]))
 
     def __repr__(self) -> str:
         return (f"TickerArticle({self.title[:20]}...)")
@@ -43,6 +45,9 @@ class PolygonAPI():
         return f
 
     def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
+        """
+        Returns a list of N annotated news articles (i.e. 'TickerArticle's)
+        """
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
             ticker=ticker, limit=1)
         articles = []
@@ -63,7 +68,6 @@ class PolygonAPI():
 # Testing
 if __name__ == "__main__":
     api = PolygonAPI()
-    n = api.get_news("AAPL", 1)
-    f = api.get_financials("AAPL")
-    print(n)
-    print(f)
+    news = api.get_news("AAPL", 10)
+    for n in news:
+        print(f"{n.score:.2f} || {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
