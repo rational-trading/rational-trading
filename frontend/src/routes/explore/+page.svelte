@@ -1,5 +1,63 @@
 <script lang="ts">
+    import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
+
+    const watchlist = [
+        {
+            symbol: "AAPL",
+            last: 151.66,
+            chg: -2.99,
+            percentChg: -1.93,
+        },
+        {
+            symbol: "TSLA",
+            last: 199.68,
+            chg: 2.87,
+            percentChg: 1.45,
+        },
+        {
+            symbol: "NFLX",
+            last: 361.54,
+            chg: -1.41,
+            percentChg: -0.39,
+        },
+        {
+            symbol: "NKE",
+            last: 122.91,
+            chg: -2.42,
+            percentChg: -1.93,
+        },
+    ];
+    const news = [
+        {
+            title: "Some Positive News About Apple",
+            source: "Newswires",
+            time: "1 hour ago",
+            positive: true,
+            url: "/",
+        },
+        {
+            title: "Some Negative News About Apple",
+            source: "Newswires",
+            time: "2 hours ago",
+            positive: false,
+            url: "/",
+        },
+        {
+            title: "Some Negative News About Apple",
+            source: "Newswires",
+            time: "3 hours ago",
+            positive: false,
+            url: "/",
+        },
+        {
+            title: "Some Positive News About Apple",
+            source: "Newswires",
+            time: "5 hours ago",
+            positive: true,
+            url: "/",
+        },
+    ];
 </script>
 
 <!-- this fixes the issue of weird extra space to the right of the page -->
@@ -7,7 +65,7 @@
     class="columns my-0"
     style="width: calc(100vw + 12px); height: calc(100vh - 56px);">
     <div class="column is-one-quarter has-background-grey-darker px-0">
-        <nav class="level is-mobile ml-5 mr-4 my-0">
+        <nav class="level ml-5 mr-4 mt-2 mb-0">
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-5">Watchlist</h1>
@@ -27,7 +85,7 @@
             <!-- Went very explicit on the alignment because it's never what you expect -->
             <div
                 class="table-container"
-                style="height: 100%; overflow-y: scroll;">
+                style="height: 100%; overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <thead>
                         <tr>
@@ -38,30 +96,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="is-selected" style="cursor: pointer;">
-                            <th class="has-text-left">AAPL</th>
-                            <td class="has-text-right">151.66</td>
-                            <td class="has-text-right has-text-warning"
-                                >-2.99</td>
-                            <td class="has-text-right has-text-warning"
-                                >-1.93%</td>
-                        </tr>
-                        <tr style="cursor: pointer;">
-                            <th class="has-text-left">TSLA</th>
-                            <td class="has-text-right">199.68</td>
-                            <td class="has-text-right has-text-success"
-                                >2.87</td>
-                            <td class="has-text-right has-text-success"
-                                >1.45%</td>
-                        </tr>
-                        <tr style="cursor: pointer;">
-                            <th class="has-text-left">NFLX</th>
-                            <td class="has-text-right">361.54</td>
-                            <td class="has-text-right has-text-warning"
-                                >-1.41</td>
-                            <td class="has-text-right has-text-warning"
-                                >-0.39%</td>
-                        </tr>
+                        {#each watchlist as item}
+                            <Watchlist data={item} />
+                        {/each}
                     </tbody>
                 </table>
             </div>
@@ -113,43 +150,19 @@
 
     <div class="column is-one-quarter has-background-grey-darker p-5">
         <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
-            <div class="block pr-4">
+            <div class="block">
                 <h1 class="title is-5">News</h1>
-                <News
-                    data={{
-                        title: "Some Positive News About Apple",
-                        source: "Newswires",
-                        time: "1 hour ago",
-                        positive: true,
-                    }} />
-                <News
-                    data={{
-                        title: "Some Negative News About Apple",
-                        source: "Newswires",
-                        time: "2 hours ago",
-                        positive: false,
-                    }} />
-                <News
-                    data={{
-                        title: "Some Negative News About Apple",
-                        source: "Newswires",
-                        time: "3 hours ago",
-                        positive: false,
-                    }} />
-                <News
-                    data={{
-                        title: "Some Positive News About Apple",
-                        source: "Newswires",
-                        time: "5 hours ago",
-                        positive: true,
-                    }} />
+                {#each news as item}
+                    <News data={item} />
+                {/each}
+
                 <div class="block is-flex is-justify-content-center">
                     <button class="button is-dark is-small is-rounded"
                         >More news</button>
                 </div>
             </div>
         </div>
-        <hr />
+        <hr style="background: #4a4a4a;" />
         <div class="block is-flex is-justify-content-center">
             <button class="button is-medium is-info">
                 <strong>Make a Rational Trade</strong>

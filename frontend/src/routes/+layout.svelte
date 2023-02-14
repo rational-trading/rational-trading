@@ -5,25 +5,11 @@
 </script>
 
 <!-- the navbar -->
-<nav class="navbar is-primary">
+<nav class="navbar is-primary is-fixed-top">
   <div class="navbar-brand">
     <a class="navbar-item" href="/">
       <img src="/logo.png" width="177" height="50" alt="logo" />
     </a>
-
-    <!-- mobile burger ignore for now
-    <a
-      role="button"
-      class="navbar-burger"
-      aria-label="menu"
-      aria-expanded="false"
-      data-target="navbarBasicExample"
-    >
-      <span aria-hidden="true" />
-      <span aria-hidden="true" />
-      <span aria-hidden="true" />
-    </a>
-  -->
   </div>
 
   <div class="navbar-menu">
@@ -38,8 +24,8 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <Login />
           <Signup />
+          <Login />
         </div>
       </div>
     </div>
