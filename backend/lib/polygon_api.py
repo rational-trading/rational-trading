@@ -20,7 +20,7 @@ class TickerArticle():
         self.published = published
 
     def __repr__(self) -> str:
-        return (f"TickerArticle Object ({self.title[:20]}...)")
+        return (f"TickerArticle({self.title[:20]}...)")
 
 
 class TickerFinancials():
@@ -45,19 +45,17 @@ class PolygonAPI():
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
             ticker=ticker, limit=1)
         articles = []
-        for _ in range(max_items):
+        count = 0
+        while count < max_items:
             n = news_generator.__next__()
             # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
             assert isinstance(n, TickerNews)
-
-            assert n.title is not None
-            assert n.description is not None
-            assert n.article_url is not None
-            assert n.published_utc is not None
-
-            article = TickerArticle(n.title, n.description,
-                                    n.article_url, n.published_utc)
-            articles.append(article)
+            
+            if (n.title and n.description and n.article_url and n.published_utc):        
+                article = TickerArticle(n.title, n.description,
+                                        n.article_url, n.published_utc)
+                articles.append(article)
+                count += 1
         return articles
 
 
