@@ -8,7 +8,6 @@ from typing import Iterator, Optional
 from polygon import RESTClient
 from polygon.rest.models import StockFinancial
 from polygon.rest.models import TickerNews
-from polygon.rest.models import Publisher
 
 from config.env import env
 

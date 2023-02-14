@@ -11,6 +11,6 @@ def get_text_score(text: str) -> float:
     but more likely a very small number near 0
     """
     t = TextBlob(text)
-    score = t.polarity * t.subjectivity
+    score = t.polarity * (1 - t.subjectivity)
     assert isinstance(score, float)
     return score
