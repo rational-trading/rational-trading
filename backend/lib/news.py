@@ -15,6 +15,7 @@ def get_news(ticker: str, N: int) -> list[TickerArticle]:
         ta.score = get_text_score(ta)
     return news
 
+
 def get_text_score(ta: TickerArticle) -> float:
     """
     Returns our text-based NLP score for a given article, between -1 and 1,
