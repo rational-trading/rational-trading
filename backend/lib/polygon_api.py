@@ -1,6 +1,6 @@
 """
 Polygon API class to get stock financials and news articles
-https://polygon.io/docs/stocks/
+https://polygon.io/docs
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
 from http.client import HTTPResponse
