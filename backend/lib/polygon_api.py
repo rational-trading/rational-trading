@@ -18,6 +18,7 @@ class TickerArticle():
         self.description = description
         self.url = url
         self.published = published
+        self.score = 0.
 
     def __repr__(self) -> str:
         return (f"TickerArticle({self.title[:20]}...)")
