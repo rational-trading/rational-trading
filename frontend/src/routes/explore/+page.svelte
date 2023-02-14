@@ -3,6 +3,9 @@
     import News from "$components/News.svelte";
     import Graph from "$components/Graph.svelte";
 
+    let w: number = 0;
+    let h: number = 0;
+
     const watchlist = [
         {
             symbol: "AAPL",
@@ -65,6 +68,7 @@
 <div
     class="columns my-0"
     style="width: calc(100vw + 12px); height: calc(100vh - 53px);">
+    <!-- watchlist column -->
     <div class="column is-one-quarter has-background-grey-darker px-0">
         <nav class="level ml-5 mr-4 mt-2 mb-0">
             <div class="level-left">
@@ -106,8 +110,9 @@
         </div>
     </div>
 
+    <!-- graph column -->
     <div class="column is-one-half" style="height: 100%;">
-        <!--- graph side header bar -->
+        <!-- graph side header bar -->
         <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
                 <div class="level-item">
@@ -142,12 +147,15 @@
             </div>
         </nav>
 
+        <!-- the graph itself -->
         <div
-            class="block mx-2"
-            style="height: 50vh; display: flex; justify-content: center; align-items: center;">
-            <Graph />
+            style="height: 50vh; display: flex; justify-content: center; align-items: center;"
+            bind:clientWidth={w}
+            bind:clientHeight={h}>
+            <Graph param={{ width: w, height: h }} />
         </div>
 
+        <!-- information tab -->
         <div class="tabs">
             <ul>
                 <li class="is-active">
@@ -162,6 +170,7 @@
         </div>
     </div>
 
+    <!-- news column -->
     <div
         class="column is-one-quarter mt-2"
         style="border-left: 1px solid #4a4a4a;">

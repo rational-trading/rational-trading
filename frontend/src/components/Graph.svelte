@@ -2,27 +2,14 @@
     import { ColorType, CrosshairMode } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
 
-    let observer;
-    let width = 600;
-    let height = 300;
-    let ref = (element) => {
-        if (observer) {
-            observer.disconnect();
-        }
-        if (!element) {
-            return;
-        }
-        observer = new ResizeObserver(([entry]) => {
-            width = entry.contentRect.width;
-            height = entry.contentRect.height;
-        });
-        observer.observe(element);
-    };
+    interface Graph {
+        width: number;
+        height: number;
+    }
+
+    export let param: Graph;
 
     const options = {
-        width: width,
-        height: height,
-        container: { ref },
         layout: {
             background: {
                 type: ColorType.Solid,
@@ -1095,7 +1082,7 @@
     ];
 </script>
 
-<Chart {...options}>
+<Chart bind:width={param.width} bind:height={param.height} {...options}>
     <CandlestickSeries
         {data}
         upColor="#60c689"
