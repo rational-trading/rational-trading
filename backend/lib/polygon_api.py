@@ -63,13 +63,12 @@ class PolygonAPI():
             assert isinstance(n.published_utc, str)
             
             desc = n.description if n.description else ""
-            publisher = n.publisher.name if n.publisher else ""
-
-            assert isinstance(desc, str)
-            assert isinstance(publisher, str)
+            
+            assert n.publisher is not None
+            assert isinstance(n.publisher.name, str)
 
             article = TickerArticle(n.title, desc, n.article_url,
-                                    n.published_utc, publisher)
+                                    n.published_utc, n.publisher.name)
             articles.append(article)
 
         return articles
