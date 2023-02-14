@@ -17,7 +17,8 @@ def get_news(ticker: str, N: int) -> list[TickerArticle]:
 
 def get_text_score(ta: TickerArticle) -> float:
     """
-    Returns our text-based NLP score for a given article
+    Returns our text-based NLP score for a given article, between -1 and 1,
+    but more likely a very small number near 0
     """
     t = TextBlob(" ".join([ta.title, ta.description]))
     score = t.polarity * t.subjectivity
@@ -28,4 +29,4 @@ def get_text_score(ta: TickerArticle) -> float:
 if __name__ == "__main__":
     news = get_news("AAPL", 10)
     for n in news:
-        print(n)
+        print(f"{n.score} + {n.title}")
