@@ -8,3 +8,4 @@ django-cors-headers==3.13.0
 mypy==1.0.0
 django-stubs==1.14.0
 django_stubs_ext==0.7.0
+pyjwt==2.6.0
