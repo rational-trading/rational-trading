@@ -41,26 +41,28 @@ def validation_error(request: HttpRequest, e: ValidationError) -> HttpResponse:
 class TokenSchema(Schema):
 
     access_token: str
-    
+
 
 @api.post("/login", auth=None, response={200, TokenSchema})
-def auth(request, username: str, password: str):
-    #check username 
+def auth(request: HttpBearer, username: str, password: str) -> int | TokenSchema:  # union
+    # check username
     # check password
-    create_token(username)
+    token = create_token(username)
+    return 200, TokenSchema(access_token=token)
 
-def create_token(username):
+
+def create_token(username: str) -> str:
     load_dotenv()
     JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY')
     JWT_ACCESS_EXPIRY = os.getenv('JWT_ACCESS_EXPIRY')
-    #JWT_SIGNING_KEY = getattr(settings, "JWT_SIGNING_KEY", None)        # add attributes to settings
-    #JWT_ACCESS_EXPIRY = getattr(settings, "JWT_ACCESS_EXPIRY", "60") # 60 minutes expiration
+    # JWT_SIGNING_KEY = getattr(settings, "JWT_SIGNING_KEY", None)        # add attributes to settings
+    # JWT_ACCESS_EXPIRY = getattr(settings, "JWT_ACCESS_EXPIRY", "60") # 60 minutes expiration
     to_encode_access = {"sub": username}
     access_expire = datetime.utcnow() + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)
     to_encode_access.update({"exp": access_expire})
-    encoded_access_jwt = jwt.encode(to_encode_access, JWT_SIGNING_KEY, algorithm="HS256")
+    encoded_access_jwt = jwt.encode(
+        to_encode_access, JWT_SIGNING_KEY, algorithm="HS256")
     return encoded_access_jwt
-
 
 
 """example
