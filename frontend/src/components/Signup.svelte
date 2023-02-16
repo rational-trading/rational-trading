@@ -25,7 +25,7 @@
                     </button>
                 </div>
                 <div
-                    class="is-flex is-flex-direction-column pt-3"
+                    class="is-flex is-flex-direction-column pt-0"
                     id="login-contents">
                     <p class="title is-1">Sign up</p>
 
@@ -37,7 +37,7 @@
                                 placeholder="Email" />
                         </div>
                     </div>
-                    <div class="field mt-3">
+                    <div class="field mt-1">
                         <div class="control">
                             <input
                                 class="input"
@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div class="field mt-3">
+                    <div class="field mt-1">
                         <div class="control">
                             <input
                                 class="input"
