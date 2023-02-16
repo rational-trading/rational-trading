@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Search from "$components/Search.svelte";
+
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
     import Graph from "$components/Graph.svelte";
@@ -126,23 +128,9 @@
                 </div>
             </div>
 
-            <div class="level-right" style="width: 60%">
+            <div class="level-right" style="width: 50%">
                 <div class="level-item mr-3" style="width: 100%">
-                    <button class="button is-rounded" style="width: 100%">
-                        <div class="level" style="width: 100%">
-                            <div class="level-left">
-                                <p
-                                    class="has-text-grey-lighter has-text-weight-light">
-                                    Search for a stock to display...
-                                </p>
-                            </div>
-                            <div class="level-right">
-                                <span class="icon">
-                                    <i class="fas fa-magnifying-glass" />
-                                </span>
-                            </div>
-                        </div>
-                    </button>
+                    <Search />
                 </div>
             </div>
         </nav>
