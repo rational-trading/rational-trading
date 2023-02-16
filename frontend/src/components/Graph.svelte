@@ -1,13 +1,14 @@
 <script lang="ts">
     import { ColorType, CrosshairMode } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
+    // import { LineSeries } from "svelte-lightweight-charts";
 
-    interface Graph {
+    interface Dimensions {
         width: number;
         height: number;
     }
 
-    export let param: Graph;
+    export let dimensions: Dimensions;
 
     const options = {
         layout: {
@@ -19,10 +20,10 @@
         },
         grid: {
             vertLines: {
-                color: "#b5b5b5",
+                color: "#dbdbdb",
             },
             horzLines: {
-                color: "#b5b5b5",
+                color: "#dbdbdb",
             },
         },
         crosshair: {
@@ -35,6 +36,7 @@
             borderColor: "#242424",
         },
     };
+
     const data = [
         {
             time: "2018-10-19",
@@ -1080,9 +1082,25 @@
             close: 193.59,
         },
     ];
+
+    /* const dataLine = [
+        { time: "2019-04-11", value: 80.01 },
+        { time: "2019-04-12", value: 96.63 },
+        { time: "2019-04-13", value: 76.64 },
+        { time: "2019-04-14", value: 81.89 },
+        { time: "2019-04-15", value: 74.43 },
+        { time: "2019-04-16", value: 80.01 },
+        { time: "2019-04-17", value: 96.63 },
+        { time: "2019-04-18", value: 76.64 },
+        { time: "2019-04-19", value: 81.89 },
+        { time: "2019-04-20", value: 74.43 },
+    ]; */
 </script>
 
-<Chart bind:width={param.width} bind:height={param.height} {...options}>
+<Chart
+    bind:width={dimensions.width}
+    bind:height={dimensions.height}
+    {...options}>
     <CandlestickSeries
         {data}
         upColor="#60c689"
@@ -1092,3 +1110,9 @@
         borderDownColor="#e91e63"
         wickDownColor="#e91e63" />
 </Chart>
+
+<!-- This is kept in case we want a line graph
+<Chart bind:width={dimensions.width} bind:height={dimensions.height} {...options}>
+    <LineSeries data={dataLine} />
+</Chart>
+-->

@@ -3,8 +3,8 @@
     import News from "$components/News.svelte";
     import Graph from "$components/Graph.svelte";
 
-    let w: number = 0;
-    let h: number = 0;
+    let w = 0;
+    let h = 0;
 
     const watchlist = [
         {
@@ -152,7 +152,7 @@
             style="height: 50vh; display: flex; justify-content: center; align-items: center;"
             bind:clientWidth={w}
             bind:clientHeight={h}>
-            <Graph param={{ width: w, height: h }} />
+            <Graph dimensions={{ width: w, height: h }} />
         </div>
 
         <!-- information tab -->
