@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Information from "./Information.svelte";
+    import Information from "$components/Information.svelte";
 
     import Search from "$components/Search.svelte";
 
@@ -10,7 +10,9 @@
         displaySymbol,
         displayCompany,
         displayExchange,
+        watchSymbols,
     } from "$lib/stores";
+    import WatchlistAdd from "$components/WatchlistAdd.svelte";
 
     let graphWidth = 0;
     let graphHeight = 0;
@@ -88,9 +90,7 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    <span class="icon">
-                        <a href="/"><i class="fas fa-plus" /></a>
-                    </span>
+                    <WatchlistAdd />
                 </div>
             </div>
         </nav>

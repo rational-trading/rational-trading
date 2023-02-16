@@ -3,21 +3,26 @@
         displaySymbol,
         displayCompany,
         displayExchange,
+        watchSymbols,
     } from "$lib/stores";
 
-    interface SearchItem {
+    interface AddItem {
         symbol: string;
         company: string;
         exchange: string;
     }
 
-    export let data: SearchItem;
+    export let data: AddItem;
     export let active = true;
 
     function click() {
-        displaySymbol.set(data.symbol);
-        displayCompany.set(data.company);
-        displayExchange.set(data.exchange);
+        watchSymbols.update((symbols) => {
+            if (symbols.indexOf(data.symbol) == -1) {
+                return [...symbols, data.symbol];
+            } else {
+                return symbols;
+            }
+        });
         active = false;
     }
 </script>

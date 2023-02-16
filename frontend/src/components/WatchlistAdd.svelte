@@ -1,10 +1,10 @@
 <script lang="ts">
-    import SearchItem from "./SearchItem.svelte";
+    import AddItem from "./AddItem.svelte";
     import { displaySymbol } from "$lib/stores";
 
     let active = false;
 
-    const searchItems = [
+    const addItems = [
         {
             symbol: "AAPL",
             company: "Apple Inc.",
@@ -23,25 +23,11 @@
     ];
 </script>
 
-<button
-    class="button is-rounded"
-    style="width: 100%"
-    on:click={() => (active = true)}>
-    <div class="level" style="width: 100%">
-        <div class="level-left">
-            <div class="level-item">
-                <span class="icon">
-                    <i class="fas fa-magnifying-glass" />
-                </span>
-            </div>
-            <div class="level-item">
-                <p class="has-text-grey-lighter has-text-weight-light">
-                    Search for a stock to display...
-                </p>
-            </div>
-        </div>
-    </div>
-</button>
+<span class="icon">
+    <!-- svelte-ignore a11y-missing-attribute -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <a on:click={() => (active = true)}><i class="fas fa-plus" /></a>
+</span>
 
 {#if active}
     <div class="modal is-active">
@@ -61,8 +47,8 @@
             <div class="table-container" style="overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
-                        {#each searchItems as item}
-                            <SearchItem data={item} bind:active />
+                        {#each addItems as item}
+                            <AddItem data={item} bind:active />
                         {/each}
                     </tbody>
                 </table>

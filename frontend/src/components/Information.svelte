@@ -3,6 +3,7 @@
         displaySymbol,
         displayCompany,
         displayExchange,
+        watchSymbols,
     } from "$lib/stores";
 
     let keyStats = true;
@@ -14,6 +15,8 @@
     function fClick() {
         keyStats = false;
     }
+
+    $: console.log($watchSymbols);
 </script>
 
 <div class="tabs">
@@ -38,6 +41,7 @@
             Here is some {$displaySymbol}. Need some api or global dict to
             display company name as well.
         </p>
+        <p>Watchlist: {$watchSymbols}</p>
     </div>
 {:else}
     <!-- Finances -->
