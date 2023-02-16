@@ -14,26 +14,26 @@
         layout: {
             background: {
                 type: ColorType.Solid,
-                color: "#f5f5f5",
+                color: "#303030",
             },
-            textColor: "#242424",
+            textColor: "#f5f5f5",
         },
         grid: {
             vertLines: {
-                color: "#dbdbdb",
+                color: "#4a4a4a",
             },
             horzLines: {
-                color: "#dbdbdb",
+                color: "#4a4a4a",
             },
         },
         crosshair: {
             mode: CrosshairMode.Normal,
         },
         rightPriceScale: {
-            borderColor: "#242424",
+            borderColor: "#f5f5f5",
         },
         timeScale: {
-            borderColor: "#242424",
+            borderColor: "#f5f5f5",
         },
     };
 
