@@ -53,6 +53,8 @@ Note: Commands should be ran from this current folder.
 
 5) In the worst case, delete `db.sqlite3` (and possible `models/migrations`) and re-initialise.
 
+> Important: The SQLite transaction isolation mode is "Serialized", not "Serializable". This means that individual rows are locked, but tables are not. For example, if I check the balance of an account by reading the users' balance field, this is guaranteed to be atomic. However, if I check the balance of an account by totalling up all past transactions, this is not guaranteed to be atomic, as another transaction can be inserted whilst I am totalling up. 
+
 # Polygon API
 
 1) To use the API, create a new file named `.env` in `/config`, with all the variables specified in `.env.example` filled in.
