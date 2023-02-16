@@ -1,4 +1,4 @@
-from ninja import NinjaAPI
+from ninja import NinjaAPI, Schema
 from ninja.errors import AuthenticationError, ValidationError
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
@@ -44,7 +44,8 @@ class TokenSchema(Schema):
 
 
 @api.post("/login", auth=None, response={200, TokenSchema})
-def auth(request: HttpBearer, username: str, password: str) -> int | TokenSchema:  # union
+# union
+def auth(request: HttpBearer, username: str, password: str) -> tuple[int, TokenSchema]:
     # check username
     # check password
     token = create_token(username)
