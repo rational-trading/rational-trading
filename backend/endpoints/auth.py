@@ -12,7 +12,7 @@ class AuthBearer(HttpBearer):
         try:
             # JWT secret key is set up in .env
             load_dotenv()
-            JWT_SIGNING_KEY = os.getenv(JWT_SIGNING_KEY)
+            JWT_SIGNING_KEY = str(os.getenv(JWT_SIGNING_KEY))    # type: ignore
             payload = jwt.decode(token, JWT_SIGNING_KEY, algorithms=["HS256"])
             username: str = payload.get("sub")
             if username is None:

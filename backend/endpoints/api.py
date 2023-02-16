@@ -54,7 +54,7 @@ def auth(request: HttpBearer, username: str, password: str) -> tuple[int, TokenS
 
 def create_token(username: str) -> str:
     load_dotenv()
-    JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY')          # type: ignore
+    JWT_SIGNING_KEY = str(os.getenv('JWT_SIGNING_KEY'))          # type: ignore
     JWT_ACCESS_EXPIRY = os.getenv('JWT_ACCESS_EXPIRY')      # type: ignore
     # JWT_SIGNING_KEY = getattr(settings, "JWT_SIGNING_KEY", None)        # add attributes to settings
     # JWT_ACCESS_EXPIRY = getattr(settings, "JWT_ACCESS_EXPIRY", "60") # 60 minutes expiration
