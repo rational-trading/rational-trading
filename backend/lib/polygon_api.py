@@ -25,7 +25,7 @@ class TickerArticle():
         self.tickers = tickers
 
     def __repr__(self) -> str:
-        return f"{self.score:>6.3f} || {self.publisher[:8]:<8}... {self.title[:40]}..."
+        return f"{self.score:>6.3f} | {self.date[5:7]}/{self.date[8:10]} {self.date[11:16]} | {self.publisher[:8]:<8}... {self.title[:40]}..."
 
 
 class TickerFinancials():
