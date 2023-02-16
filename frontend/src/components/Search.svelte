@@ -4,10 +4,6 @@
 
     let search = false;
 
-    displaySymbol.subscribe(() => {
-        search = false;
-    });
-
     const searchItems = [
         {
             symbol: "AAPL",
@@ -52,7 +48,10 @@
         <div class="modal-background" on:click={() => (search = false)} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
-                <input class="input is-large" type="text" value="AAPL" />
+                <input
+                    class="input is-large"
+                    type="text"
+                    value={$displaySymbol} />
                 <span class="icon is-large is-left">
                     <i class="fas fa-magnifying-glass" />
                 </span>
@@ -62,7 +61,7 @@
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
                         {#each searchItems as item}
-                            <SearchItem data={item} />
+                            <SearchItem data={item} bind:search />
                         {/each}
                     </tbody>
                 </table>

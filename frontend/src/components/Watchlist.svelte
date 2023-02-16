@@ -1,4 +1,10 @@
 <script lang="ts">
+    import {
+        displaySymbol,
+        displayCompany,
+        displayExchange,
+    } from "$lib/stores";
+
     interface Watchlist {
         symbol: string;
         last: number;
@@ -9,10 +15,13 @@
     export let data: Watchlist;
 
     const color = data.chg >= 0 ? "success" : "warning";
-    let selected = false;
+    $: selected = data.symbol == $displaySymbol;
 
     function click() {
-        selected = !selected;
+        displaySymbol.set(data.symbol);
+        //would need an api method to get name of company and exchange based on stock symbol
+        //displayCompany.set(data.company);
+        //displayExchange.set(data.exchange);
     }
 </script>
 

@@ -4,10 +4,14 @@
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
     import Graph from "$components/Graph.svelte";
-    import { displaySymbol } from "$lib/stores";
+    import {
+        displaySymbol,
+        displayCompany,
+        displayExchange,
+    } from "$lib/stores";
 
-    let w = 0;
-    let h = 0;
+    let graphWidth = 0;
+    let graphHeight = 0;
 
     const watchlist = [
         {
@@ -119,13 +123,13 @@
         <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
                 <div class="level-item">
-                    <h1 class="subtitle is-5">Apple Inc.</h1>
+                    <h1 class="subtitle is-5">{$displayCompany}</h1>
                 </div>
                 <div class="level-item">
                     <h1 class="subtitle is-5">•</h1>
                 </div>
                 <div class="level-item">
-                    <h1 class="subtitle is-5">NASDAQ</h1>
+                    <h1 class="subtitle is-5">{$displayExchange}</h1>
                 </div>
             </div>
 
@@ -139,9 +143,9 @@
         <!-- the graph itself -->
         <div
             style="height: 50vh; display: flex; justify-content: center; align-items: center;"
-            bind:clientWidth={w}
-            bind:clientHeight={h}>
-            <Graph dimensions={{ width: w, height: h }} />
+            bind:clientWidth={graphWidth}
+            bind:clientHeight={graphHeight}>
+            <Graph dimensions={{ width: graphWidth, height: graphHeight }} />
         </div>
 
         <!-- information tab -->
@@ -156,7 +160,6 @@
 
         <div class="block mx-2">
             <p>Here is some text.</p>
-            <p>{$displaySymbol}</p>
         </div>
     </div>
 
