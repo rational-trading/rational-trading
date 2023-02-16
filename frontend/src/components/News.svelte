@@ -19,7 +19,7 @@
         </a>
         <div class="card-header-icon has-text-{sentiment} pl-0">
             <span class="icon">
-                <i class="fas fa-thumbs-{data.positive ? 'up' : 'down'}" />
+                <i class="fas fa-arrow-trend-{data.positive ? 'up' : 'down'}" />
             </span>
         </div>
     </header>
