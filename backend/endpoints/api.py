@@ -59,7 +59,8 @@ def create_token(username: str) -> str:
     # JWT_SIGNING_KEY = getattr(settings, "JWT_SIGNING_KEY", None)        # add attributes to settings
     # JWT_ACCESS_EXPIRY = getattr(settings, "JWT_ACCESS_EXPIRY", "60") # 60 minutes expiration
     to_encode_access = {"sub": username}
-    access_expire = datetime.utcnow() + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)
+    access_expire = datetime.utcnow(
+    ) + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)       # type: ignore
     to_encode_access.update({"exp": access_expire})
     encoded_access_jwt = jwt.encode(
         to_encode_access, JWT_SIGNING_KEY, algorithm="HS256")

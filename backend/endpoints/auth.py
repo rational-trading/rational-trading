@@ -15,8 +15,8 @@ class AuthBearer(HttpBearer):
             JWT_SIGNING_KEY: str = os.getenv(JWT_SIGNING_KEY)    # type: ignore
             payload = jwt.decode(token, JWT_SIGNING_KEY, algorithms=["HS256"])
             username: str = payload.get("sub")
-            if username is None:
-                return None
+            if username is None:  # type: ignore
+                return None         # type: ignore
         except jwt.PyJWTError as e:
             return None
         return username
