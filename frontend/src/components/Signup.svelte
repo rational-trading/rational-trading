@@ -12,7 +12,8 @@
 
 {#if active}
     <div class="modal is-active">
-        <div class="modal-background" color="" />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div class="modal-background" on:click={() => (active = false)} />
         <div class="modal-content">
             <div class="is-flex is-flex-direction-column">
                 <div class="is-align-self-flex-end">

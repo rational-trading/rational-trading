@@ -45,6 +45,7 @@
 
 {#if search}
     <div class="modal is-active">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="modal-background" on:click={() => (search = false)} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
