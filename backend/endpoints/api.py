@@ -7,7 +7,7 @@ from ninja.security import HttpBearer
 import jwt
 import datetime
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv       # type: ignore
 
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
