@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Information from "./Information.svelte";
+
     import Search from "$components/Search.svelte";
 
     import Watchlist from "$components/Watchlist.svelte";
@@ -149,18 +151,7 @@
         </div>
 
         <!-- information tab -->
-        <div class="tabs">
-            <ul>
-                <li class="is-active">
-                    <a href="/">Key Stats</a>
-                </li>
-                <li><a href="/">Finances</a></li>
-            </ul>
-        </div>
-
-        <div class="block mx-2">
-            <p>Here is some text.</p>
-        </div>
+        <Information />
     </div>
 
     <!-- news column -->
