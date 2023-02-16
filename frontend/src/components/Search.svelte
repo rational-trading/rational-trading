@@ -1,5 +1,30 @@
 <script lang="ts">
+    import SearchItem from "./SearchItem.svelte";
+    import { displaySymbol } from "$lib/stores";
+
     let search = false;
+
+    displaySymbol.subscribe(() => {
+        search = false;
+    });
+
+    const searchItems = [
+        {
+            symbol: "AAPL",
+            company: "Apple Inc.",
+            exchange: "NASDAQ",
+        },
+        {
+            symbol: "TSLA",
+            company: "Tesla, Inc.",
+            exchange: "NASDAQ",
+        },
+        {
+            symbol: "NFLX",
+            company: "Netflix, Inc.",
+            exchange: "NASDAQ",
+        },
+    ];
 </script>
 
 <button
@@ -27,23 +52,29 @@
         <div class="modal-background" on:click={() => (search = false)} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
-                <input
-                    class="input is-large"
-                    type="text"
-                    style="color: #f5f5f5; background: #363636;"
-                    value="AAPL" />
+                <input class="input is-large" type="text" value="AAPL" />
                 <span class="icon is-large is-left">
                     <i class="fas fa-magnifying-glass" />
                 </span>
             </p>
+
+            <div class="table-container" style="overflow-y: auto;">
+                <table class="table is-hoverable is-fullwidth is-dark">
+                    <tbody>
+                        {#each searchItems as item}
+                            <SearchItem data={item} />
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {/if}
 
 <style>
     .modal-content {
-        width: 31.25em;
-        height: 35.5em;
+        width: 40vw;
+        height: 60vh;
         background: #363636;
         border-radius: 7px;
     }

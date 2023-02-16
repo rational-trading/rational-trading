@@ -4,6 +4,7 @@
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
     import Graph from "$components/Graph.svelte";
+    import { displaySymbol } from "$lib/stores";
 
     let w = 0;
     let h = 0;
@@ -155,6 +156,7 @@
 
         <div class="block mx-2">
             <p>Here is some text.</p>
+            <p>{$displaySymbol}</p>
         </div>
     </div>
 
