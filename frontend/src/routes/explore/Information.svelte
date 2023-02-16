@@ -19,9 +19,13 @@
 <div class="tabs">
     <ul>
         <li class:is-active={keyStats}>
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <a on:click={ksClick}>Key Stats</a>
         </li>
         <li class:is-active={!keyStats}>
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <a on:click={fClick}>Finances</a>
         </li>
     </ul>
