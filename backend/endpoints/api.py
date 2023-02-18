@@ -2,11 +2,12 @@ from ninja import NinjaAPI
 from ninja.errors import AuthenticationError, ValidationError
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
+from django.conf import settings
 
 from .demo.route import router as demo_router
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
-from .price.route import router  as price_router
+from .price.route import router as price_router
 
 
 api = NinjaAPI()
@@ -34,4 +35,15 @@ def validation_error(request: HttpRequest, e: ValidationError) -> HttpResponse:
         request,
         {"error": "Request validation failed. Please use the correct input format."},
         status=422
+    )
+
+
+@api.exception_handler(Exception)
+def exception(request: HttpRequest, e: Exception) -> HttpResponse:
+    print(e)
+    return api.create_response(
+        request,
+        {"error": str(
+            e) if settings.DEBUG else "Something went wrong! Check logs for more details."},
+        status=500
     )
