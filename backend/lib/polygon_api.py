@@ -35,18 +35,23 @@ class TickerFinancials():
 
 @dataclass
 class TickerPrice():
-    timestamp: int
+    time: int
+    open: float
     low: float
     high: float
+    close: float
 
     @staticmethod
     def from_agg(agg: Agg) -> 'TickerPrice':
         assert isinstance(agg, Agg)
+
         assert agg.timestamp is not None
+        assert agg.open is not None
         assert agg.low is not None
         assert agg.high is not None
+        assert agg.close is not None
 
-        return TickerPrice(agg.timestamp, agg.low, agg.high)
+        return TickerPrice(time=agg.timestamp / 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
 
 
 class PolygonAPI():
@@ -122,4 +127,4 @@ if __name__ == "__main__":
     print()
     prices = api.price_history("AAPL")
     for p in prices:
-        print(f"{p.timestamp} {p.low} {p.high}")
+        print(f"{p.time} {p.low} {p.high}")

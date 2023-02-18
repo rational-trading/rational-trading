@@ -8,9 +8,11 @@ router = Router()
 
 
 class PriceSchema(Schema):
-    timestamp: int
+    time: int
+    open: float
     low: float
     high: float
+    close: float
 
 
 @router.get("/recent", response=PriceSchema)
