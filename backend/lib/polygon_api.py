@@ -51,7 +51,7 @@ class TickerPrice():
         assert agg.high is not None
         assert agg.close is not None
 
-        return TickerPrice(time=agg.timestamp / 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
+        return TickerPrice(time=agg.timestamp // 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
 
 
 class PolygonAPI():
