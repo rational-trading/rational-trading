@@ -6,12 +6,15 @@ from django.http.response import HttpResponse
 from .demo.route import router as demo_router
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
+from .price.route import router  as price_router
+
 
 api = NinjaAPI()
 
 api.add_router("/demo/", demo_router)
 api.add_router("/hello/", hello_router)
 api.add_router("/maths/", maths_router)
+api.add_router("/price/", price_router)
 
 
 @api.exception_handler(AuthenticationError)

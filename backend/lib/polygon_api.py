@@ -39,6 +39,15 @@ class TickerPrice():
     low: float
     high: float
 
+    @staticmethod
+    def from_agg(agg: Agg) -> 'TickerPrice':
+        assert isinstance(agg, Agg)
+        assert agg.timestamp is not None
+        assert agg.low is not None
+        assert agg.high is not None
+
+        return TickerPrice(agg.timestamp, agg.low, agg.high)
+
 
 class PolygonAPI():
     def __init__(self) -> None:
@@ -80,23 +89,26 @@ class PolygonAPI():
 
         return articles
 
-    def get_prices(self, ticker: str) -> List[TickerPrice]:
-        from_ = datetime.utcnow() - timedelta(365*5)
+    def recent_price(self, ticker: str) -> TickerPrice:
+        # Set quite long, as trading closes on weekends, holidays etc
+        from_ = datetime.utcnow() - timedelta(days=7)
+        to = datetime.utcnow()
+        aggs = self.client.get_aggs(
+            ticker=ticker, multiplier=1, timespan="minute", from_=from_, to=to, sort=Sort.DESC, limit=1)
+
+        assert not isinstance(aggs, HTTPResponse)
+
+        return TickerPrice.from_agg(aggs[0])
+
+    def price_history(self, ticker: str) -> List[TickerPrice]:
+        from_ = datetime.utcnow() - timedelta(days=365*5)
         to = datetime.utcnow()
         aggs = self.client.get_aggs(
             ticker=ticker, multiplier=1, timespan="day", from_=from_, to=to, sort=Sort.ASC)
 
         assert not isinstance(aggs, HTTPResponse)
 
-        def agg_to_price(agg: Agg) -> TickerPrice:
-            assert isinstance(agg, Agg)
-            assert agg.timestamp is not None
-            assert agg.low is not None
-            assert agg.high is not None
-
-            return TickerPrice(agg.timestamp, agg.low, agg.high)
-
-        prices = list(map(agg_to_price, aggs))
+        prices = list(map(TickerPrice.from_agg, aggs))
         return prices
 
 
@@ -108,6 +120,6 @@ if __name__ == "__main__":
         print(
             f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
     print()
-    prices = api.get_prices("AAPL")
+    prices = api.price_history("AAPL")
     for p in prices:
         print(f"{p.timestamp} {p.low} {p.high}")
