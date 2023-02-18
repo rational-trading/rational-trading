@@ -8,7 +8,7 @@
     let request = newRequest();
 </script>
 
-<h3 class="title is-3">Maths Get</h3>
+<h3 class="title is-3">Price History</h3>
 <p>
     <input class="input" bind:value={ticker} placeholder="Ticker" />
 </p>
