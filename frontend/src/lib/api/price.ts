@@ -15,8 +15,8 @@ class PriceRoute {
         this.ticker = ticker;
     }
 
-    current(): Promise<TickerPrice> {
-        return get<TickerPrice>({ endpoint: "/price/current", queryString: `ticker=${this.ticker}` });
+    recent(): Promise<TickerPrice> {
+        return get<TickerPrice>({ endpoint: "/price/recent", queryString: `ticker=${this.ticker}` });
     }
 
     history(): Promise<TickerPrice[]> {
