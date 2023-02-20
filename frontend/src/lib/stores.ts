@@ -1,7 +1,9 @@
-import { readable, writable } from "svelte/store";
+import {
+    readable, writable, type Readable, type Writable,
+} from "svelte/store";
 import type { Stock } from "$lib/types";
 
-export const watchlist: writable<Stock[]> = writable([
+export const watchlist: Writable<Stock[]> = writable([
     {
         ticker: "AAPL",
         name: "Apple Inc",
@@ -14,9 +16,9 @@ export const watchlist: writable<Stock[]> = writable([
     },
 ]);
 
-export const currentStock: writable<Stock> = writable({ ticker: "AAPL", name: "Apple Inc", exchange: "NASDAQ" });
+export const currentStock: Writable<Stock> = writable({ ticker: "AAPL", name: "Apple Inc", exchange: "NASDAQ" });
 
-export const stocks: readable<Stock[]> = readable([
+export const stocks: Readable<Stock[]> = readable([
     {
         ticker: "AAPL",
         name: "Apple Inc",
