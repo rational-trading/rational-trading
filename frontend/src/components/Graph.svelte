@@ -19,16 +19,13 @@
 
     let request = api.pendingRequest<CandlestickData[]>();
 
-    $: newRequest = () =>
-        api
-            .price($currentStock.ticker)
-            .history()
-            .then((response) =>
-                response.map((price) => ({
-                    ...price,
-                    time: price.time as UTCTimestamp,
-                }))
-            );
+    $: newRequest = () => api
+        .price($currentStock.ticker)
+        .history()
+        .then((response) => response.map((price) => ({
+            ...price,
+            time: price.time as UTCTimestamp,
+        })));
 
     $: if (browser) request = newRequest();
 

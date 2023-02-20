@@ -8,11 +8,10 @@
 
     function click() {
         watchlist.update((stocks: Stock[]) => {
-            if (stocks.indexOf(stock) == -1) {
+            if (stocks.indexOf(stock) === -1) {
                 return [...stocks, stock];
-            } else {
-                return stocks;
             }
+            return stocks;
         });
         currentStock.set(stock);
         searchText = "";

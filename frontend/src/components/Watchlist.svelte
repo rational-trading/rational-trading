@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
     import api from "$lib/api";
     import { currentStock } from "$lib/stores";
     import type { Stock } from "$lib/types";
+    import { browser } from "$app/environment";
 
     export let stock: Stock;
 
@@ -13,27 +13,26 @@
         color: "success" | "warning";
     }>();
 
-    $: newRequest = () =>
-        api
-            .price(stock.ticker)
-            .recent()
-            .then((response) => {
-                let last = response.close;
-                let change = last - response.open;
-                let percentChange = (change / response.open) * 100;
-                let color: "success" | "warning" =
+    $: newRequest = () => api
+        .price(stock.ticker)
+        .recent()
+        .then((response) => {
+            const last = response.close;
+            const change = last - response.open;
+            const percentChange = (change / response.open) * 100;
+            const color: "success" | "warning" =
                     change >= 0 ? "success" : "warning";
-                return {
-                    last,
-                    change,
-                    percentChange,
-                    color,
-                };
-            });
+            return {
+                last,
+                change,
+                percentChange,
+                color,
+            };
+        });
 
     $: if (browser) request = newRequest();
 
-    $: selected = stock.ticker == $currentStock.ticker;
+    $: selected = stock.ticker === $currentStock.ticker;
 
     function click() {
         currentStock.set(stock);

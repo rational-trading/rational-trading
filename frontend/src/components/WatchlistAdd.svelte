@@ -1,20 +1,18 @@
 <script lang="ts">
-    import AddItem from "./AddItem.svelte";
     import { currentStock, stocks } from "$lib/stores";
+    import AddItem from "./AddItem.svelte";
 
     let text = $currentStock.ticker;
 
     function matchAny(search: string, options: string[]): boolean {
-        let searchLower = search.toLowerCase();
+        const searchLower = search.toLowerCase();
         return (
             options.findIndex((o) => o.toLowerCase().includes(searchLower)) !==
             -1
         );
     }
 
-    $: filteredStocks = $stocks.filter((s) =>
-        matchAny(text, [s.exchange, s.name, s.ticker])
-    );
+    $: filteredStocks = $stocks.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>
@@ -36,7 +34,11 @@
             }} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
-                <input class="input is-large" type="text" bind:value={text} />
+                <input
+                    class="input is-large"
+                    type="text"
+                    placeholder="Search"
+                    bind:value={text} />
                 <span class="icon is-large is-left">
                     <i class="fas fa-magnifying-glass" />
                 </span>
