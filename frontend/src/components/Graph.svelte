@@ -3,33 +3,12 @@
         ColorType,
         CrosshairMode,
         type CandlestickData,
+        type UTCTimestamp,
     } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
     import { currentStock } from "$lib/stores";
     import api from "$lib/api";
-    import { onDestroy } from "svelte";
-
-    let data: CandlestickData[];
-
-    const fetchData = async () => {
-        const response = await api.price($currentStock.ticker).history();
-        data = response.map(function (price) {
-            return {
-                time: new Date(price.time * 1000).toLocaleString(),
-                open: price.open,
-                low: price.low,
-                high: price.high,
-                close: price.close,
-            };
-        });
-        return response;
-    };
-
-    let request = fetchData();
-
-    const unsubscribe = currentStock.subscribe(() => {
-        request = fetchData();
-    });
+    import { browser } from "$app/environment";
 
     interface Dimensions {
         width: number;
@@ -37,6 +16,21 @@
     }
 
     export let dimensions: Dimensions;
+
+    let request = api.pendingRequest<CandlestickData[]>();
+
+    $: newRequest = () =>
+        api
+            .price($currentStock.ticker)
+            .history()
+            .then((response) =>
+                response.map((price) => ({
+                    ...price,
+                    time: price.time as UTCTimestamp,
+                }))
+            );
+
+    $: if (browser) request = newRequest();
 
     const options = {
         layout: {
@@ -64,13 +58,11 @@
             borderColor: "#f5f5f5",
         },
     };
-
-    onDestroy(unsubscribe);
 </script>
 
 {#await request}
     <p>Loading...</p>
-{:then}
+{:then data}
     <Chart
         bind:width={dimensions.width}
         bind:height={dimensions.height}

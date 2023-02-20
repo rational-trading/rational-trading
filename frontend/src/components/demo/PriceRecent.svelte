@@ -1,11 +1,15 @@
 <script lang="ts">
+    import { browser } from "$app/environment";
     import api from "$lib/api";
+    import type { TickerPrice } from "$lib/api/price";
 
     let ticker = "AAPL";
 
-    const newRequest = () => api.price(ticker).recent();
+    let request = api.pendingRequest<TickerPrice>();
 
-    let request = newRequest();
+    let newRequest = () => api.price(ticker).recent();
+
+    $: if (browser) request = newRequest();
 </script>
 
 <h3 class="title is-3">Price Recent</h3>
