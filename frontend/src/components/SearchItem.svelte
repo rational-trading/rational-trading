@@ -1,29 +1,27 @@
 <script lang="ts">
+    import type { Stock } from "$lib/types";
     import {
         displaySymbol,
         displayCompany,
         displayExchange,
+        currentStock,
     } from "$lib/stores";
 
-    interface SearchItem {
-        symbol: string;
-        company: string;
-        exchange: string;
-    }
-
-    export let data: SearchItem;
+    export let data: Stock;
     export let active = true;
 
     function click() {
-        displaySymbol.set(data.symbol);
-        displayCompany.set(data.company);
-        displayExchange.set(data.exchange);
+        currentStock.set({
+            ticker: data.ticker,
+            name: data.name,
+            exchange: data.exchange,
+        });
         active = false;
     }
 </script>
 
 <tr style="cursor: pointer;" on:click={click}>
-    <th class="has-text-left">{data.symbol}</th>
-    <td class="has-text-left">{data.company}</td>
+    <th class="has-text-left">{data.ticker}</th>
+    <td class="has-text-left">{data.name}</td>
     <td class="has-text-right">{data.exchange}</td>
 </tr>

@@ -11,6 +11,7 @@
         displayCompany,
         displayExchange,
         watchSymbols,
+        currentStock,
     } from "$lib/stores";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
 
@@ -125,13 +126,13 @@
         <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
                 <div class="level-item">
-                    <h1 class="subtitle is-5">{$displayCompany}</h1>
+                    <h1 class="subtitle is-5">{$currentStock.name}</h1>
                 </div>
                 <div class="level-item">
                     <h1 class="subtitle is-5">•</h1>
                 </div>
                 <div class="level-item">
-                    <h1 class="subtitle is-5">{$displayExchange}</h1>
+                    <h1 class="subtitle is-5">{$currentStock.exchange}</h1>
                 </div>
             </div>
 

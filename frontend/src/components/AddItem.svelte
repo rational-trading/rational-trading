@@ -4,6 +4,7 @@
         displayCompany,
         displayExchange,
         watchSymbols,
+        currentStock,
     } from "$lib/stores";
 
     interface AddItem {

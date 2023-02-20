@@ -1,23 +1,23 @@
 <script lang="ts">
     import SearchItem from "./SearchItem.svelte";
-    import { displaySymbol } from "$lib/stores";
+    import { currentStock } from "$lib/stores";
 
     let active = false;
 
     const searchItems = [
         {
-            symbol: "AAPL",
-            company: "Apple Inc.",
+            ticker: "AAPL",
+            name: "Apple Inc",
             exchange: "NASDAQ",
         },
         {
-            symbol: "TSLA",
-            company: "Tesla, Inc.",
+            ticker: "TSLA",
+            name: "Tesla, Inc.",
             exchange: "NASDAQ",
         },
         {
-            symbol: "NFLX",
-            company: "Netflix, Inc.",
+            ticker: "NFLX",
+            name: "Netflix, Inc.",
             exchange: "NASDAQ",
         },
     ];
@@ -52,7 +52,7 @@
                 <input
                     class="input is-large"
                     type="text"
-                    value={$displaySymbol} />
+                    value={$currentStock.ticker} />
                 <span class="icon is-large is-left">
                     <i class="fas fa-magnifying-glass" />
                 </span>

@@ -1,10 +1,5 @@
 <script lang="ts">
-    import {
-        displaySymbol,
-        displayCompany,
-        displayExchange,
-        watchSymbols,
-    } from "$lib/stores";
+    import { watchSymbols, currentStock } from "$lib/stores";
 
     let keyStats = true;
 
@@ -38,8 +33,7 @@
     <!-- Key Stats -->
     <div class="block mx-2">
         <p>
-            Here is some {$displaySymbol}. Need some api or global dict to
-            display company name as well.
+            Current stock: {$currentStock.ticker}, {$currentStock.name}, {$currentStock.exchange}
         </p>
         <p>Watchlist: {$watchSymbols}</p>
     </div>
