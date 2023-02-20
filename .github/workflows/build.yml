@@ -2,33 +2,27 @@ name: Build Frontend
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   checkout-lint-build:
-  
     runs-on: ubuntu-latest
     concurrency: ci-${{ github.ref }}
-     
+
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
-      
+        uses: actions/checkout@v3
+
       - name: Build
         working-directory: ./frontend
         run: |
 
-              yarn install --frozen-lockfile
-              yarn build
+          yarn install --frozen-lockfile
+          yarn build
 
-      
       - name: Lint
         working-directory: ./frontend
         run: |
-              yarn lint
-              
-    
-             
-        
+          yarn lint
