@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { watchSymbols, currentStock } from "$lib/stores";
+    import { watchlist, currentStock } from "$lib/stores";
 
     let keyStats = true;
 
@@ -10,8 +10,6 @@
     function fClick() {
         keyStats = false;
     }
-
-    $: console.log($watchSymbols);
 </script>
 
 <div class="tabs">
@@ -35,7 +33,10 @@
         <p>
             Current stock: {$currentStock.ticker}, {$currentStock.name}, {$currentStock.exchange}
         </p>
-        <p>Watchlist: {$watchSymbols}</p>
+        <p>Watchlist:</p>
+        {#each $watchlist as stock}
+            <p>{stock.ticker}, {stock.name}, {stock.exchange}</p>
+        {/each}
     </div>
 {:else}
     <!-- Finances -->

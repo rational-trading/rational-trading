@@ -6,44 +6,12 @@
     import Watchlist from "$components/Watchlist.svelte";
     import News from "$components/News.svelte";
     import Graph from "$components/Graph.svelte";
-    import {
-        displaySymbol,
-        displayCompany,
-        displayExchange,
-        watchSymbols,
-        currentStock,
-    } from "$lib/stores";
+    import { watchlist, currentStock } from "$lib/stores";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
 
     let graphWidth = 0;
     let graphHeight = 0;
 
-    const watchlist = [
-        {
-            symbol: "AAPL",
-            last: 151.66,
-            chg: -2.99,
-            percentChg: -1.93,
-        },
-        {
-            symbol: "TSLA",
-            last: 199.68,
-            chg: 2.87,
-            percentChg: 1.45,
-        },
-        {
-            symbol: "NFLX",
-            last: 361.54,
-            chg: -1.41,
-            percentChg: -0.39,
-        },
-        {
-            symbol: "NKE",
-            last: 122.91,
-            chg: -2.42,
-            percentChg: -1.93,
-        },
-    ];
     const news = [
         {
             title: "Some Positive News About Apple",
@@ -111,8 +79,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#each watchlist as item}
-                            <Watchlist data={item} />
+                        {#each $watchlist as stock}
+                            <Watchlist {stock} />
                         {/each}
                     </tbody>
                 </table>

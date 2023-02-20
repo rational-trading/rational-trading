@@ -1,35 +1,25 @@
 <script lang="ts">
-    import {
-        displaySymbol,
-        displayCompany,
-        displayExchange,
-        watchSymbols,
-        currentStock,
-    } from "$lib/stores";
+    import { watchlist, currentStock } from "$lib/stores";
+    import type { Stock } from "$lib/types";
 
-    interface AddItem {
-        symbol: string;
-        company: string;
-        exchange: string;
-    }
-
-    export let data: AddItem;
+    export let stock: Stock;
     export let active = true;
 
     function click() {
-        watchSymbols.update((symbols) => {
-            if (symbols.indexOf(data.symbol) == -1) {
-                return [...symbols, data.symbol];
+        watchlist.update((stocks: Stock[]) => {
+            if (stocks.indexOf(stock) == -1) {
+                return [...stocks, stock];
             } else {
-                return symbols;
+                return stocks;
             }
         });
+        currentStock.set(stock);
         active = false;
     }
 </script>
 
 <tr style="cursor: pointer;" on:click={click}>
-    <th class="has-text-left">{data.symbol}</th>
-    <td class="has-text-left">{data.company}</td>
-    <td class="has-text-right">{data.exchange}</td>
+    <th class="has-text-left">{stock.ticker}</th>
+    <td class="has-text-left">{stock.name}</td>
+    <td class="has-text-right">{stock.exchange}</td>
 </tr>

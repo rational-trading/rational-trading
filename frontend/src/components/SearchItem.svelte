@@ -1,21 +1,12 @@
 <script lang="ts">
     import type { Stock } from "$lib/types";
-    import {
-        displaySymbol,
-        displayCompany,
-        displayExchange,
-        currentStock,
-    } from "$lib/stores";
+    import { currentStock } from "$lib/stores";
 
     export let data: Stock;
     export let active = true;
 
     function click() {
-        currentStock.set({
-            ticker: data.ticker,
-            name: data.name,
-            exchange: data.exchange,
-        });
+        currentStock.set(data);
         active = false;
     }
 </script>

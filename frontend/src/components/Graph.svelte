@@ -1,7 +1,7 @@
 <script lang="ts">
     import { ColorType, CrosshairMode } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
-    // import { LineSeries } from "svelte-lightweight-charts";
+    import { currentStock } from "$lib/stores";
 
     interface Dimensions {
         width: number;
@@ -1082,19 +1082,6 @@
             close: 193.59,
         },
     ];
-
-    /* const dataLine = [
-        { time: "2019-04-11", value: 80.01 },
-        { time: "2019-04-12", value: 96.63 },
-        { time: "2019-04-13", value: 76.64 },
-        { time: "2019-04-14", value: 81.89 },
-        { time: "2019-04-15", value: 74.43 },
-        { time: "2019-04-16", value: 80.01 },
-        { time: "2019-04-17", value: 96.63 },
-        { time: "2019-04-18", value: 76.64 },
-        { time: "2019-04-19", value: 81.89 },
-        { time: "2019-04-20", value: 74.43 },
-    ]; */
 </script>
 
 <Chart
@@ -1110,9 +1097,3 @@
         borderDownColor="#e91e63"
         wickDownColor="#e91e63" />
 </Chart>
-
-<!-- This is kept in case we want a line graph
-<Chart bind:width={dimensions.width} bind:height={dimensions.height} {...options}>
-    <LineSeries data={dataLine} />
-</Chart>
--->

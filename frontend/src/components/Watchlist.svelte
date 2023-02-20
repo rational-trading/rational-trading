@@ -1,33 +1,36 @@
 <script lang="ts">
-    import {
-        displaySymbol,
-        displayCompany,
-        displayExchange,
-    } from "$lib/stores";
+    import api from "$lib/api";
+    import { currentStock } from "$lib/stores";
+    import type { Stock } from "$lib/types";
 
-    interface Watchlist {
-        symbol: string;
-        last: number;
-        chg: number;
-        percentChg: number;
-    }
+    export let stock: Stock;
 
-    export let data: Watchlist;
+    const newRequest = () => api.price(stock.ticker).recent();
+    let request = newRequest();
 
-    const color = data.chg >= 0 ? "success" : "warning";
-    $: selected = data.symbol == $displaySymbol;
+    const last = 100.3;
+    const chg = 1;
+    const percentChg = 0.1;
+
+    $: color = chg >= 0 ? "success" : "warning";
+    $: selected = stock.ticker == $currentStock.ticker;
 
     function click() {
-        displaySymbol.set(data.symbol);
-        //would need an api method to get name of company and exchange based on stock symbol
-        //displayCompany.set(data.company);
-        //displayExchange.set(data.exchange);
+        currentStock.set(stock);
     }
 </script>
 
 <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
-    <th class="has-text-left">{data.symbol}</th>
-    <td class="has-text-right">{data.last}</td>
-    <td class="has-text-right has-text-{color}">{data.chg}</td>
-    <td class="has-text-right has-text-{color}">{data.percentChg}%</td>
+    <th class="has-text-left">{stock.ticker}</th>
+    {#await request}
+        <td class="has-text-right">-</td>
+        <td class="has-text-right has-text-{color}">-</td>
+        <td class="has-text-right has-text-{color}">-</td>
+    {:then response}
+        <td class="has-text-right">{response.close}</td>
+        <td class="has-text-right has-text-{color}">{chg}</td>
+        <td class="has-text-right has-text-{color}">{percentChg}%</td>
+    {:catch error}
+        <p>{error.message}</p>
+    {/await}
 </tr>

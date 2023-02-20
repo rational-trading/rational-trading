@@ -1,26 +1,8 @@
 <script lang="ts">
     import SearchItem from "./SearchItem.svelte";
-    import { currentStock } from "$lib/stores";
+    import { currentStock, stocks } from "$lib/stores";
 
     let active = false;
-
-    const searchItems = [
-        {
-            ticker: "AAPL",
-            name: "Apple Inc",
-            exchange: "NASDAQ",
-        },
-        {
-            ticker: "TSLA",
-            name: "Tesla, Inc.",
-            exchange: "NASDAQ",
-        },
-        {
-            ticker: "NFLX",
-            name: "Netflix, Inc.",
-            exchange: "NASDAQ",
-        },
-    ];
 </script>
 
 <button
@@ -61,8 +43,8 @@
             <div class="table-container" style="overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
-                        {#each searchItems as item}
-                            <SearchItem data={item} bind:active />
+                        {#each $stocks as data}
+                            <SearchItem {data} bind:active />
                         {/each}
                     </tbody>
                 </table>

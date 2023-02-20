@@ -1,26 +1,8 @@
 <script lang="ts">
     import AddItem from "./AddItem.svelte";
-    import { displaySymbol } from "$lib/stores";
+    import { currentStock, stocks } from "$lib/stores";
 
     let active = false;
-
-    const addItems = [
-        {
-            symbol: "AAPL",
-            company: "Apple Inc.",
-            exchange: "NASDAQ",
-        },
-        {
-            symbol: "TSLA",
-            company: "Tesla, Inc.",
-            exchange: "NASDAQ",
-        },
-        {
-            symbol: "NFLX",
-            company: "Netflix, Inc.",
-            exchange: "NASDAQ",
-        },
-    ];
 </script>
 
 <span class="icon">
@@ -38,7 +20,7 @@
                 <input
                     class="input is-large"
                     type="text"
-                    value={$displaySymbol} />
+                    value={$currentStock.ticker} />
                 <span class="icon is-large is-left">
                     <i class="fas fa-magnifying-glass" />
                 </span>
@@ -47,8 +29,8 @@
             <div class="table-container" style="overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
-                        {#each addItems as item}
-                            <AddItem data={item} bind:active />
+                        {#each $stocks as stock}
+                            <AddItem {stock} bind:active />
                         {/each}
                     </tbody>
                 </table>
