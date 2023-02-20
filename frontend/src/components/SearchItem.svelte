@@ -2,17 +2,19 @@
     import type { Stock } from "$lib/types";
     import { currentStock } from "$lib/stores";
 
-    export let data: Stock;
+    export let stock: Stock;
+    export let searchText: string;
     export let active = true;
 
     function click() {
-        currentStock.set(data);
+        currentStock.set(stock);
+        searchText = "";
         active = false;
     }
 </script>
 
 <tr style="cursor: pointer;" on:click={click}>
-    <th class="has-text-left">{data.ticker}</th>
-    <td class="has-text-left">{data.name}</td>
-    <td class="has-text-right">{data.exchange}</td>
+    <th class="has-text-left">{stock.ticker}</th>
+    <td class="has-text-left">{stock.name}</td>
+    <td class="has-text-right">{stock.exchange}</td>
 </tr>

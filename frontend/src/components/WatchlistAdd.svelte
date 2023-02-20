@@ -2,6 +2,20 @@
     import AddItem from "./AddItem.svelte";
     import { currentStock, stocks } from "$lib/stores";
 
+    let text = $currentStock.ticker;
+
+    function matchAny(search: string, options: string[]): boolean {
+        let searchLower = search.toLowerCase();
+        return (
+            options.findIndex((o) => o.toLowerCase().includes(searchLower)) !==
+            -1
+        );
+    }
+
+    $: filteredStocks = $stocks.filter((s) =>
+        matchAny(text, [s.exchange, s.name, s.ticker])
+    );
+
     let active = false;
 </script>
 
@@ -14,13 +28,15 @@
 {#if active}
     <div class="modal is-active">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="modal-background" on:click={() => (active = false)} />
+        <div
+            class="modal-background"
+            on:click={() => {
+                active = false;
+                text = $currentStock.ticker;
+            }} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
-                <input
-                    class="input is-large"
-                    type="text"
-                    value={$currentStock.ticker} />
+                <input class="input is-large" type="text" bind:value={text} />
                 <span class="icon is-large is-left">
                     <i class="fas fa-magnifying-glass" />
                 </span>
@@ -29,8 +45,11 @@
             <div class="table-container" style="overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
-                        {#each $stocks as stock}
-                            <AddItem {stock} bind:active />
+                        {#each filteredStocks as stock}
+                            <AddItem
+                                {stock}
+                                bind:searchText={text}
+                                bind:active />
                         {/each}
                     </tbody>
                 </table>

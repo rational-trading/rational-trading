@@ -3,6 +3,7 @@
     import type { Stock } from "$lib/types";
 
     export let stock: Stock;
+    export let searchText: string;
     export let active = true;
 
     function click() {
@@ -14,6 +15,7 @@
             }
         });
         currentStock.set(stock);
+        searchText = "";
         active = false;
     }
 </script>

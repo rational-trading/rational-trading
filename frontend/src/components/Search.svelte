@@ -42,7 +42,12 @@
 {#if active}
     <div class="modal is-active">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="modal-background" on:click={() => (active = false)} />
+        <div
+            class="modal-background"
+            on:click={() => {
+                active = false;
+                text = "";
+            }} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
                 <input class="input is-large" type="text" bind:value={text} />
@@ -54,8 +59,11 @@
             <div class="table-container" style="overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
-                        {#each filteredStocks as data}
-                            <SearchItem {data} bind:active />
+                        {#each filteredStocks as stock}
+                            <SearchItem
+                                {stock}
+                                bind:searchText={text}
+                                bind:active />
                         {/each}
                     </tbody>
                 </table>
