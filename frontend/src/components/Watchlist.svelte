@@ -5,12 +5,21 @@
 
     export let stock: Stock;
 
-    const newRequest = () => api.price(stock.ticker).recent();
-    let request = newRequest();
+    let last: number;
+    let chg: number;
+    let percentChg: number;
 
-    const last = 100.3;
-    const chg = 1;
-    const percentChg = 0.1;
+    const fetchData = async () => {
+        const response = await api.price(stock.ticker).recent();
+        // TODO: this is the wrong way to calculate the values
+        // need an api endpoint for accessing the prices on the previous market day
+        last = response.close;
+        chg = last - response.open;
+        percentChg = (chg / response.open) * 100;
+        return response;
+    };
+
+    let response = fetchData();
 
     $: color = chg >= 0 ? "success" : "warning";
     $: selected = stock.ticker == $currentStock.ticker;
@@ -20,17 +29,21 @@
     }
 </script>
 
-<tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
-    <th class="has-text-left">{stock.ticker}</th>
-    {#await request}
+{#await response}
+    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+        <th class="has-text-left">{stock.ticker}</th>
         <td class="has-text-right">-</td>
         <td class="has-text-right has-text-{color}">-</td>
         <td class="has-text-right has-text-{color}">-</td>
-    {:then response}
-        <td class="has-text-right">{response.close}</td>
-        <td class="has-text-right has-text-{color}">{chg}</td>
-        <td class="has-text-right has-text-{color}">{percentChg}%</td>
-    {:catch error}
-        <p>{error.message}</p>
-    {/await}
-</tr>
+    </tr>
+{:then}
+    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+        <th class="has-text-left">{stock.ticker}</th>
+        <td class="has-text-right">{last.toFixed(2)}</td>
+        <td class="has-text-right has-text-{color}">{chg.toFixed(2)}</td>
+        <td class="has-text-right has-text-{color}"
+            >{percentChg.toFixed(2)}%</td>
+    </tr>
+{:catch error}
+    <p>{error.message}</p>
+{/await}
