@@ -1,5 +1,6 @@
 import { HelloEndpoint } from "./hello";
 import { MathsEndpoint } from "./maths";
+import { PriceRoute } from "./price";
 
 class Api {
     hello(): HelloEndpoint {
@@ -8,6 +9,10 @@ class Api {
 
     maths(token: string): MathsEndpoint {
         return new MathsEndpoint(token);
+    }
+
+    price(ticker: string): PriceRoute {
+        return new PriceRoute(ticker);
     }
 }
 
