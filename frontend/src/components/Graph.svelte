@@ -3,6 +3,7 @@
         ColorType,
         CrosshairMode,
         type CandlestickData,
+        type UTCTimestamp,
     } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
     import { currentStock } from "$lib/stores";
@@ -13,16 +14,10 @@
 
     const fetchData = async () => {
         const response = await api.price($currentStock.ticker).history();
-        data = response.map(function (price) {
-            return {
-                time: new Date(price.time * 1000).toLocaleString(),
-                open: price.open,
-                low: price.low,
-                high: price.high,
-                close: price.close,
-            };
-        });
-        return response;
+        data = response.map((price) => ({
+            ...price,
+            time: price.time as UTCTimestamp,
+        }));
     };
 
     let request = fetchData();
