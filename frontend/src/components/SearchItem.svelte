@@ -3,13 +3,12 @@
     import { currentStock } from "$lib/stores";
 
     export let stock: Stock;
-    export let searchText: string;
-    export let active = true;
+
+    export let onClick: () => void;
 
     function click() {
         currentStock.set(stock);
-        searchText = "";
-        active = false;
+        onClick();
     }
 </script>
 

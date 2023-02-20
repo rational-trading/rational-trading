@@ -1,18 +1,13 @@
 <script lang="ts">
     import { stocks } from "$lib/stores";
     import SearchItem from "./SearchItem.svelte";
+    import { matchAny } from "$lib/functions";
 
     let text = "";
 
-    function matchAny(search: string, options: string[]): boolean {
-        const searchLower = search.toLowerCase();
-        return (
-            options.findIndex((o) => o.toLowerCase().includes(searchLower)) !==
-            -1
-        );
-    }
-
-    $: filteredStocks = $stocks.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
+    $: filteredStocks = $stocks.filter((s) =>
+        matchAny(text, [s.exchange, s.name, s.ticker])
+    );
 
     let active = false;
 </script>
@@ -64,8 +59,10 @@
                         {#each filteredStocks as stock}
                             <SearchItem
                                 {stock}
-                                bind:searchText={text}
-                                bind:active />
+                                onClick={() => {
+                                    text = "";
+                                    active = false;
+                                }} />
                         {/each}
                     </tbody>
                 </table>

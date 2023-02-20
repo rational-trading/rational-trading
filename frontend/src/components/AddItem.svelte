@@ -3,8 +3,7 @@
     import type { Stock } from "$lib/types";
 
     export let stock: Stock;
-    export let searchText: string;
-    export let active = true;
+    export let onClick: () => void;
 
     function click() {
         watchlist.update((stocks: Stock[]) => {
@@ -14,8 +13,7 @@
             return stocks;
         });
         currentStock.set(stock);
-        searchText = "";
-        active = false;
+        onClick();
     }
 </script>
 
