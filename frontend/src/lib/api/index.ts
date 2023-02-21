@@ -14,6 +14,11 @@ class Api {
     price(ticker: string): PriceRoute {
         return new PriceRoute(ticker);
     }
+
+    pendingRequest<T>() {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return new Promise<T>(() => { });
+    }
 }
 
 const api = new Api();
