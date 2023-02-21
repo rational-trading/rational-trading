@@ -5,7 +5,8 @@ from typing import Dict
 ratios_weights = {
     "current_ratio": 0.5,
     "roic": 0.9,
-    "debt_to_equity": 0.7
+    "debt_to_equity": 0.7,
+    "eps": 0.5
 }
 
 max_score = sum(ratios_weights.values())
@@ -65,15 +66,26 @@ def evaluate_debt_to_equity(value: float) -> float:
     return normaliseValue(value, mapping)
 
 
-def scoring(current_ratio: float, roic: float, debt_to_equity: float) -> float:
+def evaluate_eps(value: float) -> float:
+    # input: value in usd
+    # output: a score between 0 and 1, 0.5 is considered okay
+    if value < 0: return 0
+    elif value > 10: return 1
+    else: return (value / 10)
+
+
+def scoring(current_ratio: float, roic: float, debt_to_equity: float, eps: float) -> float:
     # input: ratios and their values
     # output: a score between 0 and 1
     weighted_scores = [
         evaluate_current_ratio(current_ratio) *
         ratios_weights["current_ratio"],
-        evaluate_roic(roic) * ratios_weights["roic"],
+        evaluate_roic(roic) * 
+        ratios_weights["roic"],
         evaluate_debt_to_equity(debt_to_equity) *
-        ratios_weights["debt_to_equity"]
+        ratios_weights["debt_to_equity"],
+        evaluate_eps(eps) *
+        ratios_weights["eps"]
     ]
     return sum(weighted_scores) / max_score
 
@@ -81,17 +93,26 @@ def scoring(current_ratio: float, roic: float, debt_to_equity: float) -> float:
 if __name__ == "__main__":
 
     # make use of polygon API to get the variable values
+
+    # dividendV3:
+    dividends = 1
+
+    # BS:
     current_assets = 1
     current_liabilities = 1
-    net_income = 1
-    dividends = 1
-    debt = 1
+    liabilities = 1
+    debt = 0.8 * liabilities
     equity = 1
-    total_liabilities = 1
+
+    # IS: 
+    net_income = 1
+    # basic_earnings_per_share in IS:
+    eps = 1
+
     # calculate ratios
     current_ratio = current_assets / current_liabilities
     roic = (net_income - dividends) / (debt + equity)
-    debt_to_equity = total_liabilities / equity
+    debt_to_equity = debt / equity
 
     # use the scoring system
-    print(scoring(current_ratio, roic, debt_to_equity))
+    print(scoring(current_ratio, roic, debt_to_equity, eps))

@@ -6,10 +6,20 @@ https://polygon-api-client.readthedocs.io/en/latest/index.html
 from http.client import HTTPResponse
 from typing import Iterator, Optional
 from polygon import RESTClient
+from polygon.rest.models import Dividend
 from polygon.rest.models import StockFinancial
 from polygon.rest.models import TickerNews
 
 from config.env import env
+
+class TickerDividend():
+    def __init__(self, cash_amount: float) -> None:
+        self.cash_amount = cash_amount
+
+class TickerFinancials():
+    def __init__(self, balance_sheet: str, income_statement: str) -> None:
+        self.balance_sheet = balance_sheet
+        self.income_statement = income_statement
 
 
 class TickerArticle():
@@ -23,10 +33,7 @@ class TickerArticle():
         return (f"TickerArticle Object ({self.title[:20]}...)")
 
 
-class TickerFinancials():
-    def __init__(self) -> None:
-        # Simon: add in relevant fields @Trevor
-        pass
+
 
 
 class PolygonAPI():
@@ -35,10 +42,16 @@ class PolygonAPI():
         POLYGON_API_KEY = env("POLYGON_API_KEY")
         self.client = RESTClient(api_key=POLYGON_API_KEY)
 
+    def get_dividend(self, ticker: str) -> TickerDividend:
+        dividends: Iterator[Dividend] | HTTPResponse = self.client.vx.list_dividends(
+            ticker=ticker, limit=1)
+        f = TickerDividend(dividends.cash_amount)
+        return f
+    
     def get_financials(self, ticker: str) -> TickerFinancials:
         financials: Iterator[StockFinancial] | HTTPResponse = self.client.vx.list_stock_financials(
             ticker=ticker, limit=1, timeframe="annual", include_sources=True)
-        f = TickerFinancials()
+        f = TickerFinancials(financials.balace_sheet, financials.income_statement)
         return f
 
     def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
@@ -67,4 +80,5 @@ if __name__ == "__main__":
     n = api.get_news("AAPL", 1)
     f = api.get_financials("AAPL")
     print(n)
+    print(f)
     print(f)
