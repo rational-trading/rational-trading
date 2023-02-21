@@ -7,14 +7,20 @@ from ninja.security import HttpBearer
 import jwt
 import datetime
 from config.env import env
+from django.conf import settings
 
+from .demo.route import router as demo_router
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
+from .price.route import router as price_router
+
 
 api = NinjaAPI()
 
+api.add_router("/demo/", demo_router)
 api.add_router("/hello/", hello_router)
 api.add_router("/maths/", maths_router)
+api.add_router("/price/", price_router)
 
 
 @api.exception_handler(AuthenticationError)
@@ -75,3 +81,14 @@ def something(request):
     ...
 
 """
+
+
+@api.exception_handler(Exception)
+def exception(request: HttpRequest, e: Exception) -> HttpResponse:
+    print(e)
+    return api.create_response(
+        request,
+        {"error": str(
+            e) if settings.DEBUG else "Something went wrong! Check logs for more details."},
+        status=500
+    )

@@ -5,3 +5,9 @@ export interface Activity {
     price: number;
     status: "Filled" | "Pending" | "Rejected";
 }
+
+export interface Stock {
+    ticker: string;
+    name: string;
+    exchange: string;
+}
