@@ -12,22 +12,23 @@
 
 {#if active}
     <div class="modal is-active">
-        <div class="modal-background" color="" />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div class="modal-background" on:click={() => (active = false)} />
         <div class="modal-content">
             <div class="is-flex is-flex-direction-column">
                 <div class="is-align-self-flex-end">
                     <button
-                        class="delete is-large"
-                        style="background: #D9D9D9"
-                        aria-label="close"
-                        on:click={() => {
-                            active = false;
-                        }} />
+                        class="button is-ghost"
+                        on:click={() => (active = false)}>
+                        <span class="icon is-large">
+                            <i class="fas fa-xmark" />
+                        </span>
+                    </button>
                 </div>
                 <div
-                    class="is-flex is-flex-direction-column pt-4"
+                    class="is-flex is-flex-direction-column pt-3"
                     id="login-contents">
-                    <p class="title is-1 has-text-dark">Log in</p>
+                    <p class="title is-1">Log in</p>
 
                     <div class="field mt-5">
                         <div class="control">
@@ -62,7 +63,7 @@
                     </div>
 
                     <div class="is-align-self-center pt-6">
-                        <p class="has-text-dark">
+                        <p>
                             Don't have an account? Sign up <a
                                 class="link"
                                 href="/">here</a
@@ -79,7 +80,7 @@
     .modal-content {
         width: 31.25em;
         height: 35.5em;
-        background: #d9d9d9;
+        background: #363636;
         border-radius: 7px;
     }
 
