@@ -1,46 +1,50 @@
 <script lang="ts">
-    import NewsPanel from "../../components/NewsPanel.svelte";
-
     import Watchlist from "$components/Watchlist.svelte";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
     import Search from "$components/Search.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
     import News from "$components/News.svelte";
+    import NewsPanel from "$components/NewsPanel.svelte";
 
     import { watchlist, currentStock } from "$lib/stores";
 
     let graphWidth = 0;
     let graphHeight = 0;
 
-    const news = [
+    $: news = [
         {
-            title: "Some Positive News About Apple",
-            source: "Newswires",
-            time: "1 hour ago",
-            positive: true,
-            url: "/",
+            title: "Why one strategist sees a real risk of World War 3.1, whose battleground will be microchips",
+            publisher: "MarketWatch",
+            published_utc: "2023-02-21T11:32:00Z",
+            description:
+                "Peter Tchir, head of macro strategy at Academy Securities, dubs a potential war over semiconductors World War 3.1",
+            url: "https://www.marketwatch.com/story/why-one-strategist-sees-a-real-risk-of-world-war-3-1-whose-battleground-will-be-microchips-8eec0e96",
+            sentiment: true,
         },
         {
-            title: "Some Negative News About Apple",
-            source: "Newswires",
-            time: "2 hours ago",
-            positive: false,
+            title: `Some Negative News About ${$currentStock.name}`,
+            publisher: "Newswires",
+            published_utc: "2023-02-21T10:00:00Z",
+            description: "Some description",
             url: "/",
+            sentiment: false,
         },
         {
-            title: "Some Negative News About Apple",
-            source: "Newswires",
-            time: "3 hours ago",
-            positive: false,
+            title: `Some Negative News About ${$currentStock.name}`,
+            publisher: "Newswires",
+            published_utc: "2023-02-20T18:11:51Z",
+            description: "Some description",
             url: "/",
+            sentiment: false,
         },
         {
-            title: "Some Positive News About Apple",
-            source: "Newswires",
-            time: "5 hours ago",
-            positive: true,
+            title: `Some Positive News About ${$currentStock.name}`,
+            publisher: "Newswires",
+            published_utc: "2023-02-20T13:00:00Z",
+            description: "Some description",
             url: "/",
+            sentiment: true,
         },
     ];
 </script>

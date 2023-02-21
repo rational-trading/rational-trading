@@ -1,25 +1,22 @@
 <script lang="ts">
-    interface News {
-        positive: boolean;
-        source: string;
-        time: string;
-        title: string;
-        url: string;
-    }
+    import type { News } from "$lib/types";
+    import { howLongAgo } from "$lib/functions";
 
     export let data: News;
-
-    const sentiment = data.positive ? "success" : "warning";
+    const color = data.sentiment ? "success" : "warning";
 </script>
 
 <div class="block card">
     <header class="card-header">
-        <a class="card-header-title has-text-{sentiment}" href={data.url}>
-            {data.time} · {data.source}
+        <a class="card-header-title has-text-{color}" href={data.url}>
+            {howLongAgo(data.published_utc)} · {data.publisher}
         </a>
-        <div class="card-header-icon has-text-{sentiment}">
+        <div class="card-header-icon has-text-{color}">
             <span class="icon">
-                <i class="fas fa-arrow-trend-{data.positive ? 'up' : 'down'}" />
+                <i
+                    class="fas fa-arrow-trend-{data.sentiment ?
+                        'up' :
+                        'down'}" />
             </span>
         </div>
     </header>

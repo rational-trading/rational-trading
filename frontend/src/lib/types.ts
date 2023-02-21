@@ -6,6 +6,15 @@ export interface Activity {
     status: "Filled" | "Pending" | "Rejected";
 }
 
+export interface News {
+    title: string;
+    publisher: string;
+    published_utc: string;
+    description: string;
+    url: string;
+    sentiment: boolean;
+}
+
 export interface Stock {
     ticker: string;
     name: string;
