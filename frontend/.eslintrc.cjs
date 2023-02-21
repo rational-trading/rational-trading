@@ -10,6 +10,7 @@ module.exports = {
         "import/no-mutable-exports": "off",
         "import/prefer-default-export": "off",
         "import/extensions": ["error", { ts: "never", svelte: "always" }],
+        "import/no-unresolved": "off",
         quotes: ["error", "double"],
         "no-return-assign": ["error", "except-parens"],
         "class-methods-use-this": "off",
@@ -17,7 +18,7 @@ module.exports = {
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": ["error"],
         "import/first": "off",
-        "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }]
+        "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }],
     },
     settings: {
         // eslint-disable-next-line global-require
@@ -26,7 +27,8 @@ module.exports = {
             "eslint-import-resolver-custom-alias": {
                 alias: {
                     $lib: "./src/lib",
-                    $components: "./src/components"
+                    $components: "./src/components",
+                    $app: "./.svelte-kit/runtime/app"
                 },
                 extensions: [".ts", ".svelte"],
                 packages: [

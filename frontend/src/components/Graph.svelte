@@ -10,7 +10,6 @@
     } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
 
-    // eslint-disable-next-line import/no-unresolved
     import { browser } from "$app/environment";
 
     interface Dimensions {
