@@ -8,19 +8,34 @@ from datetime import datetime, timedelta
 from http.client import HTTPResponse
 from typing import Iterator, List
 from polygon import RESTClient
+
 from polygon.rest.models import Dividend
 from polygon.rest.models import Sort, StockFinancial, TickerNews, Agg
 
 from config.env import env
+from lib.nlp import get_text_score
+from lib.utils import guardNone
+
 
 class TickerDividend():
     def __init__(self, cash_amount: float) -> None:
         self.cash_amount = cash_amount
 
+
+@dataclass
 class TickerFinancials():
-    def __init__(self, balance_sheet: str, income_statement: str) -> None:
-        self.balance_sheet = balance_sheet
-        self.income_statement = income_statement
+
+    # in this class, we provide:
+    # BS:
+    equity: float
+    current_assets: float
+    current_liabilities: float
+    liabilities: float
+
+    # IS:
+    revenues: float
+    # basic_earnings_per_share in IS:
+    basic_earnings_per_share: float
 
 
 class TickerArticle():
@@ -34,7 +49,7 @@ class TickerArticle():
 
     def __repr__(self) -> str:
         return (f"TickerArticle({self.title[:20]}...)")
-    
+
 
 @dataclass
 class TickerPrice():
@@ -64,15 +79,42 @@ class PolygonAPI():
         self.client = RESTClient(api_key=POLYGON_API_KEY)
 
     def get_dividend(self, ticker: str) -> TickerDividend:
-        dividends: Iterator[Dividend] | HTTPResponse = self.client.vx.list_dividends(
+        dividends = self.client.list_dividends(
             ticker=ticker, limit=1)
-        f = TickerDividend(dividends.cash_amount)
+        assert not isinstance(dividends, HTTPResponse)
+
+        cash_amount = next(dividends).cash_amount
+        assert isinstance(cash_amount, float)
+
+        f = TickerDividend(cash_amount)
         return f
-    
+
     def get_financials(self, ticker: str) -> TickerFinancials:
-        financials: Iterator[StockFinancial] | HTTPResponse = self.client.vx.list_stock_financials(
+        financials = self.client.vx.list_stock_financials(
             ticker=ticker, limit=1, timeframe="annual", include_sources=True)
-        f = TickerFinancials(financials.balace_sheet, financials.income_statement)
+        assert not isinstance(financials, HTTPResponse)
+
+        latest = next(financials).financials
+        assert latest is not None
+
+        assert latest.balance_sheet is not None
+        assert latest.income_statement is not None
+
+        f = TickerFinancials(
+            equity=guardNone(
+                latest.balance_sheet["equity"].value),
+            current_assets=guardNone(
+                latest.balance_sheet["current_assets"].value),
+            current_liabilities=guardNone(
+                latest.balance_sheet["current_liabilities"].value),
+            liabilities=guardNone(
+                latest.balance_sheet["liabilities"].value),
+            revenues=guardNone(guardNone(
+                latest.income_statement.revenues).value),
+            basic_earnings_per_share=guardNone(guardNone(
+                latest.income_statement.basic_earnings_per_share).value)
+
+        )
         return f
 
     def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
@@ -137,3 +179,4 @@ if __name__ == "__main__":
     prices = api.price_history("AAPL")
     for p in prices:
         print(f"{p.time} {p.low} {p.high}")
+    print(api.get_financials("AAPL"))
