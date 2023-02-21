@@ -13,7 +13,7 @@ from polygon.rest.models import Sort, StockFinancial, TickerNews, Agg
 from config.env import env
 from lib.nlp import get_text_score
 
-
+import pickle
 class TickerArticle():
     def __init__(self, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
         self.title = title
@@ -145,11 +145,27 @@ class PolygonAPI():
         prices = list(map(TickerPrice.from_agg, aggs))
         return prices
 
+def normalise(articles : list[TickerArticle]) -> list[TickerArticle]:
+        f = open("lib/precomputed_result", "rb")
+        pre = pickle.load(f)
+        f.close()
+        ret = articles.copy()
+
+        for article in ret:
+            if article.score > pre[-1]:
+                article.score = 1
+                break
+            # Naive linear scan
+            for i, rank_score in enumerate(pre):
+                if article.score < rank_score:
+                    article.score = i/len(pre)
+                    break                    
+        return ret
 
 # Testing
 if __name__ == "__main__":
     api = PolygonAPI()
-    news = api.get_news("AAPL", 10)
+    news = normalise(api.get_news("AAPL", 10))
     for n in news:
         print(
             f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")

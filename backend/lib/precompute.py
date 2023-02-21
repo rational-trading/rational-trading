@@ -1,17 +1,22 @@
-from lib.polygon_api import PolygonAPI
+from lib.polygon_api import PolygonAPI, normalise
 
-def main() -> None:
+import pickle
+
+def precompute(N: int = 10) -> list[float]:
     tickers = ["AAPL", "MSFT", "AMZN,", "NVDA", "GOOGL", "TSLA", "BRK.B", "GOOG", "XOM", "UNH", "JNJ", "JPM", "META", "V", "PG", "HD", "MA", "CVX", "MRK", "LLY"]
     p = PolygonAPI()
-    N = 10
     articles = p.get_recent_news(N, tickers)
-    print("By published date:")
-    for a in articles:
-        print(a)
-    articles.sort(key=lambda x: x.score, reverse=True)
-    print("By NLP score:")
-    for a in articles:
-        print(a)
+    articles.sort(key=lambda x: x.score)
+    return list(map(lambda x: x.score, articles))
 
 if __name__ == "__main__":
-    main()
+    pre = precompute(100)
+    with open("lib/precomputed_result", 'wb') as f:
+        pickle.dump(pre, f)
+    print("Precomputed list dumped to file: lib/precomputed_result")
+
+    api = PolygonAPI()
+    news = normalise(api.get_news("AAPL", 10))
+    print("List of TickerArticles, with normalised scores:")
+    for a in news:
+        print(a)
