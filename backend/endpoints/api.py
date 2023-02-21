@@ -65,10 +65,10 @@ def auth(request: HttpBearer, data: UserInput) -> TokenSchema:
 def create_token(username: str) -> str:
 
     JWT_SIGNING_KEY: str = env("JWT_SIGNING_KEY")
-    JWT_ACCESS_EXPIRY = env("JWT_ACCESS_EXPIRY")
+    JWT_ACCESS_EXPIRY: int = env("JWT_ACCESS_EXPIRY")
     to_encode_access = {"sub": username}
     access_expire: str = datetime.datetime.now(
-        datetime.timezone.utc) + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)       # type: ignore
+        datetime.timezone.utc) + datetime.timedelta(minutes=int(JWT_ACCESS_EXPIRY))       # type: ignore
     to_encode_access.update({"exp": access_expire})
     encoded_access_jwt = jwt.encode(
         to_encode_access, JWT_SIGNING_KEY, algorithm="HS256")
