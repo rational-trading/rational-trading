@@ -38,17 +38,22 @@ def validation_error(request: HttpRequest, e: ValidationError) -> HttpResponse:
 
 
 class TokenSchema(Schema):
-
+    code: int
     access_token: str
 
 
-@api.post("/login", auth=None, response={200, TokenSchema})
+class UserInput(Schema):
+    username: str
+    password: str
+
+
+@api.post("/login", auth=None, response=TokenSchema)
 # union
-def auth(request: HttpBearer, username: str, password: str) -> tuple[int, TokenSchema]:
+def auth(request: HttpBearer, data: UserInput) -> tuple[int, TokenSchema]:
     # check username
     # check password
-    token = create_token(username)
-    return 200, TokenSchema(access_token=token)
+    token = create_token(data.username)
+    return TokenSchema(code=200, access_token=token)
 
 
 def create_token(username: str) -> str:
