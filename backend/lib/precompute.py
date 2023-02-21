@@ -1,4 +1,4 @@
-from lib.polygon_api import PolygonAPI, normalise
+from lib.polygon_api import PolygonAPI, normalise_scores
 
 import pickle
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     print("Precomputed list dumped to file: lib/precomputed_result")
 
     api = PolygonAPI()
-    news = normalise(api.get_news("AAPL", 10))
+    news = normalise_scores(api.get_news("AAPL", 10))
     print("List of TickerArticles, with normalised scores:")
     for a in news:
         print(a)
