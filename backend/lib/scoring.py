@@ -4,7 +4,7 @@ from typing import Dict
 # these are the ratios we are gonna use and their weights(0-1)
 ratios_weights = {
     "current_ratio": 0.5,
-    "roic": 0.9,
+    # (cannot use roic becasue of the API) "roic": 0.9,
     "debt_to_equity": 0.7,
     "eps": 0.5
 }
@@ -33,6 +33,8 @@ def evaluate_current_ratio(value: float) -> float:
         float("inf"): 1
     }
     return normaliseValue(value, mapping)
+
+# (cannot use roic becasue of the API)
 
 
 def evaluate_roic(value: float) -> float:
@@ -69,19 +71,24 @@ def evaluate_debt_to_equity(value: float) -> float:
 def evaluate_eps(value: float) -> float:
     # input: value in usd
     # output: a score between 0 and 1, 0.5 is considered okay
-    if value < 0: return 0
-    elif value > 10: return 1
-    else: return (value / 10)
+    if value < 0:
+        return 0
+    elif value > 10:
+        return 1
+    else:
+        return (value / 10)
+
+# (cannot use roic becasue of the API) roic: float,
 
 
-def scoring(current_ratio: float, roic: float, debt_to_equity: float, eps: float) -> float:
+def scoring(current_ratio: float, debt_to_equity: float, eps: float) -> float:
     # input: ratios and their values
     # output: a score between 0 and 1
     weighted_scores = [
         evaluate_current_ratio(current_ratio) *
         ratios_weights["current_ratio"],
-        evaluate_roic(roic) * 
-        ratios_weights["roic"],
+        # (cannot use roic becasue of the API) evaluate_roic(roic) *
+        # (cannot use roic becasue of the API) ratios_weights["roic"],
         evaluate_debt_to_equity(debt_to_equity) *
         ratios_weights["debt_to_equity"],
         evaluate_eps(eps) *
@@ -104,15 +111,16 @@ if __name__ == "__main__":
     debt = 0.8 * liabilities
     equity = 1
 
-    # IS: 
-    net_income = 1
+    # IS:
+    # (cannot use roic becasue of the API) net_income = 1
     # basic_earnings_per_share in IS:
     eps = 1
 
     # calculate ratios
     current_ratio = current_assets / current_liabilities
-    roic = (net_income - dividends) / (debt + equity)
+    # (cannot use roic becasue of the API) roic = (net_income - dividends) / (debt + equity)
     debt_to_equity = debt / equity
 
     # use the scoring system
-    print(scoring(current_ratio, roic, debt_to_equity, eps))
+    # (cannot use roic becasue of the API)
+    print(scoring(current_ratio, debt_to_equity, eps))
