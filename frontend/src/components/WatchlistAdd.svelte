@@ -1,13 +1,11 @@
 <script lang="ts">
     import { currentStock, stocks } from "$lib/stores";
-    import AddItem from "./AddItem.svelte";
     import { matchAny } from "$lib/functions";
+    import AddItem from "./AddItem.svelte";
 
     let text = $currentStock.ticker;
 
-    $: filteredStocks = $stocks.filter((s) =>
-        matchAny(text, [s.exchange, s.name, s.ticker])
-    );
+    $: filteredStocks = $stocks.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>

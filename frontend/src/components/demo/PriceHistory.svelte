@@ -1,6 +1,8 @@
 <script lang="ts">
     import api from "$lib/api";
     import type { TickerPrice } from "$lib/api/price";
+
+    // eslint-disable-next-line import/no-unresolved
     import { browser } from "$app/environment";
 
     let ticker = "AAPL";

@@ -1,4 +1,7 @@
 <script lang="ts">
+    import api from "$lib/api";
+    import { currentStock } from "$lib/stores";
+
     import {
         ColorType,
         CrosshairMode,
@@ -6,8 +9,8 @@
         type UTCTimestamp,
     } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
-    import { currentStock } from "$lib/stores";
-    import api from "$lib/api";
+
+    // eslint-disable-next-line import/no-unresolved
     import { browser } from "$app/environment";
 
     interface Dimensions {

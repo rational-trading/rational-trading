@@ -1,13 +1,12 @@
 <script lang="ts">
-    import Information from "$components/Information.svelte";
-
-    import Search from "$components/Search.svelte";
-
     import Watchlist from "$components/Watchlist.svelte";
-    import News from "$components/News.svelte";
-    import Graph from "$components/Graph.svelte";
-    import { watchlist, currentStock } from "$lib/stores";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
+    import Search from "$components/Search.svelte";
+    import Graph from "$components/Graph.svelte";
+    import Information from "$components/Information.svelte";
+    import News from "$components/News.svelte";
+
+    import { watchlist, currentStock } from "$lib/stores";
 
     let graphWidth = 0;
     let graphHeight = 0;

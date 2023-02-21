@@ -2,6 +2,8 @@
     import api from "$lib/api";
     import { currentStock } from "$lib/stores";
     import type { Stock } from "$lib/types";
+
+    // eslint-disable-next-line import/no-unresolved
     import { browser } from "$app/environment";
 
     export let stock: Stock;
