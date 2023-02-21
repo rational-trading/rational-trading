@@ -56,8 +56,8 @@ def create_token(username: str) -> str:
     JWT_SIGNING_KEY: str = env("JWT_SIGNING_KEY")
     JWT_ACCESS_EXPIRY = env("JWT_ACCESS_EXPIRY")
     to_encode_access = {"sub": username}
-    access_expire = datetime.utcnow(                        # type: ignore
-    ) + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)       # type: ignore
+    access_expire = datetime.datetime.now(
+        datetime.timezone.utc) + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)       # type: ignore
     to_encode_access.update({"exp": access_expire})
     encoded_access_jwt = jwt.encode(
         to_encode_access, JWT_SIGNING_KEY, algorithm="HS256")
