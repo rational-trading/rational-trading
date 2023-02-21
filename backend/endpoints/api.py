@@ -55,7 +55,7 @@ class UserInput(Schema):
 
 @api.post("/login", auth=None, response=TokenSchema)
 # union
-def auth(request: HttpBearer, data: UserInput) -> tuple[int, TokenSchema]:
+def auth(request: HttpBearer, data: UserInput) -> TokenSchema:
     # check username
     # check password
     token = create_token(data.username)
@@ -67,7 +67,7 @@ def create_token(username: str) -> str:
     JWT_SIGNING_KEY: str = env("JWT_SIGNING_KEY")
     JWT_ACCESS_EXPIRY = env("JWT_ACCESS_EXPIRY")
     to_encode_access = {"sub": username}
-    access_expire = datetime.datetime.now(
+    access_expire: str = datetime.datetime.now(
         datetime.timezone.utc) + datetime.timedelta(minutes=JWT_ACCESS_EXPIRY)       # type: ignore
     to_encode_access.update({"exp": access_expire})
     encoded_access_jwt = jwt.encode(
