@@ -1,4 +1,6 @@
 <script lang="ts">
+    import NewsPanel from "../../components/NewsPanel.svelte";
+
     import Watchlist from "$components/Watchlist.svelte";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
     import Search from "$components/Search.svelte";
@@ -134,8 +136,7 @@
                 {/each}
 
                 <div class="block is-flex is-justify-content-center">
-                    <button class="button is-outline is-small is-rounded"
-                        >More news</button>
+                    <NewsPanel />
                 </div>
             </div>
         </div>
