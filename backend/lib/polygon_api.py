@@ -30,7 +30,7 @@ class TickerFinancials():
     equity: float
     current_assets: float
     current_liabilities: float
-    liabilities: float
+    nc_liabilities: float
 
     # IS:
     revenues: float
@@ -107,8 +107,8 @@ class PolygonAPI():
                 latest.balance_sheet["current_assets"].value),
             current_liabilities=guardNone(
                 latest.balance_sheet["current_liabilities"].value),
-            liabilities=guardNone(
-                latest.balance_sheet["liabilities"].value),
+            nc_liabilities=guardNone(
+                latest.balance_sheet["noncurrent_liabilities"].value),
             revenues=guardNone(guardNone(
                 latest.income_statement.revenues).value),
             basic_earnings_per_share=guardNone(guardNone(
@@ -145,6 +145,7 @@ class PolygonAPI():
 
         return articles
 
+
     def recent_price(self, ticker: str) -> TickerPrice:
         # Set quite long, as trading closes on weekends, holidays etc
         from_ = datetime.utcnow() - timedelta(days=7)
@@ -171,12 +172,11 @@ class PolygonAPI():
 # Testing
 if __name__ == "__main__":
     api = PolygonAPI()
-    news = api.get_news("AAPL", 10)
-    for n in news:
-        print(
-            f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
-    print()
-    prices = api.price_history("AAPL")
-    for p in prices:
-        print(f"{p.time} {p.low} {p.high}")
-    print(api.get_financials("AAPL"))
+    # news = api.get_news("AAPL", 10)
+    # for n in news:
+    #    print(
+    #        f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
+    # print()
+    p = list.pop(api.price_history("AAPL"))
+    print(f"{p.time} {p.low} {p.high}")
+    # print(api.get_financials("AAPL"))

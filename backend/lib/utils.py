@@ -1,3 +1,7 @@
+"""
+Define guardNone function to be used in polygon_api.py
+"""
+
 
 from typing import Optional, TypeVar
 
