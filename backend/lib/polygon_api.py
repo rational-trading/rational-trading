@@ -3,17 +3,40 @@ Polygon API class to get stock financials and news articles
 https://polygon.io/docs
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
+import pickle
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from http.client import HTTPResponse
 from typing import Iterator, List
 from polygon import RESTClient
-from polygon.rest.models import Sort, StockFinancial, TickerNews, Agg
+
+from polygon.rest.models import Sort, TickerNews, Agg
 
 from config.env import env
 from lib.nlp import get_text_score
+from lib.utils import guardNone
 
-import pickle
+
+class TickerDividend():
+    def __init__(self, cash_amount: float) -> None:
+        self.cash_amount = cash_amount
+
+
+@dataclass
+class TickerFinancials():
+
+    # in this class, we provide:
+    # BS:
+    equity: float
+    current_assets: float
+    current_liabilities: float
+    nc_liabilities: float
+
+    # IS:
+    revenues: float
+    # basic_earnings_per_share in IS:
+    basic_earnings_per_share: float
+
 
 class TickerArticle():
     def __init__(self, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
@@ -27,12 +50,6 @@ class TickerArticle():
 
     def __repr__(self) -> str:
         return f"{self.score:>6.3f} | {self.date[5:7]}/{self.date[8:10]} {self.date[11:16]} | {self.publisher[:8]:<8}... {self.title[:40]}..."
-
-
-class TickerFinancials():
-    def __init__(self) -> None:
-        # Simon: add in relevant fields @Trevor
-        pass
 
 
 @dataclass
@@ -62,10 +79,43 @@ class PolygonAPI():
         POLYGON_API_KEY = env("POLYGON_API_KEY")
         self.client = RESTClient(api_key=POLYGON_API_KEY)
 
+    def get_dividend(self, ticker: str) -> TickerDividend:
+        dividends = self.client.list_dividends(
+            ticker=ticker, limit=1)
+        assert not isinstance(dividends, HTTPResponse)
+
+        cash_amount = next(dividends).cash_amount
+        assert isinstance(cash_amount, float)
+
+        f = TickerDividend(cash_amount)
+        return f
+
     def get_financials(self, ticker: str) -> TickerFinancials:
-        financials: Iterator[StockFinancial] | HTTPResponse = self.client.vx.list_stock_financials(
+        financials = self.client.vx.list_stock_financials(
             ticker=ticker, limit=1, timeframe="annual", include_sources=True)
-        f = TickerFinancials()
+        assert not isinstance(financials, HTTPResponse)
+
+        latest = next(financials).financials
+        assert latest is not None
+
+        assert latest.balance_sheet is not None
+        assert latest.income_statement is not None
+
+        f = TickerFinancials(
+            equity=guardNone(
+                latest.balance_sheet["equity"].value),
+            current_assets=guardNone(
+                latest.balance_sheet["current_assets"].value),
+            current_liabilities=guardNone(
+                latest.balance_sheet["current_liabilities"].value),
+            nc_liabilities=guardNone(
+                latest.balance_sheet["noncurrent_liabilities"].value),
+            revenues=guardNone(guardNone(
+                latest.income_statement.revenues).value),
+            basic_earnings_per_share=guardNone(guardNone(
+                latest.income_statement.basic_earnings_per_share).value)
+
+        )
         return f
 
     def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
@@ -92,21 +142,22 @@ class PolygonAPI():
             article = TickerArticle(n.title, desc, n.article_url,
                                     n.published_utc, n.publisher.name, n.tickers)
             articles.append(article)
-        
+
         return articles
 
     def get_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
         """
         Gets the N most recent news articles that talk about any of the stocks in tickers
         """
-        news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(sort="published_utc")
+        news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
+            sort="published_utc")
         articles: list[TickerArticle] = []
 
         while len(articles) < N:
             n = news_generator.__next__()
             # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
             assert isinstance(n, TickerNews)
-            
+
             assert n.tickers is not None
             if len(set(n.tickers).intersection(set(tickers))) == 0:
                 continue
@@ -146,29 +197,35 @@ class PolygonAPI():
         prices = list(map(TickerPrice.from_agg, aggs))
         return prices
 
-def normalise_scores(articles : list[TickerArticle]) -> list[TickerArticle]:
-        f = open("lib/precomputed_result", "rb")
-        pre = pickle.load(f)
-        f.close()
-        ret = articles.copy()
 
-        for article in ret:
-            # Naive linear scan
-            for i, rank_score in enumerate(pre):
-                if article.score < rank_score:
-                    article.score = i/len(pre)
-                    break   
-            article.score = 1                 
-        return ret
+def normalise_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
+    f = open("lib/precomputed_result", "rb")
+    pre = pickle.load(f)
+    f.close()
+    ret = articles.copy()
+
+    def rank(article: TickerArticle) -> float:
+        # Normalises a singular article
+        # Naive linear scan
+        for i, rank_score in enumerate(pre):
+            if article.score < rank_score:
+                return i/len(pre)
+        return 1
+
+    for article in ret:
+        article.score = rank(article)
+                        
+    return ret
+
 
 # Testing
 if __name__ == "__main__":
     api = PolygonAPI()
-    news = normalise_scores(api.get_news("AAPL", 10))
-    for n in news:
-        print(
-            f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
-    print()
-    prices = api.price_history("AAPL")
-    for p in prices:
-        print(f"{p.time} {p.low} {p.high}")
+    # news = api.get_news("AAPL", 10)
+    # for n in news:
+    #    print(
+    #        f"{n.score:.2f} || {n.publisher} - {n.title[:40]}... \n\t\t -> {n.url[:40]}...")
+    # print()
+    p = list.pop(api.price_history("AAPL"))
+    print(f"{p.time} {p.low} {p.high}")
+    # print(api.get_financials("AAPL"))
