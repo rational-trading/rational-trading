@@ -4,7 +4,7 @@ from ninja import Router, Schema
 from lib.polygon_api import PolygonAPI
 
 from endpoints.auth import AuthBearer, AuthenticatedRequest
-from models.models import HoldingModel, TradeModel, UserModel
+from models.models import ArticleModel, HoldingModel, TradeModel, UserModel
 
 router = Router(auth=AuthBearer())
 
@@ -47,10 +47,18 @@ class TradeSchema(Schema):
     units: float
     total_cost: float
     time: int
+    text_evidence: str
+    article_evidence: List[str]
 
     @staticmethod
     def from_model(model: TradeModel) -> 'TradeSchema':
-        return TradeSchema(ticker=model.stock.ticker, units=float(model.units), total_cost=float(model.total_cost), time=int(model.time.timestamp()))
+        return TradeSchema(
+            ticker=model.stock.ticker,
+            units=float(model.units),
+            total_cost=float(model.total_cost),
+            time=int(model.time.timestamp()),
+            text_evidence=model.text_evidence,
+            article_evidence=[article.article_id for article in model.article_evidence.all()])
 
 
 @router.get("/trades", response=List[TradeSchema])
