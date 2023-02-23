@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from ninja import Router, Schema
-from django.http.request import HttpRequest
 
-from endpoints.auth import AuthBearer
+from endpoints.auth import AuthBearer, AuthenticatedRequest
 
 router = Router(auth=AuthBearer())
 
@@ -18,10 +17,6 @@ class MathsResponse:
     add: int
     multiply: int
     authenticated_user: str
-
-
-class AuthenticatedRequest(HttpRequest):
-    auth: str
 
 
 @router.get("/{a}and{b}", response=MathsResponseSchema)
