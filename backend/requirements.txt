@@ -10,3 +10,4 @@ django-stubs==1.14.0
 django_stubs_ext==0.7.0
 polygon-api-client==1.7.1
 django-environ==0.9.0
+pyjwt==2.6.0
