@@ -1,10 +1,9 @@
-from dataclasses import dataclass
 from typing import List
 from ninja import Router, Schema
 from lib.polygon_api import PolygonAPI
 
 from endpoints.auth import AuthBearer, AuthenticatedRequest
-from models.models import ArticleModel, HoldingModel, TradeModel, UserModel
+from models.models import HoldingModel, UserModel
 
 router = Router(auth=AuthBearer())
 
@@ -40,4 +39,3 @@ def holdings(request: AuthenticatedRequest) -> List[HoldingSchema]:
     user = UserModel.objects.get(username=request.auth)
     holdings = HoldingModel.objects.filter(user=user)
     return [HoldingSchema.from_model(holding) for holding in holdings]
-
