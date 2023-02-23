@@ -6,7 +6,7 @@ from lib.scoring import get_financial_endpoints
 
 router = Router()
 
-class FinancialsResponse(Schema):
+class FinancialsResponseSchema(Schema):
     price_earning_ratio: float
     earnings_per_share: float
     debt_to_equity: float
