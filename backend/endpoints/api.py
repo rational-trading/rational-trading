@@ -3,6 +3,7 @@ from ninja.errors import AuthenticationError, ValidationError
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from ninja.security import HttpBearer
+from django.contrib.auth.hashers import make_password, check_password
 
 import jwt
 import datetime
@@ -14,6 +15,7 @@ from .hello.route import router as hello_router
 from .maths.route import router as maths_router
 from .price.route import router as price_router
 
+from models.models import UserModel
 
 api = NinjaAPI()
 
@@ -53,13 +55,34 @@ class UserInput(Schema):
     password: str
 
 
+class SignupSuccess(Schema):
+    success: bool
+
+
+@api.post("/signup", auth=None)
+def createAccount(request: HttpBearer, data: UserInput) -> SignupSuccess:
+
+    try:
+        UserModel.objects.get(username=data.username)
+        return SignupSuccess(success=False)
+    except UserModel.DoesNotExist:
+        UserModel.create_typed(
+            username=data.username, password=make_password(data.password), balance=0.)
+        return SignupSuccess(success=True)
+
+
 @api.post("/login", auth=None, response=TokenSchema)
 # union
 def auth(request: HttpBearer, data: UserInput) -> TokenSchema:
     # check username
     # check password
-    token = create_token(data.username)
-    return TokenSchema(code=200, access_token=token)
+    pwdHash = UserModel.objects.get(username=data.username).password
+    if (check_password(data.password, pwdHash)):
+
+        token = create_token(data.username)
+        return TokenSchema(code=200, access_token=token)
+    else:
+        return TokenSchema(code=401, access_token=None)
 
 
 def create_token(username: str) -> str:
