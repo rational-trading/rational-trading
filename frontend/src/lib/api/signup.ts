@@ -1,15 +1,15 @@
 import { post } from "../request";
 import type { TokenSchema } from "../types";
 
-interface LoginRequest {
+interface SignupRequest {
     username: string;
     password: string;
 }
 
-class LoginEndpoint {
+class SignupEndpoint {
     async post(username: string, password: string): Promise<string> {
-        return (await post<LoginRequest, TokenSchema>({ endpoint: "/login", data: { username, password } })).access_token;
+        return (await post<SignupRequest, TokenSchema>({ endpoint: "/signup", data: { username, password } })).access_token;
     }
 }
 
-export { LoginEndpoint };
+export { SignupEndpoint };
