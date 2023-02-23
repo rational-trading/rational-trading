@@ -1,5 +1,6 @@
 <script lang="ts">
   import api from "$lib/api";
+  import { authenticated } from "$lib/stores";
 
   let active = false;
 
@@ -12,8 +13,11 @@
       if (password != confirmPassword)
         throw new Error("Passwords have to match!");
       let jwt_token = await api.signup().post(username, password);
+      authenticated.set(true);
+      localStorage.setItem("access_token", jwt_token);
     } catch (error: any) {
       alert(error.message);
+      authenticated.set(false);
     }
   }
 </script>
