@@ -46,7 +46,6 @@ def validation_error(request: HttpRequest, e: ValidationError) -> HttpResponse:
 
 
 class TokenSchema(Schema):
-    code: int
     access_token: str
 
 
@@ -80,9 +79,9 @@ def auth(request: HttpBearer, data: UserInput) -> TokenSchema:
     if (check_password(data.password, pwdHash)):
 
         token = create_token(data.username)
-        return TokenSchema(code=200, access_token=token)
+        return TokenSchema(access_token=token)
     else:
-        return TokenSchema(code=401, access_token=None)
+        raise AuthenticationError()
 
 
 def create_token(username: str) -> str:
