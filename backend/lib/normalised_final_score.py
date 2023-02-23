@@ -24,8 +24,5 @@ def final_scoring(ticker: str) -> float:
     N = 20  # Number of news articles to base NLP score off
     nlp_score = sum(
         map(lambda x: x.score, normalise_scores(api.get_news(ticker, N))))/N
-    print(nlp_score)
     return 0.5 * numerical_score + 0.5 * nlp_score
 
-
-print(final_scoring("AAPL"))
