@@ -16,11 +16,11 @@ and activate the ratios we cannot use now.
 """
 
 
-
 from typing import Dict
 
 from lib.polygon_api import PolygonAPI
 
+# ————————————————————————————————————————————————————————————————
 
 # these are the ratios we are gonna use and their weights(0-1)
 ratios_weights = {
@@ -38,6 +38,9 @@ def normaliseValue(value: float, mapping: Dict[float, float]) -> float:
     keysGreaterThanValue = filter(
         lambda k: k > value, mapping.keys())
     return mapping[min(keysGreaterThanValue)]
+
+# ————————————————————————————————————————————————————————————————
+
 
 def evaluate_equity_risk(value: float) -> float:
     # input: equity
@@ -72,7 +75,6 @@ def evaluate_current_ratio(value: float) -> float:
 
 
 # (cannot use roic becasue of the API)
-
 def evaluate_roic(value: float) -> float:
     # input: ratio value
     # output: a score between 0 and 1, 0.5 is considered okay
@@ -122,7 +124,10 @@ def evaluate_pe(value: float) -> float:
     }
     return normaliseValue(value, mapping)
 
+# ————————————————————————————————————————————————————————————————
+
 # (cannot use roic becasue of the API) roic: float,
+
 
 def scoring(current_ratio: float, debt_to_equity: float, pe: float, equity: float) -> float:
     # input: ratios and their values
@@ -141,17 +146,19 @@ def scoring(current_ratio: float, debt_to_equity: float, pe: float, equity: floa
     ]
     return sum(weighted_scores) / max_score
 
+# ————————————————————————————————————————————————————————————————
+
 
 def numerical_scoring(ticker: str) -> float:
 
     # make use of polygon API to get the variable values
     api = PolygonAPI()
-    
+
     # dividendV3: (this is the most recent dividend, not for a year, but won't be used for now)
     # dividends = api.get_dividend(ticker).cash_amount
 
     price = list.pop(api.price_history(ticker)).high
-    
+
     # BS:
     financials = api.get_financials(ticker)
     current_assets = financials.current_assets
@@ -160,24 +167,22 @@ def numerical_scoring(ticker: str) -> float:
     # estimation to be replaced:
     debt = 0.6 * nc_liabilities
     equity = financials.equity
-    
+
     # IS:
     # (cannot use roic becasue of the API) net_income = 1
     # basic_earnings_per_share in IS:
     eps = financials.basic_earnings_per_share
-    
 
     # calculate ratios
     current_ratio = current_assets / current_liabilities
-    
+
     # (cannot use roic becasue of the API) roic = (net_income - dividends) / (debt + equity)
     debt_to_equity = debt / equity
     pe = price / eps
-    
+
     # use the scoring system
     # (cannot use roic becasue of the API)
     return scoring(current_ratio, debt_to_equity, pe, equity)
-
 
 
 # numerical_scoring("AAPL")
