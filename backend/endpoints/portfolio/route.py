@@ -41,29 +41,3 @@ def holdings(request: AuthenticatedRequest) -> List[HoldingSchema]:
     holdings = HoldingModel.objects.filter(user=user)
     return [HoldingSchema.from_model(holding) for holding in holdings]
 
-
-class TradeSchema(Schema):
-    ticker: str
-    units: float
-    total_cost: float
-    time: int
-    text_evidence: str
-    article_evidence: List[str]
-
-    @staticmethod
-    def from_model(model: TradeModel) -> 'TradeSchema':
-        return TradeSchema(
-            ticker=model.stock.ticker,
-            units=float(model.units),
-            total_cost=float(model.total_cost),
-            time=int(model.time.timestamp()),
-            text_evidence=model.text_evidence,
-            article_evidence=[article.article_id for article in model.article_evidence.all()])
-
-
-@router.get("/trades", response=List[TradeSchema])
-def trades(request: AuthenticatedRequest) -> List[TradeSchema]:
-    user = UserModel.objects.get(username=request.auth)
-    trades = TradeModel.objects.filter(user=user)
-
-    return [TradeSchema.from_model(trade) for trade in trades]
