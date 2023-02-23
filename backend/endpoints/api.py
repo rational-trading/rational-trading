@@ -15,6 +15,7 @@ from .hello.route import router as hello_router
 from .maths.route import router as maths_router
 from .price.route import router as price_router
 from .portfolio.route import router as portfolio_router
+from .financials.route import router as financials_router
 
 from models.models import UserModel
 
@@ -25,6 +26,7 @@ api.add_router("/hello/", hello_router)
 api.add_router("/maths/", maths_router)
 api.add_router("/price/", price_router)
 api.add_router("/portfolio/", portfolio_router)
+api.add_router("/financials/", financials_router)
 
 
 @api.exception_handler(AuthenticationError)
