@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from ninja import Router, Schema
 from django.http.request import HttpRequest
-
 from endpoints.auth import AuthBearer
 
 from lib.polygon_api import PolygonAPI, TickerArticle
