@@ -27,7 +27,7 @@ def main() -> None:
     for t in tickers50:
         print(count)
         print(score_list)
-        score = lib.scoring.numerical_scoring(t)
+        score = lib.scoring.get_financial_endpoints(t)["score"]
         score_list.append(round(score, 3))
         count += 1
 

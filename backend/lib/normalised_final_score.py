@@ -7,7 +7,7 @@ from lib.polygon_api import PolygonAPI, normalise_scores
 
 
 def normalised_numerical_scoring(ticker: str, numerical_pre_results: List[float]) -> float:
-    result = lib.scoring.numerical_scoring(ticker)
+    result = lib.scoring.get_financial_endpoints(ticker)["score"]
     score = 0.
     for x in numerical_pre_results:
         if result > x:
@@ -24,4 +24,3 @@ def final_scoring(ticker: str) -> float:
     nlp_score = sum(
         map(lambda x: x.score, normalise_scores(api.get_news(ticker, N))))/N
     return 0.5 * numerical_score + 0.5 * nlp_score
-
