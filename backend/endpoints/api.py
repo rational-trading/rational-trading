@@ -71,16 +71,16 @@ def createAccount(request: HttpBearer, data: UserInput) -> TokenSchema:
 
 
 @api.post("/login", auth=None, response=TokenSchema)
-# union
 def auth(request: HttpBearer, data: UserInput) -> TokenSchema:
-    # check username
-    # check password
-    pwdHash = UserModel.objects.get(username=data.username).password
-    if (check_password(data.password, pwdHash)):
+    try:
+        pwdHash = UserModel.objects.get(username=data.username).password
+        if (check_password(data.password, pwdHash)):
 
-        token = create_token(data.username)
-        return TokenSchema(access_token=token)
-    else:
+            token = create_token(data.username)
+            return TokenSchema(access_token=token)
+        else:
+            raise AuthenticationError()
+    except UserModel.DoesNotExist:
         raise AuthenticationError()
 
 

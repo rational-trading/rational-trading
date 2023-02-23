@@ -1,8 +1,13 @@
 import { HelloEndpoint } from "./hello";
 import { MathsEndpoint } from "./maths";
 import { PriceRoute } from "./price";
+import { LoginEndpoint } from "./login";
 
 class Api {
+    login(): LoginEndpoint {
+        return new LoginEndpoint();
+    }
+
     hello(): HelloEndpoint {
         return new HelloEndpoint();
     }
