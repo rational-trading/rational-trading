@@ -18,7 +18,6 @@ def normalised_numerical_scoring(ticker: str, numerical_pre_results: List[float]
 def final_scoring(ticker: str) -> float:
     numerical_score = normalised_numerical_scoring(
         ticker, lib.numerical_precompute.numerical_results)
-    # @Simon
     api = PolygonAPI()
 
     N = 20  # Number of news articles to base NLP score off
