@@ -14,14 +14,6 @@ class AuthenticatedRequest(HttpRequest):
     auth: str
 
 
-class PriceSchema(Schema):
-    time: int
-    open: float
-    low: float
-    high: float
-    close: float
-
-
 class WhoamiSchema(Schema):
     username: str
 
@@ -68,23 +60,3 @@ def watchlist(request: AuthenticatedRequest) -> WatchListSchema:
     items = WatchlistModel.objects.filter(user=request.auth)
     stockList = [i.stock.ticker for i in items]
     return WatchListSchema(tickers=stockList)
-
-
-"""
-@router.get("/watchlist", response=WatchListSchema)
-@router.get("/watchlist-t", response=TickersSchema)
-@router.get("/watchlist/add")
-@router.get("/watchlist/remove")
-@router.get("/recent", response=PriceSchema)
-def recent_price(request: HttpRequest, ticker: str) -> TickerPrice:
-    api = PolygonAPI()
-    price = api.recent_price(ticker)
-    return price
-
-
-@router.get("/history", response=List[PriceSchema])
-def price_history(request: HttpRequest, ticker: str) -> List[TickerPrice]:
-    api = PolygonAPI()
-    prices = api.price_history(ticker)
-    return prices
-"""
