@@ -3,14 +3,14 @@ Polygon API class to get stock financials and news articles
 https://polygon.io/docs
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
+import pickle
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from http.client import HTTPResponse
 from typing import Iterator, List
 from polygon import RESTClient
 
-from polygon.rest.models import Dividend
-from polygon.rest.models import Sort, StockFinancial, TickerNews, Agg
+from polygon.rest.models import Sort, TickerNews, Agg
 
 from config.env import env
 from lib.nlp import get_text_score
@@ -37,7 +37,6 @@ class TickerFinancials():
     # basic_earnings_per_share in IS:
     basic_earnings_per_share: float
 
-import pickle
 
 class TickerArticle():
     def __init__(self, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
@@ -143,21 +142,22 @@ class PolygonAPI():
             article = TickerArticle(n.title, desc, n.article_url,
                                     n.published_utc, n.publisher.name, n.tickers)
             articles.append(article)
-        
+
         return articles
 
     def get_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
         """
         Gets the N most recent news articles that talk about any of the stocks in tickers
         """
-        news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(sort="published_utc")
+        news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
+            sort="published_utc")
         articles: list[TickerArticle] = []
 
         while len(articles) < N:
             n = news_generator.__next__()
             # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
             assert isinstance(n, TickerNews)
-            
+
             assert n.tickers is not None
             if len(set(n.tickers).intersection(set(tickers))) == 0:
                 continue
@@ -174,7 +174,6 @@ class PolygonAPI():
 
             print(f"{len(articles)} articles collected.")
         return articles
-
 
     def recent_price(self, ticker: str) -> TickerPrice:
         # Set quite long, as trading closes on weekends, holidays etc
@@ -198,20 +197,22 @@ class PolygonAPI():
         prices = list(map(TickerPrice.from_agg, aggs))
         return prices
 
-def normalise_scores(articles : list[TickerArticle]) -> list[TickerArticle]:
-        f = open("lib/precomputed_result", "rb")
-        pre = pickle.load(f)
-        f.close()
-        ret = articles.copy()
 
-        for article in ret:
-            # Naive linear scan
-            for i, rank_score in enumerate(pre):
-                if article.score < rank_score:
-                    article.score = i/len(pre)
-                    break   
-            article.score = 1                 
-        return ret
+def normalise_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
+    f = open("lib/precomputed_result", "rb")
+    pre = pickle.load(f)
+    f.close()
+    ret = articles.copy()
+
+    for article in ret:
+        # Naive linear scan
+        for i, rank_score in enumerate(pre):
+            if article.score < rank_score:
+                article.score = i/len(pre)
+                break
+        article.score = 1
+    return ret
+
 
 # Testing
 if __name__ == "__main__":
