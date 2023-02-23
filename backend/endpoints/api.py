@@ -59,15 +59,15 @@ class SignupSuccess(Schema):
 
 
 @api.post("/signup", auth=None)
-def createAccount(request: HttpBearer, data: UserInput) -> SignupSuccess:
+def createAccount(request: HttpBearer, data: UserInput) -> TokenSchema:
 
     try:
         UserModel.objects.get(username=data.username)
-        return SignupSuccess(success=False)
+        raise AuthenticationError("Username has been taken.")
     except UserModel.DoesNotExist:
         UserModel.create_typed(
             username=data.username, password=make_password(data.password), balance=0.)
-        return SignupSuccess(success=True)
+        return TokenSchema(access_token=create_token(data.username))
 
 
 @api.post("/login", auth=None, response=TokenSchema)
