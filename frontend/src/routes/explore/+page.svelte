@@ -1,33 +1,16 @@
 <script lang="ts">
     import Watchlist from "$components/Watchlist.svelte";
+    import WatchlistAdd from "$components/WatchlistAdd.svelte";
+    import Search from "$components/Search.svelte";
+    import Graph from "$components/Graph.svelte";
+    import Information from "$components/Information.svelte";
     import News from "$components/News.svelte";
 
-    const watchlist = [
-        {
-            symbol: "AAPL",
-            last: 151.66,
-            chg: -2.99,
-            percentChg: -1.93,
-        },
-        {
-            symbol: "TSLA",
-            last: 199.68,
-            chg: 2.87,
-            percentChg: 1.45,
-        },
-        {
-            symbol: "NFLX",
-            last: 361.54,
-            chg: -1.41,
-            percentChg: -0.39,
-        },
-        {
-            symbol: "NKE",
-            last: 122.91,
-            chg: -2.42,
-            percentChg: -1.93,
-        },
-    ];
+    import { watchlist, currentStock } from "$lib/stores";
+
+    let graphWidth = 0;
+    let graphHeight = 0;
+
     const news = [
         {
             title: "Some Positive News About Apple",
@@ -63,7 +46,8 @@
 <!-- this fixes the issue of weird extra space to the right of the page -->
 <div
     class="columns my-0"
-    style="width: calc(100vw + 12px); height: calc(100vh - 56px);">
+    style="width: calc(100vw + 12px); height: calc(100vh - 53px);">
+    <!-- watchlist column -->
     <div class="column is-one-quarter has-background-grey-darker px-0">
         <nav class="level ml-5 mr-4 mt-2 mb-0">
             <div class="level-left">
@@ -74,9 +58,7 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    <span class="icon">
-                        <a href="/"><i class="fas fa-plus" /></a>
-                    </span>
+                    <WatchlistAdd />
                 </div>
             </div>
         </nav>
@@ -96,8 +78,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#each watchlist as item}
-                            <Watchlist data={item} />
+                        {#each $watchlist as stock}
+                            <Watchlist {stock} />
                         {/each}
                     </tbody>
                 </table>
@@ -105,51 +87,46 @@
         </div>
     </div>
 
-    <div class="column" style="height: calc(100vh - 56px); overflow: auto;">
-        <nav class="level mx-2">
+    <!-- graph column -->
+    <div class="column is-one-half" style="height: 100%;">
+        <!-- graph side header bar -->
+        <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
                 <div class="level-item">
-                    <h1 class="subtitle is-5">Apple Inc.</h1>
+                    <h1 class="subtitle is-5">{$currentStock.name}</h1>
                 </div>
                 <div class="level-item">
                     <h1 class="subtitle is-5">•</h1>
                 </div>
                 <div class="level-item">
-                    <h1 class="subtitle is-5">NASDAQ</h1>
+                    <h1 class="subtitle is-5">{$currentStock.exchange}</h1>
                 </div>
             </div>
 
-            <div class="level-right">
-                <div class="level-item">
-                    <span class="icon">
-                        <a href="/"><i class="fas fa-magnifying-glass" /></a>
-                    </span>
+            <div class="level-right" style="width: 50%">
+                <div class="level-item mr-3" style="width: 100%">
+                    <Search />
                 </div>
             </div>
         </nav>
+
+        <!-- the graph itself -->
         <div
-            class="block mx-2"
-            style="height: 50vh; display: flex; justify-content: center; align-items: center;">
-            Graph
+            style="height: 50vh; display: flex; justify-content: center; align-items: center;"
+            bind:clientWidth={graphWidth}
+            bind:clientHeight={graphHeight}>
+            <Graph dimensions={{ width: graphWidth, height: graphHeight }} />
         </div>
 
-        <div class="tabs">
-            <ul>
-                <li class="is-active">
-                    <a href="/">Key Stats</a>
-                </li>
-                <li><a href="/">Finances</a></li>
-            </ul>
-        </div>
-
-        <div class="block mx-2">
-            <h1 class="title is-5">Key Stats</h1>
-            <p>Here is some text.</p>
-        </div>
+        <!-- information tab -->
+        <Information />
     </div>
 
-    <div class="column is-one-quarter has-background-grey-darker p-5">
-        <div style="height: calc(100vh - 56px - 10rem); overflow: auto;">
+    <!-- news column -->
+    <div
+        class="column is-one-quarter mt-2"
+        style="border-left: 1px solid #4a4a4a;">
+        <div style="height: calc(100vh - 53px - 10rem); overflow: auto;">
             <div class="block">
                 <h1 class="title is-5">News</h1>
                 {#each news as item}
@@ -157,12 +134,12 @@
                 {/each}
 
                 <div class="block is-flex is-justify-content-center">
-                    <button class="button is-dark is-small is-rounded"
+                    <button class="button is-outline is-small is-rounded"
                         >More news</button>
                 </div>
             </div>
         </div>
-        <hr style="background: #4a4a4a;" />
+        <hr style="background: #4a4a4a; height: 1px" />
         <div class="block is-flex is-justify-content-center">
             <button class="button is-medium is-info">
                 <strong>Make a Rational Trade</strong>

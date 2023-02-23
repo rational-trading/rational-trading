@@ -37,15 +37,17 @@ class TickerFinancials():
     # basic_earnings_per_share in IS:
     basic_earnings_per_share: float
 
+import pickle
 
 class TickerArticle():
-    def __init__(self, title: str, description: str, url: str, date: str, publisher: str) -> None:
+    def __init__(self, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
         self.title = title
         self.description = description
         self.url = url
         self.date = date
         self.publisher = publisher
         self.score = get_text_score(" ".join([title, description]))
+        self.tickers = tickers
 
     def __repr__(self) -> str:
         return (f"TickerArticle({self.title[:20]}...)")
@@ -133,16 +135,44 @@ class PolygonAPI():
             assert isinstance(n.title, str)
             assert isinstance(n.article_url, str)
             assert isinstance(n.published_utc, str)
-
             desc = n.description if n.description else ""
+            assert n.publisher is not None
+            assert isinstance(n.publisher.name, str)
+            assert n.tickers is not None
 
+            article = TickerArticle(n.title, desc, n.article_url,
+                                    n.published_utc, n.publisher.name, n.tickers)
+            articles.append(article)
+        
+        return articles
+
+    def get_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
+        """
+        Gets the N most recent news articles that talk about any of the stocks in tickers
+        """
+        news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(sort="published_utc")
+        articles: list[TickerArticle] = []
+
+        while len(articles) < N:
+            n = news_generator.__next__()
+            # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
+            assert isinstance(n, TickerNews)
+            
+            assert n.tickers is not None
+            if len(set(n.tickers).intersection(set(tickers))) == 0:
+                continue
+            assert isinstance(n.title, str)
+            assert isinstance(n.article_url, str)
+            assert isinstance(n.published_utc, str)
+            desc = n.description if n.description else ""
             assert n.publisher is not None
             assert isinstance(n.publisher.name, str)
 
             article = TickerArticle(n.title, desc, n.article_url,
-                                    n.published_utc, n.publisher.name)
+                                    n.published_utc, n.publisher.name, n.tickers)
             articles.append(article)
 
+            print(f"{len(articles)} articles collected.")
         return articles
 
 
@@ -168,6 +198,20 @@ class PolygonAPI():
         prices = list(map(TickerPrice.from_agg, aggs))
         return prices
 
+def normalise_scores(articles : list[TickerArticle]) -> list[TickerArticle]:
+        f = open("lib/precomputed_result", "rb")
+        pre = pickle.load(f)
+        f.close()
+        ret = articles.copy()
+
+        for article in ret:
+            # Naive linear scan
+            for i, rank_score in enumerate(pre):
+                if article.score < rank_score:
+                    article.score = i/len(pre)
+                    break   
+            article.score = 1                 
+        return ret
 
 # Testing
 if __name__ == "__main__":

@@ -6,14 +6,14 @@
 
     let ticker = "AAPL";
 
-    let request = api.pendingRequest<TickerPrice[]>();
+    let request = api.pendingRequest<TickerPrice>();
 
-    const newRequest = () => api.price(ticker).history();
+    const newRequest = () => api.price(ticker).recent();
 
     $: if (browser) request = newRequest();
 </script>
 
-<h3 class="title is-3">Price History</h3>
+<h3 class="title is-3">Price Recent</h3>
 <p>
     <input class="input" bind:value={ticker} placeholder="Ticker" />
 </p>
@@ -26,15 +26,13 @@
 {#await request}
     <p>Waiting...</p>
 {:then response}
-    {#each response as price}
-        <div class="box has-background-grey">
-            <p>Time: {new Date(price.time * 1000).toLocaleString()}</p>
-            <p>Open: {price.open}</p>
-            <p>Low: {price.low}</p>
-            <p>High: {price.high}</p>
-            <p>Close: {price.close}</p>
-        </div>
-    {/each}
+    <div class="box has-background-grey">
+        <p>Time: {new Date(response.time * 1000).toLocaleString()}</p>
+        <p>Open: {response.open}</p>
+        <p>Low: {response.low}</p>
+        <p>High: {response.high}</p>
+        <p>Close: {response.close}</p>
+    </div>
 {:catch error}
     <p>{error.message}</p>
 {/await}
