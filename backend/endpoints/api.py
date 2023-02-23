@@ -1,16 +1,10 @@
-from ninja import NinjaAPI, Schema
+from ninja import NinjaAPI
 from ninja.errors import AuthenticationError, ValidationError
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
-from ninja.security import HttpBearer
-from django.contrib.auth.hashers import make_password, check_password
-
-import jwt
-import datetime
-from config.env import env
 from django.conf import settings
 
-from endpoints.error import FriendlyException
+from endpoints.error import FriendlyClientException, FriendlyInternalException
 
 from .auth.route import router as auth_router
 from .price.route import router as price_router
@@ -47,8 +41,19 @@ def validation_error(request: HttpRequest, e: ValidationError) -> HttpResponse:
     )
 
 
-@api.exception_handler(FriendlyException)
-def friendly_exception(request: HttpRequest, e: FriendlyException) -> HttpResponse:
+@api.exception_handler(FriendlyClientException)
+def friendly_client_exception(request: HttpRequest, e: FriendlyClientException) -> HttpResponse:
+    return api.create_response(
+        request,
+        {
+            "error": str(e)
+        },
+        status=400
+    )
+
+
+@api.exception_handler(FriendlyInternalException)
+def friendly_internal_exception(request: HttpRequest, e: FriendlyInternalException) -> HttpResponse:
     return api.create_response(
         request,
         {

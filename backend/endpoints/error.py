@@ -5,5 +5,9 @@ class ErrorResponse(Schema):
     error: str
 
 
-class FriendlyException(Exception):
+class FriendlyClientException(Exception):
+    pass
+
+
+class FriendlyInternalException(Exception):
     pass
