@@ -12,16 +12,11 @@ from django.conf import settings
 
 from endpoints.error import FriendlyException
 
-from .demo.route import router as demo_router
-from .hello.route import router as hello_router
 from .auth.route import router as auth_router
-from .maths.route import router as maths_router
 from .price.route import router as price_router
 from .portfolio.route import router as portfolio_router
 from .financials.route import router as financials_router
 from .trades.route import router as trades_router
-
-from models.models import UserModel
 
 api = NinjaAPI()
 
