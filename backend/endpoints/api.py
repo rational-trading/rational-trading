@@ -10,6 +10,8 @@ import datetime
 from config.env import env
 from django.conf import settings
 
+from endpoints.error import FriendlyException
+
 from .demo.route import router as demo_router
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
@@ -105,6 +107,17 @@ def something(request):
     ...
 
 """
+
+
+@api.exception_handler(FriendlyException)
+def friendly_exception(request: HttpRequest, e: FriendlyException) -> HttpResponse:
+    return api.create_response(
+        request,
+        {
+            "error": str(e)
+        },
+        status=500
+    )
 
 
 @api.exception_handler(Exception)

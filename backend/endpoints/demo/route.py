@@ -2,6 +2,7 @@ from ninja import Router, Schema
 from django.http.request import HttpRequest
 from django.utils import timezone
 from django.db import transaction
+from endpoints.error import FriendlyException
 
 from models.models import ArticleModel, StockModel, TradeModel, UserModel
 
@@ -25,6 +26,6 @@ def demo_post(request: HttpRequest, data: DemoRequest) -> str:
     TradeModel.create_typed(user=user, stock=apple, units=10, total_cost=2, time=timezone.now(),
                             text_evidence="here", article_evidence=[article])
     if data.test_abort:
-        raise Exception(
+        raise FriendlyException(
             "Something went wrong! The @transaction.atomic decorator means all above changes will be rolled back.")
     return "Success!"

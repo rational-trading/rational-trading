@@ -74,7 +74,7 @@ class TradeModel(Model):  # type: ignore
     total_cost = models.DecimalField(max_digits=11, decimal_places=2)
     time = models.DateTimeField()
     text_evidence = models.TextField()
-    article_evidence = models.ManyToManyField(ArticleModel)
+    article_evidence = models.ManyToManyField(ArticleModel, blank=True)
 
     @staticmethod
     def create_typed(user: UserModel, stock: StockModel, units: float, total_cost: float, time: datetime, text_evidence: str, article_evidence: List[ArticleModel]) -> 'TradeModel':
