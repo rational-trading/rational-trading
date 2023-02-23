@@ -3,29 +3,38 @@ from ninja import Router, Schema
 from django.http.request import HttpRequest
 from endpoints.auth import AuthBearer
 
-from lib.polygon_api import PolygonAPI, TickerArticle
+from lib.polygon_api import PolygonAPI, normalise_scores
 
 router = Router(auth=AuthBearer())
 
-class NewsResponseSchema(Schema):
-    news: list[TickerArticle]
-    authenticated_user: str
+@dataclass
+class TickerArticleDataclass:
+    title: str
+    description: str
+    url: str
+    date: str
+    publisher: str
+    score: float
+    tickers: list[str]
 
 @dataclass
 class NewsResponse:
-    news: list[TickerArticle]
+    news: list[TickerArticleDataclass]
     authenticated_user: str
 
 class AuthenticatedRequest(HttpRequest):
     auth: str
 
-@router.get("/news/}", response=NewsResponseSchema)
-def news(request: AuthenticatedRequest, ticker: str = "AAPL", n=20) -> NewsResponse:
+@router.get("/news/", response=NewsResponse)
+def news(request: AuthenticatedRequest, ticker: str, n=20) -> NewsResponse:
     """
     /news/ticker=?n=? 
     Gets the n most recent articles about ticker, as a list of TickerArticles
     """
     api = PolygonAPI()
-    news = api.get_news(ticker, n)
-    return NewsResponse(news=news, authenticated_user=request.auth)
+    news = normalise_scores(api.get_news(ticker, n))
+    response = []
+    for n in news:
+        response.append(TickerArticleDataclass(n.title, n.description, n.url, n.date, n.publisher, n.score, n.tickers))
+    return NewsResponse(news=response, authenticated_user=request.auth)
 
