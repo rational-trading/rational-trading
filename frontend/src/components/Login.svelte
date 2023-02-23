@@ -44,7 +44,6 @@
             <div class="control">
               <input
                 class="input"
-                type="username"
                 placeholder="Username"
                 bind:value={username}
               />
