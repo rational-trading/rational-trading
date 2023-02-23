@@ -204,13 +204,17 @@ def normalise_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
     f.close()
     ret = articles.copy()
 
-    for article in ret:
+    def rank(article: TickerArticle) -> float:
+        # Normalises a singular article
         # Naive linear scan
         for i, rank_score in enumerate(pre):
             if article.score < rank_score:
-                article.score = i/len(pre)
-                break
-        article.score = 1
+                return i/len(pre)
+        return 1
+
+    for article in ret:
+        article.score = rank(article)
+                        
     return ret
 
 
