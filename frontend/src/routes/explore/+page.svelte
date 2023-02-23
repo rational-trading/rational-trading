@@ -6,11 +6,18 @@
     import Information from "$components/Information.svelte";
     import News from "$components/News.svelte";
     import NewsPanel from "$components/NewsPanel.svelte";
+    import TradePanel from "$components/TradePanel.svelte";
 
     import { watchlist, currentStock } from "$lib/stores";
 
     let graphWidth = 0;
     let graphHeight = 0;
+
+    let activeTrade = false;
+
+    function click() {
+        activeTrade = true;
+    }
 
     $: news = [
         {
@@ -146,9 +153,13 @@
         </div>
         <hr style="background: #4a4a4a; height: 1px" />
         <div class="block is-flex is-justify-content-center">
-            <button class="button is-medium is-info">
+            <button class="button is-medium is-info" on:click={click}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
     </div>
 </div>
+
+{#if activeTrade}
+    <TradePanel close={() => (activeTrade = false)} />
+{/if}
