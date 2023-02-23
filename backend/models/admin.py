@@ -12,15 +12,17 @@ class UserAdmin(admin.ModelAdmin[UserModel]):
 class StockAdmin(admin.ModelAdmin[StockModel]):
     list_display = ['ticker']
 
+
 @admin.register(HoldingModel)
 class HoldingAdmin(admin.ModelAdmin[HoldingModel]):
     list_display = ['user', 'stock', 'units']
+
 
 @admin.register(TradeModel)
 class TradeAdmin(admin.ModelAdmin[TradeModel]):
     def articles(self, trade: TradeModel) -> List[str]:
         return [article.title for article in trade.article_evidence.all()]
-    list_display = ['user', 'stock', 'units', 'total_cost',
+    list_display = ['user', 'stock', 'units_change', 'balance_change',
                     'time', 'text_evidence', 'articles']
 
 
