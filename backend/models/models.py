@@ -82,3 +82,18 @@ class TradeModel(Model):  # type: ignore
             user=user, stock=stock, units=units, total_cost=total_cost, time=time, text_evidence=text_evidence)
         trade.article_evidence.set(article_evidence)
         return trade
+
+
+class WatchlistModel(Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    stock = models.ForeignKey(StockModel, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'stock'], name='no_duplicate_watchlist_items')
+        ]
+
+    @staticmethod
+    def create_typed(user: UserModel, stock: StockModel) -> 'WatchlistModel':
+        return WatchlistModel.objects.create(user=user, stock=stock)
