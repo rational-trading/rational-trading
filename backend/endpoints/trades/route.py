@@ -1,5 +1,5 @@
 from typing import List, Literal, Tuple
-from decimal import Decimal
+from decimal import ROUND_DOWN, ROUND_UP, Decimal
 
 from ninja import Schema, Router
 from django.utils import timezone
@@ -27,14 +27,15 @@ class TradeSchema(Schema):
     def from_model(model: TradeModel) -> 'TradeSchema':
         return TradeSchema(
             ticker=model.stock.ticker,
-            units_change=float(model.units_change),
-            balance_change=float(model.balance_change),
+            units_change=model.units_change,
+            balance_change=model.balance_change,
             time=int(model.time.timestamp()),
             text_evidence=model.text_evidence,
             article_evidence=[article.article_id for article in model.article_evidence.all()])
 
 
 @router.get("/trades/personal", response=List[TradeSchema])
+@transaction.atomic
 def personal_trades(request: AuthenticatedRequest) -> List[TradeSchema]:
     user = UserModel.objects.get(username=request.auth)
     trades = TradeModel.objects.filter(user=user)
@@ -46,17 +47,19 @@ class AddTradeSchema(Schema):
     ticker: str
     side: Literal['BUY'] | Literal['SELL']
     type: Literal['UNITS'] | Literal['PRICE']
-    amount: float
+    amount: Decimal
     text_evidence: str
     article_evidence: List[str]
 
-    def balance_units_changes(self) -> Tuple[float, float]:
+    def balance_units_changes(self) -> Tuple[Decimal, Decimal]:
         if self.amount <= 0:
             raise FriendlyClientException(
                 "Trade amount must be greater than 0!")
 
+        BUY = self.side == 'BUY'
+
         current_price = PolygonAPI().recent_price(self.ticker)
-        deal_price = current_price.high if self.side == 'BUY' else current_price.low
+        deal_price = Decimal(current_price.high if BUY else current_price.low)
 
         if self.type == 'UNITS':
             balance_change = deal_price * self.amount
@@ -65,7 +68,19 @@ class AddTradeSchema(Schema):
             balance_change = self.amount
             units_change = balance_change / deal_price
 
-        if self.side == 'BUY':
+        balance_change = balance_change.quantize(
+            Decimal('0.01'), rounding=ROUND_UP if BUY else ROUND_DOWN)
+        units_change = units_change.quantize(
+            Decimal('0.000001'), rounding=ROUND_DOWN if BUY else ROUND_UP)
+
+        if units_change < Decimal('0.000001'):
+            print(balance_change, units_change)
+            raise FriendlyClientException("Amount too small!")
+
+        if BUY:
+            if balance_change < Decimal('0.01'):
+                print(balance_change, units_change)
+                raise FriendlyClientException("Amount too small!")
             return (balance_change * -1, units_change)
         else:
             return (balance_change, units_change * -1)
@@ -91,9 +106,9 @@ def add_trade(request: AuthenticatedRequest, order: AddTradeSchema) -> TradeSche
     holding.units += Decimal(units_change)
 
     if user.balance < 0:
-        raise FriendlyClientException('Balance is too small!')
+        raise FriendlyClientException('Current balance is too small!')
     if holding.units < 0:
-        raise FriendlyClientException('Holding is too small!')
+        raise FriendlyClientException('Current holding is too small!')
 
     trade = TradeModel.create_typed(
         user=user, stock=stock, units_change=units_change, balance_change=balance_change, time=time, text_evidence=order.text_evidence, article_evidence=articles)
