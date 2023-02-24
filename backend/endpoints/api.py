@@ -14,6 +14,7 @@ from .demo.route import router as demo_router
 from .hello.route import router as hello_router
 from .maths.route import router as maths_router
 from .price.route import router as price_router
+from .user.route import router as user_router
 from .financials.route import router as financials_router
 
 from models.models import UserModel
@@ -24,6 +25,7 @@ api.add_router("/demo/", demo_router)
 api.add_router("/hello/", hello_router)
 api.add_router("/maths/", maths_router)
 api.add_router("/price/", price_router)
+api.add_router("/user/", user_router)
 api.add_router("/financials/", financials_router)
 
 
@@ -77,6 +79,7 @@ def createAccount(request: HttpBearer, data: UserInput) -> TokenSchema:
 def auth(request: HttpBearer, data: UserInput) -> TokenSchema:
     # check username
     # check password
+
     pwdHash = UserModel.objects.get(username=data.username).password
     if (check_password(data.password, pwdHash)):
 
