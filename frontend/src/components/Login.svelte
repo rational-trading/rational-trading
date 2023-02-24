@@ -12,6 +12,7 @@
       let jwt_token = await api.login().post(username, password);
       authenticated.set(true);
       localStorage.setItem("access_token", jwt_token);
+      active = false;
     } catch (error: any) {
       alert("Incorrect credentials");
       authenticated.set(false);

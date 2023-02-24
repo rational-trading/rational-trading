@@ -15,6 +15,7 @@
       let jwt_token = await api.signup().post(username, password);
       authenticated.set(true);
       localStorage.setItem("access_token", jwt_token);
+      active = false;
     } catch (error: any) {
       alert(error.message);
       authenticated.set(false);
