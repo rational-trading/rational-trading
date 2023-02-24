@@ -2,6 +2,15 @@
   import "../app.scss";
   import Login from "../components/Login.svelte";
   import Signup from "../components/Signup.svelte";
+  import Logout from "../components/Logout.svelte";
+
+  import { authenticated } from "$lib/stores";
+
+  let authenticatedValue: boolean;
+
+  authenticated.subscribe((value) => {
+    authenticatedValue = value;
+  });
 </script>
 
 <!-- the navbar -->
@@ -24,8 +33,12 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <Signup />
-          <Login />
+          {#if !authenticatedValue}
+            <Signup />
+            <Login />
+          {:else}
+            <Logout />
+          {/if}
         </div>
       </div>
     </div>
