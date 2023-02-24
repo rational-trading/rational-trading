@@ -34,7 +34,7 @@ class TradeSchema(Schema):
             article_evidence=[article.article_id for article in model.article_evidence.all()])
 
 
-@router.get("/trades/personal", response=List[TradeSchema])
+@router.get("/personal", response=List[TradeSchema])
 @transaction.atomic
 def personal_trades(request: AuthenticatedRequest) -> List[TradeSchema]:
     user = UserModel.objects.get(username=request.auth)
@@ -86,7 +86,7 @@ class AddTradeSchema(Schema):
             return (balance_change, units_change * -1)
 
 
-@router.post("/trades/add")
+@router.post("/add")
 @transaction.atomic
 def add_trade(request: AuthenticatedRequest, order: AddTradeSchema) -> TradeSchema:
     user = UserModel.objects.get(username=request.auth)
