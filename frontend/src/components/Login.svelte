@@ -1,6 +1,6 @@
 <script lang="ts">
   import api from "$lib/api";
-  import { authenticated } from "$lib/stores";
+  import { authenticated, authenticatedUser } from "$lib/stores";
 
   let active = false;
 
@@ -12,10 +12,15 @@
       let jwt_token = await api.login().post(username, password);
       authenticated.set(true);
       localStorage.setItem("access_token", jwt_token);
+
+      let whoami = await api.whoami().get();
+      authenticatedUser.set(whoami);
+
       active = false;
     } catch (error: any) {
       alert("Incorrect credentials");
       authenticated.set(false);
+      authenticatedUser.set("");
     }
   }
 </script>

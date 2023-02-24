@@ -3,6 +3,7 @@ import { MathsEndpoint } from "./maths";
 import { PriceRoute } from "./price";
 import { LoginEndpoint } from "./login";
 import { SignupEndpoint } from "./signup";
+import { WhoamiEndpoint } from "./whoami";
 
 class Api {
     login(): LoginEndpoint {
@@ -23,6 +24,10 @@ class Api {
 
     price(ticker: string): PriceRoute {
         return new PriceRoute(ticker);
+    }
+
+    whoami(): WhoamiEndpoint {
+        return new WhoamiEndpoint();
     }
 
     pendingRequest<T>() {

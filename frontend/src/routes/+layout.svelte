@@ -4,12 +4,17 @@
   import Signup from "../components/Signup.svelte";
   import Logout from "../components/Logout.svelte";
 
-  import { authenticated } from "$lib/stores";
+  import { authenticated, authenticatedUser } from "$lib/stores";
 
   let authenticatedValue: boolean;
+  let authenticatedUserValue: string;
 
   authenticated.subscribe((value) => {
     authenticatedValue = value;
+  });
+
+  authenticatedUser.subscribe((value) => {
+    authenticatedUserValue = value;
   });
 </script>
 
@@ -37,6 +42,7 @@
             <Signup />
             <Login />
           {:else}
+            <p class="navbar-item mx-3">{authenticatedUserValue}</p>
             <Logout />
           {/if}
         </div>

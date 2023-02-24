@@ -4,6 +4,7 @@ import {
 import type { Stock } from "$lib/types";
 
 export const authenticated = writable(false);
+export const authenticatedUser = writable("");
 
 export const watchlist: Writable<Stock[]> = writable([
     {
