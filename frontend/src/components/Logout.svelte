@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { authenticated } from "$lib/stores";
+    import { user } from "$lib/stores";
 
     function handleLogout() {
-        authenticated.set(false);
+        user.set(null);
         localStorage.removeItem("access_token");
     }
 </script>

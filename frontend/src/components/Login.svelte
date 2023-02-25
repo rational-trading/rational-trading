@@ -1,6 +1,6 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { authenticated, authenticatedUser } from "$lib/stores";
+    import { user } from "$lib/stores";
 
     let active = false;
 
@@ -10,17 +10,15 @@
     async function handleLogin() {
         try {
             const jwtToken = await api.login().post(username, password);
-            authenticated.set(true);
             localStorage.setItem("access_token", jwtToken);
 
             const whoami = await api.whoami().get();
-            authenticatedUser.set(whoami);
+            user.set({ username: whoami });
 
             active = false;
         } catch (error: any) {
             alert("Incorrect credentials");
-            authenticated.set(false);
-            authenticatedUser.set("");
+            user.set(null);
         }
     }
 </script>

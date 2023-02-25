@@ -1,21 +1,9 @@
 <script lang="ts">
   import "../app.scss";
-  import { authenticated, authenticatedUser } from "$lib/stores";
+  import { user } from "$lib/stores";
   import Login from "../components/Login.svelte";
   import Signup from "../components/Signup.svelte";
   import Logout from "../components/Logout.svelte";
-  
-
-  let authenticatedValue: boolean;
-  let authenticatedUserValue: string;
-
-  authenticated.subscribe((value) => {
-      authenticatedValue = value;
-  });
-
-  authenticatedUser.subscribe((value) => {
-      authenticatedUserValue = value;
-  });
 </script>
 
 <!-- the navbar -->
@@ -38,11 +26,11 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          {#if !authenticatedValue}
+          {#if $user === null}
             <Signup />
             <Login />
           {:else}
-            <p class="navbar-item mx-3">{authenticatedUserValue}</p>
+            <p class="navbar-item mx-3">{$user.username}</p>
             <Logout />
           {/if}
         </div>
