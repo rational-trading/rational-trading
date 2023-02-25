@@ -14,10 +14,10 @@
                 throw new Error("Passwords have to match!");
             }
 
-            const jwtToken = await api.signup().post(username, password);
+            const jwtToken = await api.auth().signup(username, password);
             localStorage.setItem("access_token", jwtToken);
 
-            const whoami = await api.whoami().get();
+            const whoami = await api.user().whoami();
             user.set({ username: whoami });
 
             active = false;

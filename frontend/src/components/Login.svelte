@@ -9,10 +9,10 @@
 
     async function handleLogin() {
         try {
-            const jwtToken = await api.login().post(username, password);
+            const jwtToken = await api.auth().login(username, password);
             localStorage.setItem("access_token", jwtToken);
 
-            const whoami = await api.whoami().get();
+            const whoami = await api.user().whoami();
             user.set({ username: whoami });
 
             active = false;

@@ -1,17 +1,16 @@
 import { HelloEndpoint } from "./hello";
 import { MathsEndpoint } from "./maths";
 import { PriceRoute } from "./price";
-import { LoginEndpoint } from "./login";
-import { SignupEndpoint } from "./signup";
-import { WhoamiEndpoint } from "./whoami";
+import { AuthEndpoint } from "./auth";
+import { UserEndpoint } from "./user";
 
 class Api {
-    login(): LoginEndpoint {
-        return new LoginEndpoint();
+    auth(): AuthEndpoint {
+        return new AuthEndpoint();
     }
 
-    signup(): SignupEndpoint {
-        return new SignupEndpoint();
+    user(): UserEndpoint {
+        return new UserEndpoint();
     }
 
     hello(): HelloEndpoint {
@@ -24,10 +23,6 @@ class Api {
 
     price(ticker: string): PriceRoute {
         return new PriceRoute(ticker);
-    }
-
-    whoami(): WhoamiEndpoint {
-        return new WhoamiEndpoint();
     }
 
     pendingRequest<T>() {
