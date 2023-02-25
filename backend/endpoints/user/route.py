@@ -1,14 +1,12 @@
 from typing import List
 from ninja import Router, Schema
-from django.http.request import HttpRequest
 
 from endpoints.auth import AuthBearer, AuthenticatedRequest
 from endpoints.api import FriendlyClientException
-from lib.polygon_api import PolygonAPI, TickerPrice
 from models.models import StockModel, UserModel, WatchlistItemModel
 
 
-router = Router(auth=AuthBearer())
+router: Router = Router(auth=AuthBearer())
 
 
 class WhoamiSchema(Schema):
