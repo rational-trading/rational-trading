@@ -3,6 +3,8 @@ import {
 } from "svelte/store";
 import type { Stock } from "$lib/types";
 
+export const user: Writable<{ username: string } | null> = writable(null);
+
 export const watchlist: Writable<Stock[]> = writable([
     {
         ticker: "AAPL",

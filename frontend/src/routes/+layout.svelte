@@ -1,7 +1,9 @@
 <script lang="ts">
   import "../app.scss";
+  import { user } from "$lib/stores";
   import Login from "../components/Login.svelte";
   import Signup from "../components/Signup.svelte";
+  import Logout from "../components/Logout.svelte";
 </script>
 
 <!-- the navbar -->
@@ -24,8 +26,13 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <Signup />
-          <Login />
+          {#if $user}
+            <p class="navbar-item mx-3">{$user.username}</p>
+            <Logout />
+          {:else}
+            <Signup />
+            <Login />
+          {/if}
         </div>
       </div>
     </div>
