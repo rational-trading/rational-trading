@@ -45,6 +45,7 @@ def validation_error(request: HttpRequest, e: ValidationError) -> HttpResponse:
 
 @api.exception_handler(FriendlyClientException)
 def friendly_client_exception(request: HttpRequest, e: FriendlyClientException) -> HttpResponse:
+    print(e)
     return api.create_response(
         request,
         {
@@ -56,6 +57,7 @@ def friendly_client_exception(request: HttpRequest, e: FriendlyClientException) 
 
 @api.exception_handler(FriendlyInternalException)
 def friendly_internal_exception(request: HttpRequest, e: FriendlyInternalException) -> HttpResponse:
+    print(e)
     return api.create_response(
         request,
         {

@@ -11,3 +11,7 @@ export interface Stock {
     name: string;
     exchange: string;
 }
+
+export interface TokenSchema {
+    access_token: string;
+}

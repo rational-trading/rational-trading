@@ -37,16 +37,16 @@ def signup(request: HttpRequest, data: UserInput) -> TokenSchema:
 
 
 @router.post("/login", auth=None, response=TokenSchema)
-# union
-def login(request: HttpRequest, data: UserInput) -> TokenSchema:
-    # check username
-    # check password
-    pwdHash = UserModel.objects.get(username=data.username).password
-    if (check_password(data.password, pwdHash)):
+def auth(request: HttpRequest, data: UserInput) -> TokenSchema:
+    try:
+        pwdHash = UserModel.objects.get(username=data.username).password
+        if (check_password(data.password, pwdHash)):
 
-        token = create_token(data.username)
-        return TokenSchema(access_token=token)
-    else:
+            token = create_token(data.username)
+            return TokenSchema(access_token=token)
+        else:
+            raise AuthenticationError()
+    except UserModel.DoesNotExist:
         raise AuthenticationError()
 
 

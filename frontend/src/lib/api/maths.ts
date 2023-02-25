@@ -14,7 +14,7 @@ class MathsEndpoint {
     }
 
     get(a: number, b: number): Promise<MathsResponse> {
-        return get<MathsResponse>({ endpoint: `/maths/${a}and${b}`, bearer: this.token });
+        return get<MathsResponse>({ endpoint: `/maths/${a}and${b}`, authenticated: true });
     }
 }
 
