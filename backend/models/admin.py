@@ -1,5 +1,5 @@
 from typing import List
-from models.models import HoldingModel, UserModel, StockModel, TradeModel, PublisherModel, ArticleModel
+from models.models import HoldingModel, UserModel, StockModel, TradeModel, PublisherModel, ArticleModel, WatchlistItemModel
 from django.contrib import admin
 
 
@@ -38,3 +38,14 @@ class ArticleAdmin(admin.ModelAdmin[ArticleModel]):
 
     list_display = ['article_id', 'publisher',
                     'url', 'title', 'description', 'published', 'all_stocks']
+
+
+@admin.register(WatchlistItemModel)
+class WatchlistItemAdmin(admin.ModelAdmin[WatchlistItemModel]):
+    def username(self, item: WatchlistItemModel) -> str:
+        return item.user.username
+
+    def ticker(self, item: WatchlistItemModel) -> str:
+        return item.stock.ticker
+
+    list_display = ['username', 'ticker']

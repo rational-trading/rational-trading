@@ -11,12 +11,14 @@ from .price.route import router as price_router
 from .portfolio.route import router as portfolio_router
 from .financials.route import router as financials_router
 from .trades.route import router as trades_router
+from .user.route import router as user_router
 
 api = NinjaAPI()
 
 api.add_router("/auth/", auth_router)
 api.add_router("/price/", price_router)
 api.add_router("/portfolio/", portfolio_router)
+api.add_router("/user/", user_router)
 api.add_router("/financials/", financials_router)
 api.add_router("/trades/", trades_router)
 
