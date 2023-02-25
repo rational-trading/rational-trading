@@ -1,12 +1,7 @@
 <script lang="ts">
-    import { user } from "$lib/stores";
-
-    function handleLogout() {
-        user.set(null);
-        localStorage.removeItem("access_token");
-    }
+    import { logout } from "$lib/auth";
 </script>
 
-<button class="button is-info" on:click={() => handleLogout()}>
+<button class="button is-info" on:click={logout}>
     <strong>Log out</strong>
 </button>

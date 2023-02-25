@@ -1,3 +1,5 @@
+import { AuthError, loadAccessToken } from "./auth";
+
 const dev = import.meta.env.DEV;
 
 const baseURL = dev ? "http://127.0.0.1:8000/api" : "/api";
@@ -18,8 +20,6 @@ type Request = {
 class ApiError extends Error {
     constructor(msg: string) {
         super(msg);
-
-        // Set the prototype explicitly.
         Object.setPrototypeOf(this, ApiError.prototype);
     }
 }
@@ -29,11 +29,12 @@ async function request<TRes>(r: Request): Promise<TRes> {
     try {
         const res = await fetch(`${baseURL}${r.endpoint}${r.queryString ? `?${r.queryString}` : ""}`, {
             method: r.type,
-            headers: r.authenticated ? { Authorization: `Bearer ${localStorage.getItem("access_token")}` } : {},
+            headers: r.authenticated ? { Authorization: `Bearer ${loadAccessToken()}` } : {},
             body: r.type === "post" ? r.data : undefined,
         });
         response = { ok: res.ok, value: await res.json() };
     } catch (e) {
+        if (e instanceof AuthError) throw e;
         // eslint-disable-next-line no-console
         console.error(e);
         throw new ApiError("Internal server error! Check logs for details.");
