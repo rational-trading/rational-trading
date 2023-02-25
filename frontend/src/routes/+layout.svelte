@@ -26,7 +26,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          {#if $user !== null}
+          {#if $user}
             <p class="navbar-item mx-3">{$user.username}</p>
             <Logout />
           {:else}
