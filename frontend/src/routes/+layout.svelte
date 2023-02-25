@@ -26,12 +26,12 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          {#if $user === null}
-            <Signup />
-            <Login />
-          {:else}
+          {#if $user !== null}
             <p class="navbar-item mx-3">{$user.username}</p>
             <Logout />
+          {:else}
+            <Signup />
+            <Login />
           {/if}
         </div>
       </div>
