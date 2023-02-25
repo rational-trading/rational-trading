@@ -1,12 +1,12 @@
 import { get } from "../request";
 
-interface WhoamiResponse {
+interface User {
     username: string;
 }
 
 class UserEndpoint {
-    async whoami(): Promise<string> {
-        return (await get<WhoamiResponse>({ endpoint: "/user/whoami", authenticated: true })).username;
+    whoami(): Promise<User> {
+        return get<User>({ endpoint: "/user/whoami", authenticated: true });
     }
 }
 

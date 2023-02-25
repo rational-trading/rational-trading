@@ -9,7 +9,7 @@ from models.models import StockModel, UserModel, WatchlistItemModel
 router: Router = Router(auth=AuthBearer())
 
 
-class WhoamiSchema(Schema):
+class UserSchema(Schema):
     username: str
 
 
@@ -21,9 +21,9 @@ class TickerSchema(Schema):
     ticker: str
 
 
-@router.get("/whoami", response=WhoamiSchema)
-def whoami(request: AuthenticatedRequest) -> WhoamiSchema:
-    return WhoamiSchema(username=request.auth)
+@router.get("/whoami", response=UserSchema)
+def whoami(request: AuthenticatedRequest) -> UserSchema:
+    return UserSchema(username=request.auth)
 
 
 @router.post("/watchlist/add")
