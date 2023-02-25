@@ -1,6 +1,6 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { user } from "$lib/stores";
+    import { authenticate } from "$lib/auth";
 
     let active = false;
 
@@ -13,17 +13,11 @@
             if (password !== confirmPassword) {
                 throw new Error("Passwords have to match!");
             }
-
             const jwtToken = await api.auth().signup(username, password);
-            localStorage.setItem("access_token", jwtToken);
-
-            const whoami = await api.user().whoami();
-            user.set({ username: whoami });
-
+            authenticate(jwtToken);
             active = false;
         } catch (error: any) {
             alert(error.message);
-            user.set(null);
         }
     }
 </script>
@@ -32,8 +26,7 @@
     class="button is-info"
     on:click={() => {
         active = true;
-    }}
->
+    }}>
     <strong>Sign up</strong>
 </button>
 
@@ -46,8 +39,7 @@
                 <div class="is-align-self-flex-end">
                     <button
                         class="button is-ghost"
-                        on:click={() => (active = false)}
-                    >
+                        on:click={() => (active = false)}>
                         <span class="icon is-large">
                             <i class="fas fa-xmark" />
                         </span>
@@ -55,8 +47,7 @@
                 </div>
                 <div
                     class="is-flex is-flex-direction-column pt-0"
-                    id="login-contents"
-                >
+                    id="login-contents">
                     <p class="title is-1">Sign up</p>
 
                     <div class="field mt-5">
@@ -64,8 +55,7 @@
                             <input
                                 class="input"
                                 placeholder="Username"
-                                bind:value={username}
-                            />
+                                bind:value={username} />
                         </div>
                     </div>
                     <div class="field mt-1">
@@ -74,8 +64,7 @@
                                 class="input"
                                 type="password"
                                 placeholder="Password"
-                                bind:value={password}
-                            />
+                                bind:value={password} />
                         </div>
                     </div>
 
@@ -85,8 +74,7 @@
                                 class="input"
                                 type="password"
                                 placeholder="Repeat password"
-                                bind:value={confirmPassword}
-                            />
+                                bind:value={confirmPassword} />
                         </div>
                     </div>
 
@@ -98,8 +86,7 @@
                                     on:click={() => handleSignup()}
                                     ><p class="px-3">
                                         <strong>Sign up</strong>
-                                    </p></button
-                                >
+                                    </p></button>
                             </div>
                         </div>
                     </div>

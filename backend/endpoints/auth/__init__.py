@@ -17,3 +17,7 @@ class AuthBearer(HttpBearer):
             return username
         except jwt.PyJWTError as e:
             return None
+
+
+class AuthenticatedRequest(HttpRequest):
+    auth: str

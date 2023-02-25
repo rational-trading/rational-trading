@@ -19,6 +19,7 @@ module.exports = {
         "@typescript-eslint/no-shadow": ["error"],
         "import/first": "off",
         "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }],
+        "@typescript-eslint/no-explicit-any": ["off"],
     },
     settings: {
         // eslint-disable-next-line global-require

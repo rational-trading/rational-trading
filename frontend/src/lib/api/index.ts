@@ -1,28 +1,28 @@
-import { HelloEndpoint } from "./hello";
-import { MathsEndpoint } from "./maths";
 import { PriceRoute } from "./price";
 import { AuthEndpoint } from "./auth";
 import { UserEndpoint } from "./user";
+import { PortfolioRoute } from "./portfolio";
+import { TradesRoute } from "./trades";
 
 class Api {
     auth(): AuthEndpoint {
         return new AuthEndpoint();
     }
 
-    user(): UserEndpoint {
-        return new UserEndpoint();
-    }
-
-    hello(): HelloEndpoint {
-        return new HelloEndpoint();
-    }
-
-    maths(token: string): MathsEndpoint {
-        return new MathsEndpoint(token);
+    portfolio(): PortfolioRoute {
+        return new PortfolioRoute();
     }
 
     price(ticker: string): PriceRoute {
         return new PriceRoute(ticker);
+    }
+
+    trades(): TradesRoute {
+        return new TradesRoute();
+    }
+
+    user(): UserEndpoint {
+        return new UserEndpoint();
     }
 
     pendingRequest<T>() {
