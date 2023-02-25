@@ -43,7 +43,7 @@ def personal_trades(request: AuthenticatedRequest) -> List[TradeSchema]:
     return [TradeSchema.from_model(trade) for trade in trades]
 
 
-class AddTradeSchema(Schema):
+class MakeTradeSchema(Schema):
     ticker: str
     side: Literal['BUY'] | Literal['SELL']
     type: Literal['UNITS'] | Literal['PRICE']
@@ -86,9 +86,9 @@ class AddTradeSchema(Schema):
             return (balance_change, units_change * -1)
 
 
-@router.post("/add")
+@router.post("/make", response=TradeSchema)
 @transaction.atomic
-def add_trade(request: AuthenticatedRequest, order: AddTradeSchema) -> TradeSchema:
+def make_trade(request: AuthenticatedRequest, order: MakeTradeSchema) -> TradeSchema:
     user = UserModel.objects.get(username=request.auth)
     articles = [ArticleModel.objects.get(
         article_id=id) for id in set(order.article_evidence)]

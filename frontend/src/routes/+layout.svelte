@@ -1,17 +1,19 @@
 <script lang="ts">
     import "../app.scss";
     import { user } from "$lib/stores";
-    import Login from "../components/Login.svelte";
-    import Signup from "../components/Signup.svelte";
-    import Logout from "../components/Logout.svelte";
-    import { browser } from "$app/environment";
     import { authenticate } from "$lib/auth";
+    import Login from "$components/Login.svelte";
+    import Signup from "$components/Signup.svelte";
+    import Logout from "$components/Logout.svelte";
+    import { browser } from "$app/environment";
 
     // Attempt to re-authenticate on refresh.
     if (browser) {
         try {
             authenticate();
-        } catch {}
+        } catch {
+            // Silently ignore if token has expired (authenticate automatically logs them out).
+        }
     }
 </script>
 
