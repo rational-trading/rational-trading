@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 from typing import List
 from django.db import models
 from django.db.models import Model
@@ -70,15 +71,30 @@ class TradeModel(Model):  # type: ignore
     """
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     stock = models.ForeignKey(StockModel, on_delete=models.CASCADE)
-    units = models.DecimalField(max_digits=15, decimal_places=6)
-    total_cost = models.DecimalField(max_digits=11, decimal_places=2)
+    units_change = models.DecimalField(max_digits=15, decimal_places=6)
+    balance_change = models.DecimalField(max_digits=11, decimal_places=2)
     time = models.DateTimeField()
     text_evidence = models.TextField()
-    article_evidence = models.ManyToManyField(ArticleModel)
+    article_evidence = models.ManyToManyField(ArticleModel, blank=True)
 
     @staticmethod
-    def create_typed(user: UserModel, stock: StockModel, units: float, total_cost: float, time: datetime, text_evidence: str, article_evidence: List[ArticleModel]) -> 'TradeModel':
+    def create_typed(user: UserModel, stock: StockModel, units_change: Decimal, balance_change: Decimal, time: datetime, text_evidence: str, article_evidence: List[ArticleModel]) -> 'TradeModel':
         trade = TradeModel.objects.create(
-            user=user, stock=stock, units=units, total_cost=total_cost, time=time, text_evidence=text_evidence)
+            user=user, stock=stock, units_change=units_change, balance_change=balance_change, time=time, text_evidence=text_evidence)
         trade.article_evidence.set(article_evidence)
         return trade
+
+
+class WatchlistItemModel(Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    stock = models.ForeignKey(StockModel, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'stock'], name='no_duplicate_watchlist_items')
+        ]
+
+    @staticmethod
+    def create_typed(user: UserModel, stock: StockModel) -> 'WatchlistItemModel':
+        return WatchlistItemModel.objects.create(user=user, stock=stock)

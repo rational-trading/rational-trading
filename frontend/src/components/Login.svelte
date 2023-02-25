@@ -1,5 +1,21 @@
 <script lang="ts">
+    import api from "$lib/api";
+    import { authenticate } from "$lib/auth";
+
     let active = false;
+
+    let username = "";
+    let password = "";
+
+    async function handleLogin() {
+        try {
+            const jwtToken = await api.auth().login(username, password);
+            authenticate(jwtToken);
+            active = false;
+        } catch (error: any) {
+            alert("Incorrect credentials");
+        }
+    }
 </script>
 
 <button
@@ -34,8 +50,8 @@
                         <div class="control">
                             <input
                                 class="input"
-                                type="email"
-                                placeholder="Email" />
+                                placeholder="Username"
+                                bind:value={username} />
                         </div>
                     </div>
                     <div class="field mt-3">
@@ -43,7 +59,8 @@
                             <input
                                 class="input"
                                 type="password"
-                                placeholder="Password" />
+                                placeholder="Password"
+                                bind:value={password} />
                         </div>
                     </div>
 
@@ -54,7 +71,9 @@
                     <div class="is-align-self-flex-end pt-5">
                         <div class="field">
                             <div class="control">
-                                <button class="button is-link is-medium"
+                                <button
+                                    class="button is-link is-medium"
+                                    on:click={() => handleLogin()}
                                     ><p class="px-3">
                                         <strong>Log in</strong>
                                     </p></button>
