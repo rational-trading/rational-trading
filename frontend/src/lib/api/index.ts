@@ -1,8 +1,7 @@
-import { HelloEndpoint } from "./hello";
-import { MathsEndpoint } from "./maths";
 import { PriceRoute } from "./price";
 import { AuthEndpoint } from "./auth";
 import { UserEndpoint } from "./user";
+import { PortfolioRoute } from "./portfolio";
 
 class Api {
     auth(): AuthEndpoint {
@@ -13,16 +12,12 @@ class Api {
         return new UserEndpoint();
     }
 
-    hello(): HelloEndpoint {
-        return new HelloEndpoint();
-    }
-
-    maths(token: string): MathsEndpoint {
-        return new MathsEndpoint(token);
-    }
-
     price(ticker: string): PriceRoute {
         return new PriceRoute(ticker);
+    }
+
+    portfolio(): PortfolioRoute {
+        return new PortfolioRoute();
     }
 
     pendingRequest<T>() {

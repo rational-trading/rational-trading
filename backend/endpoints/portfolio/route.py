@@ -11,7 +11,7 @@ from models.models import HoldingModel, TradeModel, UserModel
 router = Router(auth=AuthBearer())
 
 
-class StatsResponseSchema(Schema):
+class PortfolioStatsSchema(Schema):
     cash_balance: float
     holdings_value: float
     unrealised_gain: float
@@ -42,9 +42,9 @@ def calculate_unrealised_gain(holding: HoldingModel, sale_price: float) -> float
     return unrealised_gain
 
 
-@router.get("/stats", response=StatsResponseSchema)
+@router.get("/stats", response=PortfolioStatsSchema)
 @transaction.atomic
-def stats(request: AuthenticatedRequest) -> StatsResponseSchema:
+def stats(request: AuthenticatedRequest) -> PortfolioStatsSchema:
     user = UserModel.objects.get(username=request.auth)
     holdings = HoldingModel.objects.filter(user=user)
 
@@ -59,7 +59,7 @@ def stats(request: AuthenticatedRequest) -> StatsResponseSchema:
     unrealised_gains = [calculate_unrealised_gain(
         holding, price) for (holding, price) in current_prices]
 
-    return StatsResponseSchema(
+    return PortfolioStatsSchema(
         cash_balance=user.balance,
         holdings_value=current_value,
         unrealised_gain=sum(unrealised_gains))
