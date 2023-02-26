@@ -27,14 +27,13 @@
         activeTrade = true;
     }
 
-    const newWatchlistRequest = () =>
-        api
-            .user()
-            .watchlist()
-            .then((response) => {
-                userWatchlist.set(response.tickers);
-                return response.tickers;
-            });
+    const newWatchlistRequest = () => api
+        .user()
+        .watchlist()
+        .then((response) => {
+            userWatchlist.set(response.tickers);
+            return response.tickers;
+        });
 
     $: if ($user && browser) newWatchlistRequest();
 

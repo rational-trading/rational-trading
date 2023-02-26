@@ -1,12 +1,10 @@
 <script lang="ts">
     import api from "$lib/api";
     import { currentStock, stocks } from "$lib/stores";
-    import type { Stock } from "$lib/types";
-
     import { browser } from "$app/environment";
 
     export let ticker: string;
-    let stock = $stocks.get(ticker);
+    const stock = $stocks.get(ticker);
 
     let request = api.pendingRequest<{
         last: number;
@@ -15,23 +13,22 @@
         color: "success" | "warning";
     }>();
 
-    $: newRequest = () =>
-        api
-            .price(stock.ticker)
-            .recent()
-            .then((response) => {
-                const last = response.close;
-                const change = last - response.open;
-                const percentChange = (change / response.open) * 100;
-                const color: "success" | "warning" =
+    $: newRequest = () => api
+        .price(stock.ticker)
+        .recent()
+        .then((response) => {
+            const last = response.close;
+            const change = last - response.open;
+            const percentChange = (change / response.open) * 100;
+            const color: "success" | "warning" =
                     change >= 0 ? "success" : "warning";
-                return {
-                    last,
-                    change,
-                    percentChange,
-                    color,
-                };
-            });
+            return {
+                last,
+                change,
+                percentChange,
+                color,
+            };
+        });
 
     $: if (browser) request = newRequest();
 

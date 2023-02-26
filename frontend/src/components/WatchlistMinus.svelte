@@ -6,15 +6,13 @@
         userWatchlist,
         defaultWatchlist,
     } from "$lib/stores";
-    import type { Stock } from "$lib/types";
 
-    const newRequest = () =>
-        api.user().watchlist_remove({ ticker: $currentStock.ticker });
+    const newRequest = () => api.user().watchlist_remove({ ticker: $currentStock.ticker });
 
     function minus() {
         if ($user) {
             userWatchlist.update((tickers: string[]) => {
-                let index = tickers.indexOf($currentStock.ticker);
+                const index = tickers.indexOf($currentStock.ticker);
                 if (index !== -1) {
                     newRequest();
                     tickers.splice(index, 1);
@@ -23,7 +21,7 @@
             });
         } else {
             defaultWatchlist.update((tickers: string[]) => {
-                let index = tickers.indexOf($currentStock.ticker);
+                const index = tickers.indexOf($currentStock.ticker);
                 if (index !== -1) {
                     tickers.splice(index, 1);
                 }
