@@ -20,6 +20,8 @@ module.exports = {
         "import/first": "off",
         "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }],
         "@typescript-eslint/no-explicit-any": ["off"],
+        "no-alert": "off",
+        "max-len": ["error", { "code": 150 }]
     },
     settings: {
         // eslint-disable-next-line global-require
