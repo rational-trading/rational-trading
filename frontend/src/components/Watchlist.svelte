@@ -13,29 +13,32 @@
         color: "success" | "warning";
     }>();
 
-    $: newRequest = () => api
-        .price(stock.ticker)
-        .recent()
-        .then((response) => {
-            const last = response.close;
-            const change = last - response.open;
-            const percentChange = (change / response.open) * 100;
-            const color: "success" | "warning" =
+    $: newRequest = () =>
+        api
+            .price(stock.ticker)
+            .recent()
+            .then((response) => {
+                const last = response.close;
+                const change = last - response.open;
+                const percentChange = (change / response.open) * 100;
+                const color: "success" | "warning" =
                     change >= 0 ? "success" : "warning";
-            return {
-                last,
-                change,
-                percentChange,
-                color,
-            };
-        });
+                return {
+                    last,
+                    change,
+                    percentChange,
+                    color,
+                };
+            });
 
     $: if (browser) request = newRequest();
 
     $: selected = stock.ticker === $currentStock.ticker;
 
     function click() {
-        currentStock.set(stock);
+        if ($currentStock !== stock) {
+            currentStock.set(stock);
+        }
     }
 </script>
 

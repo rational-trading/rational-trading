@@ -24,16 +24,21 @@
     let activeTrade = false;
 
     function click() {
-        activeTrade = true;
+        if ($user) {
+            activeTrade = true;
+        } else {
+            alert("Please log in first.");
+        }
     }
 
-    const newWatchlistRequest = () => api
-        .user()
-        .watchlist()
-        .then((response) => {
-            userWatchlist.set(response.tickers);
-            return response.tickers;
-        });
+    const newWatchlistRequest = () =>
+        api
+            .user()
+            .watchlist()
+            .then((response) => {
+                userWatchlist.set(response.tickers);
+                return response.tickers;
+            });
 
     $: if ($user && browser) newWatchlistRequest();
 
@@ -41,7 +46,7 @@
         {
             title: "Why one strategist sees a real risk of World War 3.1, whose battleground will be microchips",
             publisher: "MarketWatch",
-            published_utc: "2023-02-21T11:32:00Z",
+            published_utc: "2023-02-26T13:56:00Z",
             description:
                 "Peter Tchir, head of macro strategy at Academy Securities, dubs a potential war over semiconductors World War 3.1",
             url: "https://www.marketwatch.com/story/why-one-strategist-sees-a-real-risk-of-world-war-3-1-whose-battleground-will-be-microchips-8eec0e96",

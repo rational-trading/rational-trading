@@ -31,7 +31,9 @@
             });
         }
 
-        currentStock.set(stock);
+        if ($currentStock !== stock) {
+            currentStock.set(stock);
+        }
         onClick();
     }
 </script>
