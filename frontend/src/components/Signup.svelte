@@ -20,6 +20,13 @@
             alert(error.message);
         }
     }
+
+    function close() {
+        active = false;
+        username = "";
+        password = "";
+        confirmPassword = "";
+    }
 </script>
 
 <button
@@ -33,13 +40,11 @@
 {#if active}
     <div class="modal is-active">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="modal-background" on:click={() => (active = false)} />
+        <div class="modal-background" on:click={close} />
         <div class="modal-content">
             <div class="is-flex is-flex-direction-column">
                 <div class="is-align-self-flex-end">
-                    <button
-                        class="button is-ghost"
-                        on:click={() => (active = false)}>
+                    <button class="button is-ghost" on:click={close}>
                         <span class="icon is-large">
                             <i class="fas fa-xmark" />
                         </span>
