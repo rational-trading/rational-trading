@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Watchlist from "$components/Watchlist.svelte";
+    import WatchlistItem from "$components/WatchlistItem.svelte";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
     import WatchlistMinus from "$components/WatchlistMinus.svelte";
     import Search from "$components/Search.svelte";
@@ -118,11 +118,11 @@
                     <tbody>
                         {#if $user}
                             {#each $userWatchlist as ticker (ticker)}
-                                <Watchlist {ticker} />
+                                <WatchlistItem {ticker} />
                             {/each}
                         {:else}
                             {#each $defaultWatchlist as ticker (ticker)}
-                                <Watchlist {ticker} />
+                                <WatchlistItem {ticker} />
                             {/each}
                         {/if}
                     </tbody>
