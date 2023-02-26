@@ -1,17 +1,36 @@
 <script lang="ts">
-    import { watchlist, currentStock } from "$lib/stores";
+    import api from "$lib/api";
+    import {
+        defaultWatchlist,
+        userWatchlist,
+        currentStock,
+        user,
+    } from "$lib/stores";
     import type { Stock } from "$lib/types";
 
     export let stock: Stock;
     export let onClick: () => void;
 
+    const newRequest = () => api.user().watchlist_add({ ticker: stock.ticker });
+
     function click() {
-        watchlist.update((stocks: Stock[]) => {
-            if (stocks.indexOf(stock) === -1) {
-                return [...stocks, stock];
-            }
-            return stocks;
-        });
+        if ($user) {
+            userWatchlist.update((tickers: string[]) => {
+                if (tickers.indexOf(stock.ticker) === -1) {
+                    newRequest();
+                    return [...tickers, stock.ticker];
+                }
+                return tickers;
+            });
+        } else {
+            defaultWatchlist.update((tickers: string[]) => {
+                if (tickers.indexOf(stock.ticker) === -1) {
+                    return [...tickers, stock.ticker];
+                }
+                return tickers;
+            });
+        }
+
         currentStock.set(stock);
         onClick();
     }

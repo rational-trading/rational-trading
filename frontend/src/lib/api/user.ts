@@ -1,4 +1,4 @@
-import { get } from "../request";
+import { get, post } from "../request";
 
 interface User {
     username: string;
@@ -21,12 +21,12 @@ class UserEndpoint {
         return get<Watchlist>({ endpoint: "/user/watchlist", authenticated: true });
     }
 
-    watchlist_add(ticker: Ticker): Promise<Ticker> {
-        return get<Ticker>({ endpoint: "/user/watchlist/add", authenticated: true, queryString: `data=${ticker}` });
+    watchlist_add(ticker: Ticker): Promise<boolean> {
+        return post<Ticker, boolean>({ endpoint: "/user/watchlist/add", authenticated: true, data: ticker });
     }
 
-    watchlis_remove(ticker: Ticker): Promise<Ticker> {
-        return get<Ticker>({ endpoint: "/user/watchlist/remove", authenticated: true, queryString: `data=${ticker}` });
+    watchlist_remove(ticker: Ticker): Promise<boolean> {
+        return post<Ticker, boolean>({ endpoint: "/user/watchlist/remove", authenticated: true, data: ticker });
     }
 }
 

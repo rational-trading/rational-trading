@@ -1,15 +1,35 @@
 <script lang="ts">
-    import { currentStock, watchlist } from "$lib/stores";
+    import api from "$lib/api";
+    import {
+        currentStock,
+        user,
+        userWatchlist,
+        defaultWatchlist,
+    } from "$lib/stores";
     import type { Stock } from "$lib/types";
 
+    const newRequest = () =>
+        api.user().watchlist_remove({ ticker: $currentStock.ticker });
+
     function minus() {
-        watchlist.update((stocks: Stock[]) => {
-            let index = stocks.indexOf($currentStock);
-            if (index !== -1) {
-                stocks.splice(index, 1);
-            }
-            return stocks;
-        });
+        if ($user) {
+            userWatchlist.update((tickers: string[]) => {
+                let index = tickers.indexOf($currentStock.ticker);
+                if (index !== -1) {
+                    newRequest();
+                    tickers.splice(index, 1);
+                }
+                return tickers;
+            });
+        } else {
+            defaultWatchlist.update((tickers: string[]) => {
+                let index = tickers.indexOf($currentStock.ticker);
+                if (index !== -1) {
+                    tickers.splice(index, 1);
+                }
+                return tickers;
+            });
+        }
     }
 </script>
 

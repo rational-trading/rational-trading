@@ -9,7 +9,14 @@
     import NewsPanel from "$components/NewsPanel.svelte";
     import TradePanel from "$components/TradePanel.svelte";
 
-    import { watchlist, currentStock, user } from "$lib/stores";
+    import {
+        defaultWatchlist,
+        currentStock,
+        user,
+        userWatchlist,
+    } from "$lib/stores";
+    import api from "$lib/api";
+    import { browser } from "$app/environment";
 
     let graphWidth = 0;
     let graphHeight = 0;
@@ -19,6 +26,17 @@
     function click() {
         activeTrade = true;
     }
+
+    const newWatchlistRequest = () =>
+        api
+            .user()
+            .watchlist()
+            .then((response) => {
+                userWatchlist.set(response.tickers);
+                return response.tickers;
+            });
+
+    $: if ($user && browser) newWatchlistRequest();
 
     $: news = [
         {
@@ -95,9 +113,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#each $watchlist as stock}
-                            <Watchlist {stock} />
-                        {/each}
+                        {#if $user}
+                            {#each $userWatchlist as ticker}
+                                <Watchlist {ticker} />
+                            {/each}
+                        {:else}
+                            {#each $defaultWatchlist as ticker}
+                                <Watchlist {ticker} />
+                            {/each}
+                        {/if}
                     </tbody>
                 </table>
             </div>
