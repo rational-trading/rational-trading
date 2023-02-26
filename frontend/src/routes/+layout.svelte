@@ -35,17 +35,22 @@
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    {#if $user}
-                        <p class="navbar-item mx-3">{$user.username}</p>
+            {#if $user}
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <p class="navbar-link">{$user.username}</p>
+
+                    <div class="navbar-dropdown">
                         <Logout />
-                    {:else}
+                    </div>
+                </div>
+            {:else}
+                <div class="navbar-item">
+                    <div class="buttons">
                         <Signup />
                         <Login />
-                    {/if}
+                    </div>
                 </div>
-            </div>
+            {/if}
         </div>
     </div>
 </nav>
