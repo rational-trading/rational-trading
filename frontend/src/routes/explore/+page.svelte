@@ -1,6 +1,7 @@
 <script lang="ts">
     import Watchlist from "$components/Watchlist.svelte";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
+    import WatchlistMinus from "$components/WatchlistMinus.svelte";
     import Search from "$components/Search.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
@@ -8,7 +9,7 @@
     import NewsPanel from "$components/NewsPanel.svelte";
     import TradePanel from "$components/TradePanel.svelte";
 
-    import { watchlist, currentStock } from "$lib/stores";
+    import { watchlist, currentStock, user } from "$lib/stores";
 
     let graphWidth = 0;
     let graphHeight = 0;
@@ -70,6 +71,9 @@
             </div>
 
             <div class="level-right">
+                <div class="level-item">
+                    <WatchlistMinus />
+                </div>
                 <div class="level-item">
                     <WatchlistAdd />
                 </div>

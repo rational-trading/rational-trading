@@ -31,7 +31,9 @@
 
             <a class="navbar-item" href="/explore"> Explore </a>
 
-            <a class="navbar-item" href="/portfolio"> Portfolio </a>
+            {#if $user}
+                <a class="navbar-item" href="/portfolio"> Portfolio </a>
+            {/if}
         </div>
 
         <div class="navbar-end">
