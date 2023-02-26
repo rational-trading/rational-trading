@@ -5,6 +5,7 @@
         user,
         userWatchlist,
         defaultWatchlist,
+        stocks,
     } from "$lib/stores";
 
     const newRequest = () => api.user().watchlist_remove({ ticker: $currentStock.ticker });
@@ -16,17 +17,31 @@
                 if (index !== -1) {
                     newRequest();
                     tickers.splice(index, 1);
+                    return tickers;
                 }
                 return tickers;
             });
+
+            if ($userWatchlist.length === 0) {
+                currentStock.set($stocks.get("AAPL"));
+            } else {
+                currentStock.set($stocks.get($userWatchlist[0]));
+            }
         } else {
             defaultWatchlist.update((tickers: string[]) => {
                 const index = tickers.indexOf($currentStock.ticker);
                 if (index !== -1) {
                     tickers.splice(index, 1);
+                    return tickers;
                 }
                 return tickers;
             });
+
+            if ($defaultWatchlist.length === 0) {
+                currentStock.set($stocks.get("AAPL"));
+            } else {
+                currentStock.set($stocks.get($defaultWatchlist[0]));
+            }
         }
     }
 </script>

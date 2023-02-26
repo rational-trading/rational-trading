@@ -117,11 +117,11 @@
                     </thead>
                     <tbody>
                         {#if $user}
-                            {#each $userWatchlist as ticker}
+                            {#each $userWatchlist as ticker (ticker)}
                                 <Watchlist {ticker} />
                             {/each}
                         {:else}
-                            {#each $defaultWatchlist as ticker}
+                            {#each $defaultWatchlist as ticker (ticker)}
                                 <Watchlist {ticker} />
                             {/each}
                         {/if}

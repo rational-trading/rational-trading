@@ -5,7 +5,11 @@
     import Login from "$components/Login.svelte";
     import Signup from "$components/Signup.svelte";
     import Logout from "$components/Logout.svelte";
+    import TimeAgo from "javascript-time-ago";
+    import en from "javascript-time-ago/locale/en";
     import { browser } from "$app/environment";
+
+    TimeAgo.addDefaultLocale(en);
 
     // Attempt to re-authenticate on refresh.
     if (browser) {

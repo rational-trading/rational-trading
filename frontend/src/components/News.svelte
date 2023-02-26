@@ -2,9 +2,6 @@
     import { capitalize } from "$lib/functions";
     import type { News } from "$lib/types";
     import TimeAgo from "javascript-time-ago";
-    import en from "javascript-time-ago/locale/en";
-
-    TimeAgo.addDefaultLocale(en);
 
     export let data: News;
     const color = data.sentiment ? "success" : "warning";
