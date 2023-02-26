@@ -50,6 +50,7 @@ def news(request: HttpRequest, ticker: str, n:int=20, sort:str="recent") -> list
         # todo: return sorted list by objectivity
         return []
     
+    # Simon - currently trying to understand how to interact with database system
     return [ArticleSchema.from_model(article) for article in articles]
 
 
