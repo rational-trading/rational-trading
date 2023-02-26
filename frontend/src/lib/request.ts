@@ -1,3 +1,5 @@
+import { AuthError, loadAccessToken } from "./auth";
+
 const dev = import.meta.env.DEV;
 
 const baseURL = dev ? "http://127.0.0.1:8000/api" : "/api";
@@ -12,29 +14,28 @@ type PostRequest = {
 }
 
 type Request = {
-    endpoint: string, queryString?: string, bearer?: string
+    endpoint: string, queryString?: string, authenticated?: boolean
 } & (GetRequest | PostRequest);
 
 class ApiError extends Error {
     constructor(msg: string) {
         super(msg);
-
-        // Set the prototype explicitly.
         Object.setPrototypeOf(this, ApiError.prototype);
     }
 }
 
 async function request<TRes>(r: Request): Promise<TRes> {
-    let response: { ok: true, value: TRes } | { ok: false, value: {error: string} };
+    let response: { ok: true, value: TRes } | { ok: false, value: { error: string } };
     try {
         const res = await fetch(`${baseURL}${r.endpoint}${r.queryString ? `?${r.queryString}` : ""}`, {
             method: r.type,
-            headers: r.bearer ? { Authorization: `Bearer ${r.bearer}` } : {},
+            headers: r.authenticated ? { Authorization: `Bearer ${loadAccessToken()}` } : {},
             body: r.type === "post" ? r.data : undefined,
         });
         response = { ok: res.ok, value: await res.json() };
     } catch (e) {
-    // eslint-disable-next-line no-console
+        if (e instanceof AuthError) throw e;
+        // eslint-disable-next-line no-console
         console.error(e);
         throw new ApiError("Internal server error! Check logs for details.");
     }
@@ -48,12 +49,12 @@ async function request<TRes>(r: Request): Promise<TRes> {
 interface GetParams {
     endpoint: string,
     queryString?: string,
-    bearer?: string,
+    authenticated?: boolean,
 }
 
-function get<TRes>({ endpoint, queryString = "", bearer = undefined }: GetParams): Promise<TRes> {
+function get<TRes>({ endpoint, queryString = "", authenticated = false }: GetParams): Promise<TRes> {
     return request({
-        type: "get", endpoint, queryString, bearer,
+        type: "get", endpoint, queryString, authenticated,
     });
 }
 
@@ -61,17 +62,17 @@ interface PostParams<TReq> {
     endpoint: string,
     data: TReq,
     queryString?: string,
-    bearer?: string,
+    authenticated?: boolean,
 }
 
 function post<TReq, TRes>({
     endpoint,
     data,
     queryString = undefined,
-    bearer = undefined,
+    authenticated = false,
 }: PostParams<TReq>): Promise<TRes> {
     return request({
-        type: "post", endpoint, queryString, data: JSON.stringify(data), bearer,
+        type: "post", endpoint, queryString, data: JSON.stringify(data), authenticated,
     });
 }
 

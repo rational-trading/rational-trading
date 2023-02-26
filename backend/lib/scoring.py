@@ -149,7 +149,7 @@ def scoring(current_ratio: float, debt_to_equity: float, pe: float, equity: floa
 # ————————————————————————————————————————————————————————————————
 
 
-def numerical_scoring(ticker: str) -> float:
+def get_financial_endpoints(ticker: str) -> Dict[str, float]:
 
     # make use of polygon API to get the variable values
     api = PolygonAPI()
@@ -182,7 +182,12 @@ def numerical_scoring(ticker: str) -> float:
 
     # use the scoring system
     # (cannot use roic becasue of the API)
-    return scoring(current_ratio, debt_to_equity, pe, equity)
+    return {"score": scoring(current_ratio, debt_to_equity, pe, equity),
+            "price_earning_ratio": pe,
+            "current_ratio": current_ratio,
+            "debt_to_equity": debt_to_equity,
+            "earnings_per_share": eps
+            }
 
 
-# numerical_scoring("AAPL")
+# ("AAPL")
