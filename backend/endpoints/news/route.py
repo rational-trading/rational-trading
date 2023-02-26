@@ -1,11 +1,31 @@
 from dataclasses import dataclass
-from ninja import Router
+from ninja import Router, Schema
 from django.http.request import HttpRequest
+from models.models import ArticleModel
 
 from lib.polygon_api import PolygonAPI, normalise_scores
 
 router = Router()
 
+class ArticleSchema(Schema):
+    title: str
+    description: str
+    url: str
+    date: str
+    publisher: str
+    score: float
+    tickers: list[str]
+
+    @staticmethod
+    def from_model(model: ArticleModel) -> 'ArticleSchema':
+        return ArticleSchema(
+            title = model.title,
+            description = model.description,
+            url = model.url,
+            date = model.published,
+            publisher = model.publisher,
+            tickers = model.stocks)
+    
 @dataclass
 class TickerArticleDataclass:
     title: str
@@ -16,19 +36,21 @@ class TickerArticleDataclass:
     score: float
     tickers: list[str]
 
-@dataclass
-class NewsResponse:
-    news: list[TickerArticleDataclass]
+@router.get("/news/", response=list[ArticleSchema])
+def news(request: HttpRequest, ticker: str, n:int=20, sort:str="recent") -> list[ArticleSchema]:
+    """
+    Gets the list of the n most recent articles about ticker.
+    """
+    articles = ArticleModel.objects.filter(stocks=ticker) # get articles from database
 
-@router.get("/news/", response=NewsResponse)
-def news(request: HttpRequest, ticker: str, n=20) -> NewsResponse:
-    """
-    Gets the list of the n most recent articles about ticker
-    """
-    api = PolygonAPI()
-    news = normalise_scores(api.get_news(ticker, n))
-    response = []
-    for n in news:
-        response.append(TickerArticleDataclass(n.title, n.description, n.url, n.date, n.publisher, n.score, n.tickers))
-    return NewsResponse(news=response)
+    if sort == "recent":
+        # todo: return sorted list by recency
+        return []
+    elif sort == "objectivity":
+        # todo: return sorted list by objectivity
+        return []
+    
+    return [ArticleSchema.from_model(article) for article in articles]
+
+
 
