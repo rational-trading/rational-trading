@@ -8,7 +8,7 @@
     const timeAgo = new TimeAgo("en-US");
 </script>
 
-<div class="block card">
+<div class="block card" style="cursor: pointer;">
     <header class="card-header">
         <a class="card-header-title has-text-{color}" href={data.url}>
             {capitalize(timeAgo.format(new Date(data.published_utc)))} · {data.publisher}
@@ -16,9 +16,9 @@
         <div class="card-header-icon has-text-{color}">
             <span class="icon">
                 <i
-                    class="fas fa-arrow-trend-{data.sentiment ?
-                        'up' :
-                        'down'}" />
+                    class="fas fa-arrow-trend-{data.sentiment
+                        ? 'up'
+                        : 'down'}" />
             </span>
         </div>
     </header>

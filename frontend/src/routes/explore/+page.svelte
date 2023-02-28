@@ -196,5 +196,7 @@
 </div>
 
 {#if activeTrade}
-    <TradePanel close={() => (activeTrade = false)} />
+    <TradePanel
+        ticker={$currentStock.ticker}
+        close={() => (activeTrade = false)} />
 {/if}

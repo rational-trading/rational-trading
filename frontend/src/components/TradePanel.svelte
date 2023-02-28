@@ -1,21 +1,25 @@
 <script lang="ts">
     import type { Stock } from "$lib/types";
     import NewsTile from "$components/NewsTile.svelte";
+    import { stocks } from "$lib/stores";
+    import api from "$lib/api";
+    import type { TickerPrice } from "$lib/api/price";
 
     export let close: () => void;
-    const stock: Stock = {
-        ticker: "AAPL",
-        name: "Apple Inc",
-        exchange: "NASDAQ",
-    };
 
     let buy = true;
+    let useUnits = true;
     let units: number;
     let totalValue: number;
 
     export let ticker: string;
+    let stock = $stocks.get(ticker);
 
     const lowPrice = 153.22;
+
+    let request = api.pendingRequest<TickerPrice>();
+    const newRequest = () => api.price(stock.ticker).recent();
+    request = newRequest();
 
     // eslint-disable-next-line no-restricted-globals
     $: validUnits = !isNaN(units) && units > 0;
@@ -48,7 +52,7 @@
 
                 <hr style="background: #4a4a4a; height: 1px" />
 
-                <div class="block" style="height: 45%">
+                <div class="block" style="height: 35%">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
                             class="button is-large {buy
@@ -58,7 +62,13 @@
                             style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                             <div>
                                 <p class="title is-4">Buy</p>
-                                <p class="subtitle is-5">153.22</p>
+                                <p class="subtitle is-5">
+                                    {#await request}
+                                        -
+                                    {:then price}
+                                        {price.high}
+                                    {/await}
+                                </p>
                             </div>
                         </button>
                         <button
@@ -69,67 +79,79 @@
                             style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                             <div>
                                 <p class="title is-4">Sell</p>
-                                <p class="subtitle is-5">152.94</p>
+                                <p class="subtitle is-5">
+                                    {#await request}
+                                        -
+                                    {:then price}
+                                        {price.low}
+                                    {/await}
+                                </p>
                             </div>
                         </button>
                     </div>
 
-                    <!-- units -->
-                    <div class="field" style="height: 25%">
-                        <!-- svelte-ignore a11y-label-has-associated-control -->
-                        <label class="label">Units</label>
-                        <div class="control">
-                            <input
-                                class="input {validUnits ? '' : 'is-danger'}"
-                                type="text"
-                                placeholder="Units"
-                                bind:value={units}
-                                on:input={() =>
-                                    (totalValue = units * lowPrice)} />
-                        </div>
-                        {#if !validUnits}
-                            <p class="help is-danger">
-                                Please enter a valid number.
-                            </p>
-                        {/if}
+                    <div class="select mb-4">
+                        <select bind:value={useUnits}>
+                            <option value={true}>Units</option>
+                            <option value={false}>Total value</option>
+                        </select>
                     </div>
 
-                    <div
-                        class="mb-5"
-                        style="width: 100%; height: 15px; border-bottom: 1px solid #b5b5b5; text-align: center">
-                        <span
-                            style="color: #b5b5b5; background-color: #363636; padding: 0 10px;">
-                            or
-                        </span>
-                    </div>
-
-                    <!-- total value -->
-                    <div class="field" style="height: 25%">
-                        <!-- svelte-ignore a11y-label-has-associated-control -->
-                        <label class="label">Total value</label>
-                        <div class="control">
-                            <input
-                                class="input {validTotalValue
-                                    ? ''
-                                    : 'is-danger'}"
-                                type="text"
-                                placeholder="Total value"
-                                bind:value={totalValue}
-                                on:input={() =>
-                                    (units = totalValue / lowPrice)} />
+                    {#if useUnits}
+                        <!-- units -->
+                        <div class="field" style="height: 25%">
+                            <div class="control">
+                                <input
+                                    class="input {validUnits
+                                        ? ''
+                                        : 'is-danger'}"
+                                    type="text"
+                                    placeholder="Units"
+                                    bind:value={units}
+                                    on:input={async () => {
+                                        let price = await request;
+                                        totalValue =
+                                            units *
+                                            (buy ? price.high : price.low);
+                                    }} />
+                            </div>
+                            {#if !validUnits}
+                                <p class="help is-danger">
+                                    Please enter a valid number.
+                                </p>
+                            {/if}
                         </div>
-                        {#if !validTotalValue}
-                            <p class="help is-danger">
-                                Please enter a valid number.
-                            </p>
-                        {/if}
-                    </div>
+                    {:else}
+                        <!-- total value -->
+                        <div class="field" style="height: 25%">
+                            <div class="control">
+                                <input
+                                    class="input {validTotalValue
+                                        ? ''
+                                        : 'is-danger'}"
+                                    type="text"
+                                    placeholder="Total value"
+                                    bind:value={totalValue}
+                                    on:input={async () => {
+                                        let price = await request;
+                                        units =
+                                            totalValue /
+                                            (buy ? price.high : price.low);
+                                    }} />
+                            </div>
+                            {#if !validTotalValue}
+                                <p class="help is-danger">
+                                    Please enter a valid number.
+                                </p>
+                            {/if}
+                        </div>
+                    {/if}
                 </div>
 
                 <hr style="background: #4a4a4a; height: 1px" />
 
-                <div class="block" style="height: 15%">
-                    <header class="title is-6 mb-2">Order info</header>
+                <div class="block" style="height: 20%">
+                    <header class="title is-6">Order info</header>
 
                     <div style="display: flex; justify-content: space-between;">
                         <div style="vertical-align: baseline; ">Units</div>
@@ -143,7 +165,13 @@
                             Per-unit value
                         </div>
                         <div style="vertical-align: baseline; ">
-                            <strong>-</strong>
+                            <strong>
+                                {#await request}
+                                    -
+                                {:then price}
+                                    {buy ? price.high : price.low}
+                                {/await}
+                            </strong>
                         </div>
                     </div>
 
