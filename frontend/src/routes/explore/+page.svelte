@@ -1,44 +1,79 @@
 <script lang="ts">
-    import Watchlist from "$components/Watchlist.svelte";
+    import WatchlistItem from "$components/WatchlistItem.svelte";
     import WatchlistAdd from "$components/WatchlistAdd.svelte";
+    import WatchlistMinus from "$components/WatchlistMinus.svelte";
     import Search from "$components/Search.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
     import News from "$components/News.svelte";
+    import NewsPanel from "$components/NewsPanel.svelte";
+    import TradePanel from "$components/TradePanel.svelte";
 
-    import { watchlist, currentStock } from "$lib/stores";
+    import {
+        defaultWatchlist,
+        currentStock,
+        user,
+        userWatchlist,
+    } from "$lib/stores";
+    import api from "$lib/api";
+    import { browser } from "$app/environment";
 
     let graphWidth = 0;
     let graphHeight = 0;
 
-    const news = [
+    let activeTrade = false;
+
+    function click() {
+        if ($user) {
+            activeTrade = true;
+        } else {
+            alert("Please log in first.");
+        }
+    }
+
+    const newWatchlistRequest = () => api
+        .user()
+        .watchlist()
+        .then((response) => {
+            userWatchlist.set(response.tickers);
+            return response.tickers;
+        });
+
+    $: if ($user && browser) newWatchlistRequest();
+
+    $: news = [
         {
-            title: "Some Positive News About Apple",
-            source: "Newswires",
-            time: "1 hour ago",
-            positive: true,
-            url: "/",
+            title: "Why one strategist sees a real risk of World War 3.1, whose battleground will be microchips",
+            publisher: "MarketWatch",
+            published_utc: "2023-02-26T13:56:00Z",
+            description:
+                "Peter Tchir, head of macro strategy at Academy Securities, dubs a potential war over semiconductors World War 3.1",
+            url: "https://www.marketwatch.com/story/why-one-strategist-sees-a-real-risk-of-world-war-3-1-whose-battleground-will-be-microchips-8eec0e96",
+            sentiment: true,
         },
         {
-            title: "Some Negative News About Apple",
-            source: "Newswires",
-            time: "2 hours ago",
-            positive: false,
+            title: `Some Negative News About ${$currentStock.name}`,
+            publisher: "Newswires",
+            published_utc: "2023-02-21T10:00:00Z",
+            description: "Some description",
             url: "/",
+            sentiment: false,
         },
         {
-            title: "Some Negative News About Apple",
-            source: "Newswires",
-            time: "3 hours ago",
-            positive: false,
+            title: `Some Negative News About ${$currentStock.name}`,
+            publisher: "Newswires",
+            published_utc: "2023-02-20T18:11:51Z",
+            description: "Some description",
             url: "/",
+            sentiment: false,
         },
         {
-            title: "Some Positive News About Apple",
-            source: "Newswires",
-            time: "5 hours ago",
-            positive: true,
+            title: `Some Positive News About ${$currentStock.name}`,
+            publisher: "Newswires",
+            published_utc: "2023-02-20T13:00:00Z",
+            description: "Some description",
             url: "/",
+            sentiment: true,
         },
     ];
 </script>
@@ -57,6 +92,9 @@
             </div>
 
             <div class="level-right">
+                <div class="level-item">
+                    <WatchlistMinus />
+                </div>
                 <div class="level-item">
                     <WatchlistAdd />
                 </div>
@@ -78,9 +116,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#each $watchlist as stock}
-                            <Watchlist {stock} />
-                        {/each}
+                        {#if $user}
+                            {#each $userWatchlist as ticker (ticker)}
+                                <WatchlistItem {ticker} />
+                            {/each}
+                        {:else}
+                            {#each $defaultWatchlist as ticker (ticker)}
+                                <WatchlistItem {ticker} />
+                            {/each}
+                        {/if}
                     </tbody>
                 </table>
             </div>
@@ -134,16 +178,19 @@
                 {/each}
 
                 <div class="block is-flex is-justify-content-center">
-                    <button class="button is-outline is-small is-rounded"
-                        >More news</button>
+                    <NewsPanel />
                 </div>
             </div>
         </div>
         <hr style="background: #4a4a4a; height: 1px" />
         <div class="block is-flex is-justify-content-center">
-            <button class="button is-medium is-info">
+            <button class="button is-medium is-info" on:click={click}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
     </div>
 </div>
+
+{#if activeTrade}
+    <TradePanel close={() => (activeTrade = false)} />
+{/if}

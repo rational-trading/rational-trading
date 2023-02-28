@@ -1,11 +1,10 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { currentStock } from "$lib/stores";
-    import type { Stock } from "$lib/types";
-
+    import { currentStock, stocks } from "$lib/stores";
     import { browser } from "$app/environment";
 
-    export let stock: Stock;
+    export let ticker: string;
+    const stock = $stocks.get(ticker);
 
     let request = api.pendingRequest<{
         last: number;
@@ -36,7 +35,9 @@
     $: selected = stock.ticker === $currentStock.ticker;
 
     function click() {
-        currentStock.set(stock);
+        if ($currentStock !== stock) {
+            currentStock.set(stock);
+        }
     }
 </script>
 
