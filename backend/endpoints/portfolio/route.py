@@ -77,12 +77,13 @@ class HoldingSchema(Schema):
         return HoldingSchema(
             ticker=model.stock.ticker,
             units=float(model.units),
-            value=current_price * float(model.units),
-            unrealised_gain=calculate_unrealised_gain(model, current_price))
+            value=round(current_price * float(model.units), 2),
+            unrealised_gain=round(
+                calculate_unrealised_gain(model, current_price), 2))
 
 
-@router.get("/holdings", response=List[HoldingSchema])
-@transaction.atomic
+@ router.get("/holdings", response=List[HoldingSchema])
+@ transaction.atomic
 def holdings(request: AuthenticatedRequest) -> List[HoldingSchema]:
     user = UserModel.objects.get(username=request.auth)
     holdings = HoldingModel.objects.filter(user=user)
