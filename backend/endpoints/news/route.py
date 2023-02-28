@@ -37,21 +37,17 @@ class TickerArticleDataclass:
     tickers: list[str]
 
 @router.get("/news/", response=list[ArticleSchema])
-def news(request: HttpRequest, ticker: str, n:int=20, sort:str="recent") -> list[ArticleSchema]:
+def news(request: HttpRequest, ticker: str, n:int=20) -> list[ArticleSchema]:
     """
     Gets the list of the n most recent articles about ticker.
     """
-    articles = ArticleModel.objects.filter(stocks=ticker) # get articles from database
+    articles = ArticleModel.objects.filter(stocks__in=[ticker]) # get articles from database
+    articles = [article for article in articles]
 
-    if sort == "recent":
-        # todo: return sorted list by recency
-        return []
-    elif sort == "objectivity":
-        # todo: return sorted list by objectivity
-        return []
-    
-    # Simon - currently trying to understand how to interact with database system
-    return [ArticleSchema.from_model(article) for article in articles]
+    # get all articles from database, but only return n most objective
+    articles.sort(key=lambda x: x.objectivity, reverse=True)
+
+    return [ArticleSchema.from_model(article) for article in articles[:n]]
 
 
 

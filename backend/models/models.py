@@ -40,6 +40,8 @@ class ArticleModel(Model):  # type: ignore
     description = models.TextField()
     published = models.DateTimeField()
     stocks = models.ManyToManyField(StockModel)
+    polarity = models.FloatField()
+    objectivity = models.FloatField()
 
     @staticmethod
     def create_typed(article_id: str, publisher: PublisherModel, url: str, title: str, description: str, published: datetime, stocks: List[StockModel]) -> 'ArticleModel':
