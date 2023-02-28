@@ -8,7 +8,8 @@
         stocks,
     } from "$lib/stores";
 
-    const newRequest = () => api.user().watchlist_remove({ ticker: $currentStock.ticker });
+    const newRequest = () =>
+        api.user().watchlist_remove({ ticker: $currentStock.ticker });
 
     function minus() {
         if ($user) {
@@ -17,7 +18,6 @@
                 if (index !== -1) {
                     newRequest();
                     tickers.splice(index, 1);
-                    return tickers;
                 }
                 return tickers;
             });
@@ -32,7 +32,6 @@
                 const index = tickers.indexOf($currentStock.ticker);
                 if (index !== -1) {
                     tickers.splice(index, 1);
-                    return tickers;
                 }
                 return tickers;
             });

@@ -10,9 +10,7 @@
         <!-- Left side -->
         <div class="level-left">
             <div class="level-item">
-                <p class="subtitle has-text-{color}">
-                    Some relevant information
-                </p>
+                <p class="subtitle has-text-{color}">Some information</p>
             </div>
         </div>
 
@@ -25,11 +23,6 @@
     </nav>
 
     <div class="content">
-        <p>
-            The actual content. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Proin ornare magna eros, eu pellentesque tortor
-            vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis
-            feugiat facilisis.
-        </p>
+        <p>The actual content.</p>
     </div>
 </article>
