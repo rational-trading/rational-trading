@@ -32,19 +32,6 @@ class ArticleSchema(Schema):
             text_score = model.text_score)
     
 
-# What's this used for?
-@dataclass
-class ArticleDataclass:
-    article_id: str 
-    publisher: str
-    url: str
-    title: str
-    description: str
-    date: str
-    tickers: list[str]
-    objectivity: float
-    text_score: float
-
 @router.get("/news/", response=list[ArticleSchema])
 def news(request: HttpRequest, ticker: str, n:int=20) -> list[ArticleSchema]:
     """
