@@ -1,0 +1,35 @@
+<script lang="ts">
+    const sentiment = true;
+    const color = "success";
+</script>
+
+<article class="tile is-child box">
+    <p class="title mb-1">Title</p>
+
+    <nav class="level">
+        <!-- Left side -->
+        <div class="level-left">
+            <div class="level-item">
+                <p class="subtitle has-text-{color}">
+                    Some relevant information
+                </p>
+            </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="level-right">
+            <span class="icon has-text-{color}">
+                <i class="fas fa-arrow-trend-{sentiment ? 'up' : 'down'}" />
+            </span>
+        </div>
+    </nav>
+
+    <div class="content">
+        <p>
+            The actual content. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Proin ornare magna eros, eu pellentesque tortor
+            vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis
+            feugiat facilisis.
+        </p>
+    </div>
+</article>

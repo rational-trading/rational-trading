@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { watchlist, currentStock } from "$lib/stores";
+    import { currentStock } from "$lib/stores";
 
     let keyStats = true;
 
@@ -33,10 +33,6 @@
         <p>
             Current stock: {$currentStock.ticker}, {$currentStock.name}, {$currentStock.exchange}
         </p>
-        <p>Watchlist:</p>
-        {#each $watchlist as stock}
-            <p>{stock.ticker}, {stock.name}, {stock.exchange}</p>
-        {/each}
     </div>
 {:else}
     <!-- Finances -->
