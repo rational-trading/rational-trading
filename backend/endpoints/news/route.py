@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 from ninja import Router, Schema
 from django.http.request import HttpRequest
+from lib.nlp.scoring import current_article_recency, current_article_relevance, current_article_reputation
 from models.models import ArticleModel
 
 router = Router()
@@ -14,8 +14,9 @@ class ArticleSchema(Schema):
     description: str
     date: int
     tickers: list[str]
-    objectivity: float
     normalised_sentiment: float
+    reputation: float
+    recency: float
 
     @staticmethod
     def from_model(model: ArticleModel) -> 'ArticleSchema':
@@ -27,8 +28,9 @@ class ArticleSchema(Schema):
             description=model.description,
             date=model.published.timestamp(),
             tickers=[stock.ticker for stock in model.stocks.all()],
-            objectivity=model.objectivity,
-            normalised_sentiment=model.normalised_sentiment)
+            normalised_sentiment=model.normalised_sentiment,
+            reputation=current_article_reputation(model),
+            recency=current_article_recency(model))
 
 
 @router.get("/news/", response=list[ArticleSchema])
@@ -39,7 +41,7 @@ def news(request: HttpRequest, ticker: str, n: int = 20) -> list[ArticleSchema]:
     articles = list(ArticleModel.objects.filter(
         stocks__in=[ticker]))  # get articles from database
 
-    # get all articles from database, but only return n most objective
-    articles.sort(key=lambda x: x.objectivity, reverse=True)
+    # get all articles from database, but only return n most relevant
+    articles.sort(key=lambda x: current_article_relevance(x), reverse=True)
 
     return [ArticleSchema.from_model(article) for article in articles[:n]]

@@ -29,7 +29,7 @@ def precompute(N: int = 10) -> list[float]:
     tickers = ["AAPL", "MSFT", "AMZN,", "NVDA", "GOOGL", "TSLA", "BRK.B", "GOOG",
                "XOM", "UNH", "JNJ", "JPM", "META", "V", "PG", "HD", "MA", "CVX", "MRK", "LLY"]
     p = PolygonAPI()
-    articles = p.get_recent_news(N, tickers)
+    articles = p.search_all_recent_news(N, tickers)
     sentiments = [AnalysisResult.from_article(
         article).sentiment for article in articles]
     return list(sentiments)
@@ -42,7 +42,8 @@ if __name__ == "__main__":
     print("Precomputed list dumped to file: lib/precomputed_result")
 
     api = PolygonAPI()
-    news = api.get_news("AAPL", 10)
+    news = api.get_recent_news("AAPL", 10)
     print("List of TickerArticles, with normalised scores:")
     for a in news:
-        print(NormalisedAnalysisResult.from_article(a).normalised_sentiment)
+        print(NormalisedAnalysisResult.from_article(
+            a).normalised_sentiment, a.description)

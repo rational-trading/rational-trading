@@ -8,7 +8,7 @@ from lib.polygon_api import TickerArticle
 class AnalysisResult:
     """
     Objectivity ranges from 0 to 1.
-    Sentiment is weighted by objectivity, and 
+    Sentiment ranges from -1 to 1.
     """
     objectivity: float
     sentiment: float
@@ -20,7 +20,7 @@ class AnalysisResult:
         objectivity = 1-t.subjectivity
         assert isinstance(objectivity, float)
 
-        sentiment = t.polarity * objectivity
+        sentiment = t.polarity
         assert isinstance(sentiment, float)
 
         return AnalysisResult(objectivity, sentiment)

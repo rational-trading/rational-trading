@@ -6,10 +6,9 @@ https://polygon-api-client.readthedocs.io/en/latest/index.html
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from http.client import HTTPResponse
-from typing import Iterator, List
+from typing import Generator, Iterator, List
 from polygon import RESTClient
-
-from polygon.rest.models import Sort, TickerNews, Agg
+from polygon.rest.models import Sort, TickerNews, Agg, Order
 
 from config.env import env
 from lib.exceptions import FriendlyClientException
@@ -120,13 +119,13 @@ class PolygonAPI():
         )
         return f
 
-    def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
+    def get_recent_news(self, ticker: str, max_items: int) -> Generator[TickerArticle, None, None]:
         """
-        Returns a list of N annotated news articles (i.e. 'TickerArticle's)
+        Returns a generator that yeilds at most "max_items" `TickerArticle`s.
         """
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
-            ticker=ticker, limit=1)
-        articles = []
+            ticker=ticker,
+            sort="published_utc", limit=max_items, order=Order.DESC)
 
         for _ in range(max_items):
             n = news_generator.__next__()
@@ -143,13 +142,11 @@ class PolygonAPI():
 
             article = TickerArticle(article_id=n.id, title=n.title, description=desc, url=n.article_url,
                                     date=n.published_utc, publisher=n.publisher.name, tickers=n.tickers)
-            articles.append(article)
+            yield article
 
-        return articles
-
-    def get_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
+    def search_all_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
         """
-        Gets the N most recent news articles that talk about any of the stocks in tickers
+        Searches for the N most recent news articles that talk about any of the stocks in tickers
         """
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
             sort="published_utc")
