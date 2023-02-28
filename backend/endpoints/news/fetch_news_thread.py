@@ -8,7 +8,7 @@ from lib.nlp_precompute import normalise_nlp_scores
 from models.models import StockModel, ArticleModel, PublisherModel
 from lib.polygon_api import PolygonAPI
 
-WAIT_TIME_SECONDS = 5
+WAIT_TIME_SECONDS = 60
 NUM_ARTICLES_TO_GET = 20
 
 
