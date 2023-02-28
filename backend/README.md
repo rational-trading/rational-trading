@@ -58,3 +58,12 @@ Note: Commands should be ran from this current folder.
 # Polygon API
 
 1) To use the API, create a new file named `.env` in `/config`, with all the variables specified in `.env.example` filled in.
+
+
+# Docker
+
+1) To run the project in Docker, change the name of `docker-compose.yml.TEMPLATE` to `docker-compose.yml`
+
+2) Change the contents of this file so that `POLYGON_API_KEY` and `JWT_SIGNING_KEY` are up to date.
+
+3) Save the file then run `docker compose up` from `rational-trading\backend\`
