@@ -13,11 +13,11 @@
     let units: number;
     let totalValue: number;
 
-    let lowPrice = 153.22;
-    let highPrice = 152.98;
+    const lowPrice = 153.22;
 
     // eslint-disable-next-line no-restricted-globals
     $: validUnits = !isNaN(units);
+    // eslint-disable-next-line no-restricted-globals
     $: validTotalValue = !isNaN(totalValue);
 </script>
 
@@ -47,9 +47,9 @@
                 <div class="block" style="height: 55%">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
-                            class="button is-large {buy
-                                ? 'is-info is-selected'
-                                : ''}"
+                            class="button is-large {buy ?
+                                'is-info is-selected' :
+                                ''}"
                             on:click={() => (buy = true)}
                             style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                             <div>
@@ -58,9 +58,9 @@
                             </div>
                         </button>
                         <button
-                            class="button is-large {buy
-                                ? ''
-                                : 'is-info is-selected'}"
+                            class="button is-large {buy ?
+                                '' :
+                                'is-info is-selected'}"
                             on:click={() => (buy = false)}
                             style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                             <div>
@@ -72,6 +72,7 @@
 
                     <!-- units -->
                     <div class="field" style="height: 30%">
+                        <!-- svelte-ignore a11y-label-has-associated-control -->
                         <label class="label">Units</label>
                         <div class="control">
                             <input
@@ -79,8 +80,7 @@
                                 type="text"
                                 placeholder="Units"
                                 bind:value={units}
-                                on:input={() =>
-                                    (totalValue = units * lowPrice)} />
+                                on:input={() => (totalValue = units * lowPrice)} />
                         </div>
                         {#if !validUnits}
                             <p class="help is-danger">
@@ -101,19 +101,19 @@
                     <!-- total value -->
 
                     <div class="field" style="height: 30%">
+                        <!-- svelte-ignore a11y-label-has-associated-control -->
                         <label class="label">Total value</label>
                         <div class="control">
                             <input
-                                class="input {validTotalValue
-                                    ? ''
-                                    : 'is-danger'}"
+                                class="input {validTotalValue ?
+                                    '' :
+                                    'is-danger'}"
                                 type="text"
-                                placeholder="Units"
+                                placeholder="Total value"
                                 bind:value={totalValue}
-                                on:input={() =>
-                                    (units = totalValue / lowPrice)} />
+                                on:input={() => (units = totalValue / lowPrice)} />
                         </div>
-                        {#if !validUnits}
+                        {#if !validTotalValue}
                             <p class="help is-danger">
                                 Please enter a valid number.
                             </p>

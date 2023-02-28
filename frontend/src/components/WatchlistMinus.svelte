@@ -8,8 +8,7 @@
         stocks,
     } from "$lib/stores";
 
-    const newRequest = () =>
-        api.user().watchlist_remove({ ticker: $currentStock.ticker });
+    const newRequest = () => api.user().watchlist_remove({ ticker: $currentStock.ticker });
 
     function minus() {
         if ($user) {
