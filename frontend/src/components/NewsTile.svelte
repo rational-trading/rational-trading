@@ -12,7 +12,7 @@
 <article
     class="tile is-child box"
     on:click={click}
-    style="background-color: {selected ? '#133658' : ''}">
+    style="background-color: {selected ? '#2C4869' : ''}">
     <p class="title mb-1">Title</p>
 
     <nav class="level">
@@ -42,6 +42,6 @@
     }
 
     article:hover {
-        background-color: #303030;
+        background-color: #181818;
     }
 </style>

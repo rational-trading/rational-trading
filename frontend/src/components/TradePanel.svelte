@@ -13,12 +13,16 @@
     let units: number;
     let totalValue: number;
 
+    export let ticker: string;
+
     const lowPrice = 153.22;
 
     // eslint-disable-next-line no-restricted-globals
-    $: validUnits = !isNaN(units);
+    $: validUnits = !isNaN(units) && units > 0;
     // eslint-disable-next-line no-restricted-globals
-    $: validTotalValue = !isNaN(totalValue);
+    $: validTotalValue = !isNaN(totalValue) && totalValue > 0;
+
+    function submit() {}
 </script>
 
 <div class="modal is-active">
@@ -44,12 +48,12 @@
 
                 <hr style="background: #4a4a4a; height: 1px" />
 
-                <div class="block" style="height: 55%">
+                <div class="block" style="height: 45%">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
-                            class="button is-large {buy ?
-                                'is-info is-selected' :
-                                ''}"
+                            class="button is-large {buy
+                                ? 'is-info is-selected'
+                                : ''}"
                             on:click={() => (buy = true)}
                             style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                             <div>
@@ -58,9 +62,9 @@
                             </div>
                         </button>
                         <button
-                            class="button is-large {buy ?
-                                '' :
-                                'is-info is-selected'}"
+                            class="button is-large {buy
+                                ? ''
+                                : 'is-info is-selected'}"
                             on:click={() => (buy = false)}
                             style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                             <div>
@@ -71,7 +75,7 @@
                     </div>
 
                     <!-- units -->
-                    <div class="field" style="height: 30%">
+                    <div class="field" style="height: 25%">
                         <!-- svelte-ignore a11y-label-has-associated-control -->
                         <label class="label">Units</label>
                         <div class="control">
@@ -80,7 +84,8 @@
                                 type="text"
                                 placeholder="Units"
                                 bind:value={units}
-                                on:input={() => (totalValue = units * lowPrice)} />
+                                on:input={() =>
+                                    (totalValue = units * lowPrice)} />
                         </div>
                         {#if !validUnits}
                             <p class="help is-danger">
@@ -91,27 +96,27 @@
 
                     <div
                         class="mb-5"
-                        style="width: 100%; height: 15px; border-bottom: 1px solid #4a4a4a; text-align: center">
+                        style="width: 100%; height: 15px; border-bottom: 1px solid #b5b5b5; text-align: center">
                         <span
-                            style="color: #4a4a4a; background-color: #363636; padding: 0 10px;">
+                            style="color: #b5b5b5; background-color: #363636; padding: 0 10px;">
                             or
                         </span>
                     </div>
 
                     <!-- total value -->
-
-                    <div class="field" style="height: 30%">
+                    <div class="field" style="height: 25%">
                         <!-- svelte-ignore a11y-label-has-associated-control -->
                         <label class="label">Total value</label>
                         <div class="control">
                             <input
-                                class="input {validTotalValue ?
-                                    '' :
-                                    'is-danger'}"
+                                class="input {validTotalValue
+                                    ? ''
+                                    : 'is-danger'}"
                                 type="text"
                                 placeholder="Total value"
                                 bind:value={totalValue}
-                                on:input={() => (units = totalValue / lowPrice)} />
+                                on:input={() =>
+                                    (units = totalValue / lowPrice)} />
                         </div>
                         {#if !validTotalValue}
                             <p class="help is-danger">
@@ -123,8 +128,8 @@
 
                 <hr style="background: #4a4a4a; height: 1px" />
 
-                <div class="block" style="height: 20%">
-                    <header class="title is-6">Order info</header>
+                <div class="block" style="height: 15%">
+                    <header class="title is-6 mb-2">Order info</header>
 
                     <div style="display: flex; justify-content: space-between;">
                         <div style="vertical-align: baseline; ">Units</div>
@@ -151,6 +156,24 @@
                                 >{validTotalValue ? totalValue : "-"}</strong>
                         </div>
                     </div>
+                </div>
+
+                <hr style="background: #4a4a4a; height: 1px" />
+
+                <div class="block">
+                    <!-- force refresh button label -->
+                    {#key units}
+                        <button
+                            class="button is-large is-info"
+                            style="width: 100%"
+                            on:click={submit}
+                            disabled={!validUnits}>
+                            <strong
+                                >{buy ? "Buy" : "Sell"}
+                                {validUnits ? units : ""}
+                                {stock.exchange}:{stock.ticker}</strong>
+                        </button>
+                    {/key}
                 </div>
             </div>
 
@@ -186,6 +209,39 @@
 
                 <div class="block mr-5">
                     <header class="title is-5">
+                        And did any financial stats play into this?
+                    </header>
+
+                    <div class="columns">
+                        <div class="column">
+                            <label class="checkbox">
+                                <input type="checkbox" />
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="column">
+                            <label class="checkbox">
+                                <input type="checkbox" />
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="column">
+                            <label class="checkbox">
+                                <input type="checkbox" />
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="column">
+                            <label class="checkbox">
+                                <input type="checkbox" />
+                                Remember me
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block mr-5">
+                    <header class="title is-5">
                         ...or was it something else?
                     </header>
 
@@ -193,18 +249,6 @@
                         class="textarea"
                         placeholder="3 lines of textarea"
                         rows="3" />
-                </div>
-
-                <div class="block mr-5">
-                    <button
-                        class="button is-large is-info"
-                        style="width: 100%"
-                        disabled={!validUnits}>
-                        <strong
-                            >{buy ? "Buy" : "Sell"}
-                            {validUnits ? units : ""}
-                            {stock.exchange}:{stock.ticker}</strong>
-                    </button>
                 </div>
             </div>
         </div>

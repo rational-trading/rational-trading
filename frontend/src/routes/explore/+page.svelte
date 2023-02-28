@@ -31,13 +31,14 @@
         }
     }
 
-    const newWatchlistRequest = () => api
-        .user()
-        .watchlist()
-        .then((response) => {
-            userWatchlist.set(response.tickers);
-            return response.tickers;
-        });
+    const newWatchlistRequest = () =>
+        api
+            .user()
+            .watchlist()
+            .then((response) => {
+                userWatchlist.set(response.tickers);
+                return response.tickers;
+            });
 
     $: if ($user && browser) newWatchlistRequest();
 
@@ -184,7 +185,10 @@
         </div>
         <hr style="background: #4a4a4a; height: 1px" />
         <div class="block is-flex is-justify-content-center">
-            <button class="button is-medium is-info" on:click={click}>
+            <button
+                class="button is-medium is-info"
+                style="width: 100%"
+                on:click={click}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
