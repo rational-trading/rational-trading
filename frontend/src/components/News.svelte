@@ -1,25 +1,24 @@
 <script lang="ts">
-    interface News {
-        positive: boolean;
-        source: string;
-        time: string;
-        title: string;
-        url: string;
-    }
+    import { capitalize } from "$lib/functions";
+    import type { News } from "$lib/types";
+    import TimeAgo from "javascript-time-ago";
 
     export let data: News;
-
-    const sentiment = data.positive ? "success" : "warning";
+    const color = data.sentiment ? "success" : "warning";
+    const timeAgo = new TimeAgo("en-US");
 </script>
 
 <div class="block card">
     <header class="card-header">
-        <a class="card-header-title has-text-{sentiment}" href={data.url}>
-            {data.time} · {data.source}
+        <a class="card-header-title has-text-{color}" href={data.url}>
+            {capitalize(timeAgo.format(new Date(data.published_utc)))} · {data.publisher}
         </a>
-        <div class="card-header-icon has-text-{sentiment}">
+        <div class="card-header-icon has-text-{color}">
             <span class="icon">
-                <i class="fas fa-arrow-trend-{data.positive ? 'up' : 'down'}" />
+                <i
+                    class="fas fa-arrow-trend-{data.sentiment ?
+                        'up' :
+                        'down'}" />
             </span>
         </div>
     </header>

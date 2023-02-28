@@ -5,7 +5,7 @@
 
     let text = $currentStock.ticker;
 
-    $: filteredStocks = $stocks.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
+    $: filteredStocks = [...$stocks.values()].filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>

@@ -5,7 +5,11 @@
     import Login from "$components/Login.svelte";
     import Signup from "$components/Signup.svelte";
     import Logout from "$components/Logout.svelte";
+    import TimeAgo from "javascript-time-ago";
+    import en from "javascript-time-ago/locale/en";
     import { browser } from "$app/environment";
+
+    TimeAgo.addDefaultLocale(en);
 
     // Attempt to re-authenticate on refresh.
     if (browser) {
@@ -31,21 +35,28 @@
 
             <a class="navbar-item" href="/explore"> Explore </a>
 
-            <a class="navbar-item" href="/portfolio"> Portfolio </a>
+            {#if $user}
+                <a class="navbar-item" href="/portfolio"> Portfolio </a>
+            {/if}
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    {#if $user}
-                        <p class="navbar-item mx-3">{$user.username}</p>
+            {#if $user}
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <p class="navbar-link">{$user.username}</p>
+
+                    <div class="navbar-dropdown">
                         <Logout />
-                    {:else}
+                    </div>
+                </div>
+            {:else}
+                <div class="navbar-item">
+                    <div class="buttons">
                         <Signup />
                         <Login />
-                    {/if}
+                    </div>
                 </div>
-            </div>
+            {/if}
         </div>
     </div>
 </nav>

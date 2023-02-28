@@ -1,4 +1,6 @@
 <script lang="ts">
+    import TradePanel from "./TradePanel.svelte";
+
     interface Asset {
         company: string;
         symbol: string;
@@ -9,6 +11,12 @@
     }
 
     export let data: Asset;
+
+    let activeTrade = false;
+
+    function click() {
+        activeTrade = true;
+    }
 
     const colorToday = data.glToday >= 0 ? "success" : "warning";
     const colorOverall = data.glOverall >= 0 ? "success" : "warning";
@@ -63,7 +71,11 @@
             </div>
         </div>
         <div class="column has-text-centered">
-            <button class="button is-info">Buy / Sell</button>
+            <button class="button is-info" on:click={click}>Buy / Sell</button>
         </div>
     </div>
 </div>
+
+{#if activeTrade}
+    <TradePanel close={() => (activeTrade = false)} />
+{/if}
