@@ -4,15 +4,14 @@ Precomputing numerical scores in order to normalise the given score based on its
 
 
 from typing import List
-import lib.scoring
+import lib.numerical_scoring
 
-numerical_results = [0.747, 0.465, 0.812, 0.753, 0.753, 0.506,
-                     0.694, 0.812, 0.7, 0.8, 0.718, 0.676, 0.753,
-                     0.688, 0.876, 0.841, 0.994, 0.876, 0.976, 0.794,
-                     0.865, 0.876, 0.924, 0.694, 0.459, 0.759, 0.953, 0.788,
-                     0.812, 0.618, 0.824, 0.694, 0.976, 0.694, 0.818, 0.818,
-                     0.6, 0.718, 0.959, 0.929, 0.988, 0.665, 0.871, 0.982, 0.918,
-                     0.459, 0.976, 0.718, 0.953]
+numerical_results = [0.767, 0.552, 0.695, 0.767, 0.771, 0.571, 0.581, 0.819, 0.79, 
+                     0.857, 0.743, 0.648, 0.771, 0.705, 0.933, 0.971, 0.981, 0.886, 
+                     0.905, 0.705, 0.862, 0.829, 0.971, 0.771, 0.529, 0.733, 0.933, 
+                     0.795, 0.819, 0.571, 0.776, 0.724, 0.952, 0.724, 0.838, 0.838, 
+                     0.605, 0.743, 0.952, 0.914, 0.962, 0.714, 0.581, 0.971, 0.905, 
+                     0.538, 0.952, 0.743, 0.914, 0.562]
 
 
 def main() -> None:
@@ -25,11 +24,11 @@ def main() -> None:
     score_list: List[float] = []
     count = 0
     for t in tickers50:
-        print(count)
-        print(score_list)
-        score = lib.scoring.get_financial_endpoints(t)["score"]
+        score = lib.numerical_scoring.get_financial_endpoints(t)["score"]
         score_list.append(round(score, 3))
         count += 1
+    print(count)
+    print(score_list)
 
 
 if __name__ == "__main__":

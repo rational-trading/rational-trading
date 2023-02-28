@@ -24,10 +24,10 @@ from lib.polygon_api import PolygonAPI
 
 # these are the ratios we are gonna use and their weights(0-1)
 ratios_weights = {
-    "equity_risk": 0.1,
+    "equity_risk": 0.4,
     "current_ratio": 0.2,
     # (cannot use roic becasue of the API) "roic": 0.9,
-    "debt_to_equity": 0.4,
+    "debt_to_equity": 0.5,
     "pe": 1
 }
 
@@ -180,9 +180,12 @@ def get_financial_endpoints(ticker: str) -> Dict[str, float]:
     debt_to_equity = debt / equity
     pe = price / eps
 
+    score = scoring(current_ratio, debt_to_equity, pe, equity)
+
+
     # use the scoring system
     # (cannot use roic becasue of the API)
-    return {"score": scoring(current_ratio, debt_to_equity, pe, equity),
+    return {"score": score,
             "price_earning_ratio": pe,
             "current_ratio": current_ratio,
             "debt_to_equity": debt_to_equity,
