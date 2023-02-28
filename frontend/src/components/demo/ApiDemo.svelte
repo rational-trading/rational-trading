@@ -1,4 +1,5 @@
 <script lang="ts">
+    import GetNews from "./GetNews.svelte";
     import PortfolioHoldings from "./PortfolioHoldings.svelte";
     import PriceHistory from "./PriceHistory.svelte";
     import PriceRecent from "./PriceRecent.svelte";
@@ -15,6 +16,8 @@
         </div>
         <div class="column is-one-third">
             <PortfolioHoldings />
+            <hr />
+            <GetNews />
         </div>
     </div>
 </div>

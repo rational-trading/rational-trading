@@ -33,7 +33,7 @@ class ArticleSchema(Schema):
             recency=current_article_recency(model))
 
 
-@router.get("/news/", response=list[ArticleSchema])
+@router.get("/news", response=list[ArticleSchema])
 def news(request: HttpRequest, ticker: str, n: int = 20) -> list[ArticleSchema]:
     """
     Gets the list of the n most objective articles about ticker.

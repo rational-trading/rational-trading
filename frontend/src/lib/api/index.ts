@@ -3,10 +3,15 @@ import { AuthEndpoint } from "./auth";
 import { UserEndpoint } from "./user";
 import { PortfolioRoute } from "./portfolio";
 import { TradesRoute } from "./trades";
+import { NewsRoute } from "./news";
 
 class Api {
     auth(): AuthEndpoint {
         return new AuthEndpoint();
+    }
+
+    news() {
+        return new NewsRoute();
     }
 
     portfolio(): PortfolioRoute {
