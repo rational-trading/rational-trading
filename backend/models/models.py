@@ -42,6 +42,7 @@ class ArticleModel(Model):  # type: ignore
     stocks = models.ManyToManyField(StockModel)
     polarity = models.FloatField()
     objectivity = models.FloatField()
+    text_score = models.FloatField()
 
     @staticmethod
     def create_typed(article_id: str, publisher: PublisherModel, url: str, title: str, description: str, published: datetime, stocks: List[StockModel]) -> 'ArticleModel':

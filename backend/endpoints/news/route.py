@@ -8,33 +8,42 @@ from lib.polygon_api import PolygonAPI, normalise_scores
 router = Router()
 
 class ArticleSchema(Schema):
+    article_id: str 
+    publisher: str
+    url: str
     title: str
     description: str
-    url: str
     date: str
-    publisher: str
-    score: float
     tickers: list[str]
+    objectivity: float
+    text_score: float
 
     @staticmethod
     def from_model(model: ArticleModel) -> 'ArticleSchema':
         return ArticleSchema(
+            article_id = model.article_id,
+            publisher = model.publisher,
+            url = model.url,
             title = model.title,
             description = model.description,
-            url = model.url,
             date = model.published,
-            publisher = model.publisher,
-            tickers = model.stocks)
+            tickers = model.stocks,
+            objectivity = model.objectivity,
+            text_score = model.text_score)
     
+
+# What's this used for?
 @dataclass
-class TickerArticleDataclass:
+class ArticleDataclass:
+    article_id: str 
+    publisher: str
+    url: str
     title: str
     description: str
-    url: str
     date: str
-    publisher: str
-    score: float
     tickers: list[str]
+    objectivity: float
+    text_score: float
 
 @router.get("/news/", response=list[ArticleSchema])
 def news(request: HttpRequest, ticker: str, n:int=20) -> list[ArticleSchema]:

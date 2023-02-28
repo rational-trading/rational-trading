@@ -25,7 +25,8 @@ def fetch_task() -> None:
                     description = article.description,
                     published = article.date,
                     stocks = [StockModel(t) for t in article.tickers],
-                    objectivity = article.objectivity
+                    objectivity = article.objectivity,
+                    text_score = article.score
                 )
         sleep(WAIT_TIME_SECONDS)
 
