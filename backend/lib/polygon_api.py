@@ -12,6 +12,7 @@ from polygon import RESTClient
 from polygon.rest.models import Sort, TickerNews, Agg
 
 from config.env import env
+from endpoints.error import FriendlyClientException
 from lib.nlp import get_text_score
 from lib.utils import guardNone
 
@@ -90,11 +91,17 @@ class PolygonAPI():
         return f
 
     def get_financials(self, ticker: str) -> TickerFinancials:
+
         financials = self.client.vx.list_stock_financials(
             ticker=ticker, limit=1, timeframe="annual", include_sources=True)
+
         assert not isinstance(financials, HTTPResponse)
 
-        latest = next(financials).financials
+        try:
+            latest = next(financials).financials
+        except Exception as e:
+            raise FriendlyClientException("Financials not found!")
+
         assert latest is not None
 
         assert latest.balance_sheet is not None

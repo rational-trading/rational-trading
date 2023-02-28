@@ -169,11 +169,8 @@ class Financials:
 
         price = api.recent_price(ticker).high
 
-        try:
-            # BS:
-            financials = api.get_financials(ticker)
-        except Exception as e:
-            raise FriendlyClientException("Financials not found!")
+        # BS:
+        financials = api.get_financials(ticker)
 
         current_assets = financials.current_assets
         current_liabilities = financials.current_liabilities
