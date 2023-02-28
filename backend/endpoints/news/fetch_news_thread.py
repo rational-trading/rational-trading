@@ -6,27 +6,27 @@ from threading import Thread
 WAIT_TIME_SECONDS = 600 
 NUM_ARTICLES_TO_GET = 20
 
-def main():
+def main() -> None:
     t = Thread(target=fetch_task)
     t.start()
 
-def fetch_task():
-    while True():
+def fetch_task() -> None:
+    while True:
         api = PolygonAPI()
-        tickers = StockModel.objects.all() # get supported tickers from database
+        tickers = list(StockModel.objects.all()) # get supported tickers from database
         for t in tickers:
             news = normalise_scores(api.get_news(t.ticker, NUM_ARTICLES_TO_GET))
             for article in news:
-                entry = ArticleModel()
-                entry.article_id = article.article_id
-                entry.publisher = article.publisher
-                entry.url = article.url
-                entry.title = article.title
-                entry.description = article.description
-                entry.published = article.date
-                entry.stocks = article.tickers
-                entry.objectivity - article.objectivity
-                ArticleModel.objects.get_or_create(entry)
+                ArticleModel.objects.get_or_create(
+                    article_id = article.article_id,
+                    publisher = article.publisher,
+                    url = article.url,
+                    title = article.title,
+                    description = article.description,
+                    published = article.date,
+                    stocks = [StockModel(t) for t in article.tickers],
+                    objectivity = article.objectivity
+                )
         sleep(WAIT_TIME_SECONDS)
 
 if __name__ == "__main__":
