@@ -22,11 +22,22 @@
     request = newRequest();
 
     // eslint-disable-next-line no-restricted-globals
-    $: validUnits = !isNaN(units) && units > 0;
+    $: validUnits = units !== undefined && !isNaN(units) && units > 0;
     // eslint-disable-next-line no-restricted-globals
-    $: validTotalValue = !isNaN(totalValue) && totalValue > 0;
+    $: validTotalValue =
+        totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
 
-    function submit() {}
+    let textEvidence = "";
+    function submit() {
+        api.trades().make({
+            ticker: stock.ticker,
+            side: buy ? "BUY" : "SELL",
+            type: useUnits ? "UNITS" : "PRICE",
+            amount: useUnits ? units : totalValue,
+            text_evidence: textEvidence,
+            article_evidence: ["yada"],
+        });
+    }
 </script>
 
 <div class="modal is-active">
@@ -276,7 +287,8 @@
                     <textarea
                         class="textarea"
                         placeholder="3 lines of textarea"
-                        rows="3" />
+                        rows="3"
+                        bind:value={textEvidence} />
                 </div>
             </div>
         </div>
