@@ -5,6 +5,7 @@ Scroll to bottom to see usage and testing.
 
 from textblob import TextBlob
 
+
 def get_text_score(text: str) -> float:
     """
     Returns our text-based NLP score for a given article, between -1 and 1,

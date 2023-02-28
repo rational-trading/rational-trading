@@ -3,7 +3,6 @@ Polygon API class to get stock financials and news articles
 https://polygon.io/docs
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
-import pickle
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from http.client import HTTPResponse
@@ -196,26 +195,6 @@ class PolygonAPI():
 
         prices = list(map(TickerPrice.from_agg, aggs))
         return prices
-
-
-def normalise_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
-    f = open("lib/precomputed_result", "rb")
-    pre = pickle.load(f)
-    f.close()
-    ret = articles.copy()
-
-    def rank(article: TickerArticle) -> float:
-        # Normalises a singular article
-        # Naive linear scan
-        for i, rank_score in enumerate(pre):
-            if article.score < rank_score:
-                return i/len(pre)
-        return 1
-
-    for article in ret:
-        article.score = rank(article)
-                        
-    return ret
 
 
 # Testing

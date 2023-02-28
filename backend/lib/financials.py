@@ -16,7 +16,10 @@ and activate the ratios we cannot use now.
 """
 
 
+from dataclasses import dataclass
 from typing import Dict
+from endpoints.error import FriendlyClientException
+from lib.financials_precompute import normalise_financials_score
 
 from lib.polygon_api import PolygonAPI
 
@@ -149,48 +152,58 @@ def scoring(current_ratio: float, debt_to_equity: float, pe: float, equity: floa
 # ————————————————————————————————————————————————————————————————
 
 
-def get_financial_endpoints(ticker: str) -> Dict[str, float]:
+@dataclass
+class Financials:
+    price_earning_ratio: float
+    earnings_per_share: float
+    debt_to_equity: float
+    current_ratio: float
+    score: float
 
-    # make use of polygon API to get the variable values
-    api = PolygonAPI()
+    @staticmethod
+    def create(ticker: str, normalise_score: bool = True) -> 'Financials':
+        api = PolygonAPI()
 
-    # dividendV3: (this is the most recent dividend, not for a year, but won't be used for now)
-    # dividends = api.get_dividend(ticker).cash_amount
+        # dividendV3: (this is the most recent dividend, not for a year, but won't be used for now)
+        # dividends = api.get_dividend(ticker).cash_amount
 
-    price = list.pop(api.price_history(ticker)).high
+        price = api.recent_price(ticker).high
 
-    # BS:
-    financials = api.get_financials(ticker)
-    current_assets = financials.current_assets
-    current_liabilities = financials.current_liabilities
-    nc_liabilities = financials.nc_liabilities
-    # estimation to be replaced:
-    debt = 0.6 * nc_liabilities
-    equity = financials.equity
+        try:
+            # BS:
+            financials = api.get_financials(ticker)
+        except Exception as e:
+            raise FriendlyClientException("Financials not found!")
 
-    # IS:
-    # (cannot use roic becasue of the API) net_income = 1
-    # basic_earnings_per_share in IS:
-    eps = financials.basic_earnings_per_share
+        current_assets = financials.current_assets
+        current_liabilities = financials.current_liabilities
+        nc_liabilities = financials.nc_liabilities
+        # estimation to be replaced:
+        debt = 0.6 * nc_liabilities
+        equity = financials.equity
 
-    # calculate ratios
-    current_ratio = current_assets / current_liabilities
+        # IS:
+        # (cannot use roic becasue of the API) net_income = 1
+        # basic_earnings_per_share in IS:
+        eps = financials.basic_earnings_per_share
 
-    # (cannot use roic becasue of the API) roic = (net_income - dividends) / (debt + equity)
-    debt_to_equity = debt / equity
-    pe = price / eps
+        # calculate ratios
+        current_ratio = current_assets / current_liabilities
 
-    score = scoring(current_ratio, debt_to_equity, pe, equity)
+        # (cannot use roic becasue of the API) roic = (net_income - dividends) / (debt + equity)
+        debt_to_equity = debt / equity
+        pe = price / eps
 
+        score = scoring(current_ratio, debt_to_equity, pe, equity)
 
-    # use the scoring system
-    # (cannot use roic becasue of the API)
-    return {"score": score,
-            "price_earning_ratio": pe,
-            "current_ratio": current_ratio,
-            "debt_to_equity": debt_to_equity,
-            "earnings_per_share": eps
-            }
+        # (cannot use roic becasue of the API)
+        return Financials(price_earning_ratio=pe,
+                          earnings_per_share=eps,
+                          debt_to_equity=debt_to_equity,
+                          current_ratio=current_ratio,
+                          score=normalise_financials_score(
+                              score) if normalise_score else score
+                          )
 
 
 # ("AAPL")
