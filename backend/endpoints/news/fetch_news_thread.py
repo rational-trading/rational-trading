@@ -21,7 +21,7 @@ def fetch_task() -> None:
                 try:
                     ArticleModel.objects.get(article_id=article.article_id)
                 except ArticleModel.DoesNotExist:
-                    ArticleModel.objects.create(
+                    ArticleModel.create_typed(
                         article_id = article.article_id,
                         publisher = article.publisher,
                         url = article.url,
