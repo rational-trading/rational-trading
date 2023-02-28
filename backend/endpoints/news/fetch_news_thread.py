@@ -28,7 +28,7 @@ def fetch_task() -> None:
                         url = article.url,
                         title = article.title,
                         description = article.description,
-                        published = timezone.now, # article.date
+                        published = timezone.now(), # article.date
                         stocks = [StockModel(t) for t in article.tickers],
                         objectivity = article.objectivity,
                         text_score = article.score
