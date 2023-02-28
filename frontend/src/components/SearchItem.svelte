@@ -7,7 +7,9 @@
     export let onClick: () => void;
 
     function click() {
-        currentStock.set(stock);
+        if ($currentStock !== stock) {
+            currentStock.set(stock);
+        }
         onClick();
     }
 </script>
