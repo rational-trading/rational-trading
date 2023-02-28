@@ -1,25 +1,4 @@
-"""
-Create a function such that when given a ticker,
-it returns a numerical score for the financial data using 
-the Stock Financials VX in Polygon API.
-Mainly use P/E ratio to see if the stock is overpriced or not,
-also use other ratios to evaluate liquidity, capital structure and risk
-
-As the Stock Financials VX in Polygon API is experimental, 
-some of the detailed information in the financial statements is missing, 
-including “debt” under “liabilities” and “net_income_loss” in “income_statement”.
-
-According to what we have discussed with our client, we decided to estimate the value.
-Once the features are upgraded, we can replace the estimation with the real value 
-and activate the ratios we cannot use now.
-
-"""
-
 from typing import Dict
-
-from lib.polygon_api import PolygonAPI
-
-# ————————————————————————————————————————————————————————————————
 
 
 def normaliseValue(value: float, mapping: Dict[float, float]) -> float:

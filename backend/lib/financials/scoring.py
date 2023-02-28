@@ -4,6 +4,23 @@ from lib.financials.core import evaluate_current_ratio, evaluate_debt_to_equity,
 
 from lib.polygon_api import PolygonAPI
 
+"""
+Create a function such that when given a ticker,
+it returns a numerical score for the financial data using 
+the Stock Financials VX in Polygon API.
+Mainly use P/E ratio to see if the stock is overpriced or not,
+also use other ratios to evaluate liquidity, capital structure and risk
+
+As the Stock Financials VX in Polygon API is experimental, 
+some of the detailed information in the financial statements is missing, 
+including “debt” under “liabilities” and “net_income_loss” in “income_statement”.
+
+According to what we have discussed with our client, we decided to estimate the value.
+Once the features are upgraded, we can replace the estimation with the real value 
+and activate the ratios we cannot use now.
+
+"""
+
 
 precomputed_dist = [0.767, 0.552, 0.695, 0.767, 0.771, 0.571, 0.581, 0.819, 0.79,
                     0.857, 0.743, 0.648, 0.771, 0.705, 0.933, 0.971, 0.981, 0.886,
