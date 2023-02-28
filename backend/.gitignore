@@ -5,3 +5,6 @@ models/migrations/
 db.sqlite3
 config/.env
 docker-compose.yml
+node_modules/
+yarn.lock
+.vscode/

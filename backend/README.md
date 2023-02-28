@@ -66,4 +66,9 @@ Note: Commands should be ran from this current folder.
 
 2) Change the contents of this file so that `POLYGON_API_KEY` and `JWT_SIGNING_KEY` are up to date.
 
-3) Save the file then run `docker compose up` from `rational-trading\backend\`
+3) Follow all steps in `frontend/README.md`
+
+4) Save the file then run `docker compose up -d` from `rational-trading/backend/`
+
+5) To rebuild container, run `docker compose up --build -d` from `rational-trading/backend/`
+
