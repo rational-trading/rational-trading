@@ -23,13 +23,13 @@ def current_article_recency(article: ArticleModel) -> float:
     RECENCY_BIAS = 1.1  # negative means concave, positive means convex, 0 is straight line
     MAX_WEEKS_AGO = 52
 
-    def f(x): return math.pow(x+1, 1-RECENCY_BIAS)
+    def f(x: float) -> float:
+        return math.pow(x+1, 1-RECENCY_BIAS)
 
     w = max(
         0., (timezone.now() - article.published).seconds / (60 * 60 * 24 * 7))
 
     score = (f(w) - f(MAX_WEEKS_AGO)) / (f(0)-f(MAX_WEEKS_AGO))
-    print(score)
 
     return max(score, 0)
 
