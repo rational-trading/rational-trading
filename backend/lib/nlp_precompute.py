@@ -36,7 +36,7 @@ def normalise_nlp_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
         return 1
 
     for article in ret:
-        article.score = rank(article)
+        article.score = 2.*rank(article)-1.
 
     return ret
 

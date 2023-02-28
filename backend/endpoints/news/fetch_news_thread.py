@@ -7,7 +7,6 @@ import pytz
 from lib.nlp_precompute import normalise_nlp_scores
 from models.models import StockModel, ArticleModel, PublisherModel
 from lib.polygon_api import PolygonAPI
-from lib.utils import guardNone
 
 WAIT_TIME_SECONDS = 5
 NUM_ARTICLES_TO_GET = 20
@@ -62,4 +61,5 @@ def fetch_task() -> None:
                         objectivity=article.objectivity,
                         text_score=article.score
                     )
+        print("Completed fetching.")
         sleep(WAIT_TIME_SECONDS)
