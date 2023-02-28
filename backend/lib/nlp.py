@@ -15,3 +15,13 @@ def get_text_score(text: str) -> float:
     score = t.polarity * (1 - t.subjectivity)
     assert isinstance(score, float)
     return score
+
+
+def get_text_objectivity(text: str) -> float:
+    """
+    Returns our text-based NLP score for a given article, between -1 and 1,
+    but more likely a very small number near 0
+    """
+    t = TextBlob(text)
+    assert isinstance(t.subjectivity, float)
+    return 1 - t.subjectivity
