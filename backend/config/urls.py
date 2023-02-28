@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from endpoints.api import api
 
+
 from django.contrib import admin
 admin.autodiscover()
 
