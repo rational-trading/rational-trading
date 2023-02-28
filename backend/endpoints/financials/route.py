@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from ninja import Router, Schema
 from django.http.request import HttpRequest
 
-from lib.financials import Financials
+from lib.financials.scoring import Financials
 
 
 router = Router()
