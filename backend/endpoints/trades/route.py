@@ -8,7 +8,7 @@ from django.db import transaction
 from models.models import ArticleModel, HoldingModel, StockModel, TradeModel
 from models.models import UserModel
 from endpoints.auth import AuthBearer, AuthenticatedRequest
-from endpoints.error import FriendlyClientException
+from lib.exceptions import FriendlyClientException
 from lib.polygon_api import PolygonAPI
 
 
