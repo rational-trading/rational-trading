@@ -41,7 +41,7 @@ class ArticleModel(Model):  # type: ignore
     published = models.DateTimeField()
     stocks = models.ManyToManyField(StockModel)
     objectivity = models.FloatField()
-    text_score = models.FloatField()
+    normalised_sentiment = models.FloatField()
 
     @staticmethod
     def create_typed(article_id: str,
@@ -51,10 +51,10 @@ class ArticleModel(Model):  # type: ignore
                      published: datetime,
                      stocks: List[StockModel],
                      objectivity: float,
-                     text_score: float) -> 'ArticleModel':
+                     normalised_sentiment: float) -> 'ArticleModel':
         article = ArticleModel.objects.create(article_id=article_id, publisher=publisher, url=url,
                                               title=title, description=description, published=published,
-                                              objectivity=objectivity, text_score=text_score)
+                                              objectivity=objectivity, normalised_sentiment=normalised_sentiment)
         article.stocks.set(stocks)
         return article
 

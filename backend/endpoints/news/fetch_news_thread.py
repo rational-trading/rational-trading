@@ -4,17 +4,22 @@ from time import sleep
 from threading import Thread
 import pytz
 
-from lib.nlp_precompute import normalise_nlp_scores
+from lib.nlp.precompute import NormalisedAnalysisResult
 from models.models import StockModel, ArticleModel, PublisherModel
 from lib.polygon_api import PolygonAPI
 
 WAIT_TIME_SECONDS = 60
 NUM_ARTICLES_TO_GET = 20
 
+started = False
+
 
 def start_background_thread() -> None:
-    t = Thread(target=fetch_task)
-    t.start()
+    global started
+    if not started:
+        started = True
+        t = Thread(target=fetch_task)
+        t.start()
 
 
 def fetch_task() -> None:
@@ -25,8 +30,8 @@ def fetch_task() -> None:
         # get supported tickers from database
         tickers = list(StockModel.objects.all())
         for t in tickers:
-            news = normalise_nlp_scores(api.get_news(
-                t.ticker, NUM_ARTICLES_TO_GET))
+            news = api.get_news(
+                t.ticker, NUM_ARTICLES_TO_GET)
 
             for article in news:
                 try:
@@ -49,6 +54,8 @@ def fetch_task() -> None:
                     stocks = [
                         stock for stock in optional_stocks if stock is not None]
 
+                    nlp_result = NormalisedAnalysisResult.from_article(article)
+
                     ArticleModel.create_typed(
                         article_id=article.article_id,
                         publisher=publisher,
@@ -58,8 +65,8 @@ def fetch_task() -> None:
                         published=datetime.strptime(
                             article.date, '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=pytz.UTC),  # article.date
                         stocks=stocks,
-                        objectivity=article.objectivity,
-                        text_score=article.score
+                        objectivity=nlp_result.objectivity,
+                        normalised_sentiment=nlp_result.normalised_sentiment
                     )
         print("Completed fetching.")
         sleep(WAIT_TIME_SECONDS)

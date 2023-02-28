@@ -15,7 +15,7 @@ class ArticleSchema(Schema):
     date: int
     tickers: list[str]
     objectivity: float
-    text_score: float
+    normalised_sentiment: float
 
     @staticmethod
     def from_model(model: ArticleModel) -> 'ArticleSchema':
@@ -28,7 +28,7 @@ class ArticleSchema(Schema):
             date=model.published.timestamp(),
             tickers=[stock.ticker for stock in model.stocks.all()],
             objectivity=model.objectivity,
-            text_score=model.text_score)
+            normalised_sentiment=model.normalised_sentiment)
 
 
 @router.get("/news/", response=list[ArticleSchema])

@@ -12,8 +12,7 @@ from polygon import RESTClient
 from polygon.rest.models import Sort, TickerNews, Agg
 
 from config.env import env
-from endpoints.error import FriendlyClientException
-from lib.nlp import get_text_score, get_text_objectivity
+from lib.exceptions import FriendlyClientException
 from lib.utils import guardNone
 
 
@@ -38,20 +37,15 @@ class TickerFinancials():
     basic_earnings_per_share: float
 
 
+@dataclass
 class TickerArticle():
-    def __init__(self, article_id: str, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
-        self.article_id = article_id
-        self.title = title
-        self.description = description
-        self.url = url
-        self.date = date
-        self.publisher = publisher
-        self.score = get_text_score(" ".join([title, description]))
-        self.tickers = tickers
-        self.objectivity = get_text_objectivity(" ".join([title, description]))
-
-    def __repr__(self) -> str:
-        return f"{self.score:>6.3f} | {self.date[5:7]}/{self.date[8:10]} {self.date[11:16]} | {self.publisher[:8]:<8}... {self.title[:40]}..."
+    article_id: str
+    title: str
+    description: str
+    url: str
+    date: str
+    publisher: str
+    tickers: list[str]
 
 
 @dataclass

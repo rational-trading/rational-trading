@@ -18,7 +18,6 @@ and activate the ratios we cannot use now.
 
 from dataclasses import dataclass
 from typing import Dict
-from endpoints.error import FriendlyClientException
 from lib.financials_precompute import normalise_financials_score
 
 from lib.polygon_api import PolygonAPI
