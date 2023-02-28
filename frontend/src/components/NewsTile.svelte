@@ -1,9 +1,18 @@
 <script lang="ts">
     const sentiment = true;
     const color = "success";
+    let selected = false;
+
+    function click() {
+        selected = !selected;
+    }
 </script>
 
-<article class="tile is-child box">
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<article
+    class="tile is-child box"
+    on:click={click}
+    style="background-color: {selected ? '#133658' : ''}">
     <p class="title mb-1">Title</p>
 
     <nav class="level">
@@ -26,3 +35,13 @@
         <p>The actual content.</p>
     </div>
 </article>
+
+<style>
+    article {
+        transition: background-color 0s;
+    }
+
+    article:hover {
+        background-color: #303030;
+    }
+</style>
