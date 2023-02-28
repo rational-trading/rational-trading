@@ -13,7 +13,7 @@ from polygon import RESTClient
 from polygon.rest.models import Sort, TickerNews, Agg
 
 from config.env import env
-from lib.nlp import get_text_score
+from lib.nlp import get_text_score, get_text_objectivity
 from lib.utils import guardNone
 
 
@@ -39,7 +39,8 @@ class TickerFinancials():
 
 
 class TickerArticle():
-    def __init__(self, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
+    def __init__(self, article_id: str, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
+        self.article_id = article_id
         self.title = title
         self.description = description
         self.url = url
@@ -47,6 +48,7 @@ class TickerArticle():
         self.publisher = publisher
         self.score = get_text_score(" ".join([title, description]))
         self.tickers = tickers
+        self.objectivity = get_text_objectivity(" ".join([title, description]))
 
     def __repr__(self) -> str:
         return f"{self.score:>6.3f} | {self.date[5:7]}/{self.date[8:10]} {self.date[11:16]} | {self.publisher[:8]:<8}... {self.title[:40]}..."
@@ -130,7 +132,7 @@ class PolygonAPI():
             n = news_generator.__next__()
             # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
             assert isinstance(n, TickerNews)
-
+            assert isinstance(n.id, str)
             assert isinstance(n.title, str)
             assert isinstance(n.article_url, str)
             assert isinstance(n.published_utc, str)
@@ -139,8 +141,8 @@ class PolygonAPI():
             assert isinstance(n.publisher.name, str)
             assert n.tickers is not None
 
-            article = TickerArticle(n.title, desc, n.article_url,
-                                    n.published_utc, n.publisher.name, n.tickers)
+            article = TickerArticle(article_id=n.id, title=n.title, description=desc, url=n.article_url,
+                                    date=n.published_utc, publisher=n.publisher.name, tickers=n.tickers)
             articles.append(article)
 
         return articles
@@ -161,6 +163,7 @@ class PolygonAPI():
             assert n.tickers is not None
             if len(set(n.tickers).intersection(set(tickers))) == 0:
                 continue
+            assert isinstance(n.id, str)
             assert isinstance(n.title, str)
             assert isinstance(n.article_url, str)
             assert isinstance(n.published_utc, str)
@@ -168,8 +171,8 @@ class PolygonAPI():
             assert n.publisher is not None
             assert isinstance(n.publisher.name, str)
 
-            article = TickerArticle(n.title, desc, n.article_url,
-                                    n.published_utc, n.publisher.name, n.tickers)
+            article = TickerArticle(article_id=n.id, title=n.title, description=desc, url=n.article_url,
+                                    date=n.published_utc, publisher=n.publisher.name, tickers=n.tickers)
             articles.append(article)
 
             print(f"{len(articles)} articles collected.")
