@@ -48,7 +48,7 @@ class ArticleDataclass:
 @router.get("/news/", response=list[ArticleSchema])
 def news(request: HttpRequest, ticker: str, n:int=20) -> list[ArticleSchema]:
     """
-    Gets the list of the n most recent articles about ticker.
+    Gets the list of the n most objective articles about ticker.
     """
     articles = list(ArticleModel.objects.filter(stocks__in=[ticker])) # get articles from database
 
