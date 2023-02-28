@@ -3,6 +3,14 @@
     import Asset from "$components/Asset.svelte";
     import type { Activity as ActivityData } from "$lib/types";
 
+    import { browser } from "$app/environment";
+    import api from "$lib/api";
+    import type { Holding } from "$lib/api/portfolio";
+
+    let request = api.pendingRequest<Holding[]>();
+    const newRequest = () => api.portfolio().holdings();
+    $: if (browser) request = newRequest();
+
     const activities: ActivityData[] = [
         {
             time: "2023-02-08 21:09:19",
@@ -26,24 +34,6 @@
             status: "Rejected",
         },
     ];
-    const assets = [
-        {
-            company: "Tesla, Inc.",
-            symbol: "TSLA",
-            qty: 10,
-            currentVal: 1996.82,
-            glToday: -53.28,
-            glOverall: -18.02,
-        },
-        {
-            company: "Apple, Inc.",
-            symbol: "AAPL",
-            qty: 10,
-            currentVal: 1996.82,
-            glToday: 53.28,
-            glOverall: 18.02,
-        },
-    ];
 </script>
 
 <div class="block mt-5 ml-5">
@@ -55,7 +45,8 @@
         <h2 class="title is-5 ml-5">Summary</h2>
         <div
             class="box mx-5 has-background-grey-darker"
-            style="height: 85%; overflow-y: auto;">
+            style="height: 85%; overflow-y: auto;"
+        >
             <div>
                 <p class="heading">Current value</p>
                 <p class="title">£13,267.39</p>
@@ -84,7 +75,8 @@
         <h2 class="title is-5 ml-5">Recent Activities</h2>
         <div
             class="box mx-5 py-2 has-background-grey-darker"
-            style="height: 85%; overflow-y: auto;">
+            style="height: 85%; overflow-y: auto;"
+        >
             <table class="table is-fullwidth is-dark">
                 <thead>
                     <tr>
@@ -92,7 +84,8 @@
                         <th class="has-text-left">Symbol</th>
                         <th class="has-text-left">Side</th>
                         <th class="has-text-left"
-                            ><abbr title="Quantity">Qty</abbr></th>
+                            ><abbr title="Quantity">Qty</abbr></th
+                        >
                         <th>Price</th>
                         <th>Total value</th>
                         <th class="has-text-left">Status</th>
@@ -112,12 +105,28 @@
     <h2 class="title is-5 ml-5">Details</h2>
     <div
         class="box mx-5 has-background-grey-darker"
-        style="height: 85%; overflow-y: auto;">
-        {#each assets as item, i}
-            <Asset data={item} />
-            {#if i < assets.length - 1}
-                <hr style="background: #4a4a4a;" />
-            {/if}
-        {/each}
+        style="height: 85%; overflow-y: auto;"
+    >
+        {#await request}
+            <p>Fetching your portfolio ...</p>
+        {:then response}
+            {#each response as holding, i}
+                <Asset
+                    data={{
+                        company: "Apple, Inc.",
+                        symbol: holding.ticker,
+                        qty: holding.units,
+                        currentVal: holding.value,
+                        glToday: 0,
+                        glOverall: holding.unrealised_gain,
+                    }}
+                />
+                {#if i < response.length - 1}
+                    <hr style="background: #4a4a4a;" />
+                {/if}
+            {/each}
+        {:catch error}
+            <p>{error.message}</p>
+        {/await}
     </div>
 </div>
