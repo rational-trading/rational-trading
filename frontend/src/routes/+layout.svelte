@@ -2,6 +2,7 @@
     import "../app.scss";
     import { user } from "$lib/stores";
     import { authenticate } from "$lib/auth";
+    import { loadTickerDetails } from "$lib/stocks";
     import Login from "$components/Login.svelte";
     import Signup from "$components/Signup.svelte";
     import Logout from "$components/Logout.svelte";
@@ -13,6 +14,7 @@
 
     // Attempt to re-authenticate on refresh.
     if (browser) {
+        loadTickerDetails();
         try {
             authenticate();
         } catch {
