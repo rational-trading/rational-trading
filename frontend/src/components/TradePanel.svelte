@@ -4,28 +4,31 @@
     import { stocks } from "$lib/stores";
     import api from "$lib/api";
     import type { TickerPrice } from "$lib/api/price";
+    import type { News } from "$lib/api/news";
 
     export let close: () => void;
 
     let buy = true;
+
     let useUnits = true;
     let units: number;
     let totalValue: number;
-
-    export let ticker: string;
-    let stock = $stocks.get(ticker);
-
-    const lowPrice = 153.22;
-
-    let request = api.pendingRequest<TickerPrice>();
-    const newRequest = () => api.price(stock.ticker).recent();
-    request = newRequest();
-
     // eslint-disable-next-line no-restricted-globals
     $: validUnits = units !== undefined && !isNaN(units) && units > 0;
     // eslint-disable-next-line no-restricted-globals
     $: validTotalValue =
         totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
+
+    export let ticker: string;
+    let stock = $stocks.get(ticker);
+
+    let priceRequest = api.pendingRequest<TickerPrice>();
+    const newPriceRequest = () => api.price(stock.ticker).recent();
+    priceRequest = newPriceRequest();
+
+    let newsRequest = api.pendingRequest<News[]>();
+    const newNewsRequest = () => api.news().get(stock.ticker, 20);
+    newsRequest = newNewsRequest();
 
     let textEvidence = "";
     function submit() {
@@ -74,7 +77,7 @@
                             <div>
                                 <p class="title is-4">Buy</p>
                                 <p class="subtitle is-5">
-                                    {#await request}
+                                    {#await priceRequest}
                                         -
                                     {:then price}
                                         {price.high}
@@ -91,7 +94,7 @@
                             <div>
                                 <p class="title is-4">Sell</p>
                                 <p class="subtitle is-5">
-                                    {#await request}
+                                    {#await priceRequest}
                                         -
                                     {:then price}
                                         {price.low}
@@ -120,7 +123,7 @@
                                     placeholder="Units"
                                     bind:value={units}
                                     on:input={async () => {
-                                        let price = await request;
+                                        let price = await priceRequest;
                                         totalValue =
                                             units *
                                             (buy ? price.high : price.low);
@@ -144,7 +147,7 @@
                                     placeholder="Total value"
                                     bind:value={totalValue}
                                     on:input={async () => {
-                                        let price = await request;
+                                        let price = await priceRequest;
                                         units =
                                             totalValue /
                                             (buy ? price.high : price.low);
@@ -177,7 +180,7 @@
                         </div>
                         <div style="vertical-align: baseline; ">
                             <strong>
-                                {#await request}
+                                {#await priceRequest}
                                     -
                                 {:then price}
                                     {buy ? price.high : price.low}
@@ -217,31 +220,35 @@
             </div>
 
             <!-- state the reason -->
-            <div class="column">
-                <div class="block mr-5" style="height: 45%;">
+            <div class="column" style="height: 75vh;">
+                <div class="block mr-5" style="height: 55%;">
                     <header class="title is-5">
                         Did some news articles push you towards making this
                         trade? (Click to select)
                     </header>
                     <div
-                        class="tile is-ancestor"
-                        style="height: 90%; overflow-y: auto;">
-                        <div class="tile is-vertical is-8">
-                            <div class="tile">
+                        class="block"
+                        style="height: 85%; overflow-x: hidden; overflow-y: auto;">
+                        <div class="tile is-ancestor">
+                            {#await newsRequest}
+                                <div
+                                    style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;">
+                                    <p>Loading...</p>
+                                </div>
+                            {:then responses}
                                 <div class="tile is-parent is-vertical">
-                                    <NewsTile />
-                                    <NewsTile />
+                                    {#each responses.slice(0, responses.length / 2) as response}
+                                        <NewsTile data={response} />
+                                    {/each}
                                 </div>
-                                <div class="tile is-parent">
-                                    <NewsTile />
+                                <div class="tile is-parent is-vertical">
+                                    {#each responses.slice(responses.length / 2, responses.length) as response}
+                                        <NewsTile data={response} />
+                                    {/each}
                                 </div>
-                            </div>
-                            <div class="tile is-parent">
-                                <NewsTile />
-                            </div>
-                        </div>
-                        <div class="tile is-parent">
-                            <NewsTile />
+                            {:catch error}
+                                <p>{error.message}</p>
+                            {/await}
                         </div>
                     </div>
                 </div>

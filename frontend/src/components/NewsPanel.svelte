@@ -36,6 +36,8 @@
                             <div class="tile is-parent is-vertical">
                                 <NewsTile />
                                 <NewsTile />
+                                <NewsTile />
+                                <NewsTile />
                             </div>
                             <div class="tile is-parent">
                                 <NewsTile />

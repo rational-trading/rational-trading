@@ -1,7 +1,13 @@
 <script lang="ts">
-    const sentiment = true;
-    const color = "success";
+    import type { News } from "$lib/api/news";
+    import { capitalize } from "$lib/functions";
+    import TimeAgo from "javascript-time-ago";
+    const timeAgo = new TimeAgo("en-US");
+
     let selected = false;
+
+    export let data: News;
+    const color = data.normalised_sentiment >= 0 ? "success" : "warning";
 
     function click() {
         selected = !selected;
@@ -13,26 +19,31 @@
     class="tile is-child box"
     on:click={click}
     style="background-color: {selected ? '#2C4869' : ''}">
-    <p class="title mb-1">Title</p>
+    <p class="title is-5 mb-1">{data.title}</p>
 
     <nav class="level">
         <!-- Left side -->
         <div class="level-left">
             <div class="level-item">
-                <p class="subtitle has-text-{color}">Some information</p>
+                <a class="subtitle is-6 has-text-{color}" href={data.url}>
+                    {capitalize(timeAgo.format(new Date(data.date * 1000)))} · {data.publisher}
+                </a>
             </div>
         </div>
 
         <!-- Right side -->
         <div class="level-right">
             <span class="icon has-text-{color}">
-                <i class="fas fa-arrow-trend-{sentiment ? 'up' : 'down'}" />
+                <i
+                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0
+                        ? 'up'
+                        : 'down'}" />
             </span>
         </div>
     </nav>
 
     <div class="content">
-        <p>The actual content.</p>
+        <p>{capitalize(data.description)}</p>
     </div>
 </article>
 
@@ -43,5 +54,9 @@
 
     article:hover {
         background-color: #181818;
+    }
+
+    a:hover {
+        text-decoration: underline;
     }
 </style>
