@@ -109,15 +109,21 @@
         <!-- graph side header bar -->
         <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
-                <div class="level-item">
-                    <h1 class="subtitle is-5">{$currentStock.name}</h1>
-                </div>
-                <div class="level-item">
-                    <h1 class="subtitle is-5">•</h1>
-                </div>
-                <div class="level-item">
-                    <h1 class="subtitle is-5">{$currentStock.exchange}</h1>
-                </div>
+                {#if $currentStock.name === "Loading..."}
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">{$currentStock.name}</h1>
+                    </div>
+                {:else}
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">{$currentStock.name}</h1>
+                    </div>
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">•</h1>
+                    </div>
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">{$currentStock.exchange}</h1>
+                    </div>
+                {/if}
             </div>
 
             <div class="level-right" style="width: 50%">
@@ -155,20 +161,19 @@
                     {#each responses as response}
                         <NewsCard data={response} />
                     {/each}
+                    <div class="block is-flex is-justify-content-center">
+                        <button
+                            class="button is-outline is-small is-rounded"
+                            on:click={clickNews}>
+                            More news
+                        </button>
+                    </div>
                 {:catch error}
                     <div
                         style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;">
                         <p>{error.message}</p>
                     </div>
                 {/await}
-
-                <div class="block is-flex is-justify-content-center">
-                    <button
-                        class="button is-outline is-small is-rounded"
-                        on:click={clickNews}>
-                        More news
-                    </button>
-                </div>
             </div>
         </div>
         <hr style="background: #4a4a4a; height: 1px" />

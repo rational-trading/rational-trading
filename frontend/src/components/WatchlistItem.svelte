@@ -59,5 +59,10 @@
             >{data.percentChange.toFixed(2)}%</td>
     </tr>
 {:catch error}
-    <p>{error.message}</p>
+    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+        <th class="has-text-left">-</th>
+        <td class="has-text-right">-</td>
+        <td class="has-text-right has-text-grey">-</td>
+        <td class="has-text-right has-text-grey">-</td>
+    </tr>
 {/await}

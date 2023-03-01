@@ -259,7 +259,10 @@
                                     {/each}
                                 </div>
                             {:catch error}
-                                <p>{error.message}</p>
+                                <div
+                                    style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;">
+                                    <p>{error.message}</p>
+                                </div>
                             {/await}
                         </div>
                     </div>
