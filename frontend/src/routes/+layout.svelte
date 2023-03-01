@@ -2,6 +2,7 @@
     import "../app.scss";
     import { user } from "$lib/stores";
     import { authenticate } from "$lib/auth";
+    import { getStocksDetails } from "$lib/api/stocks";
     import Login from "$components/Login.svelte";
     import Signup from "$components/Signup.svelte";
     import Logout from "$components/Logout.svelte";
@@ -15,6 +16,7 @@
     if (browser) {
         try {
             authenticate();
+            getStocksDetails();
         } catch {
             // Silently ignore if token has expired (authenticate automatically logs them out).
         }

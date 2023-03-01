@@ -1,3 +1,4 @@
+import { stocksDetails } from "$lib/stores";
 import { get } from "../request";
 
 interface TickerDetails {
@@ -6,10 +7,17 @@ interface TickerDetails {
     exchange: string
 }
 
-class StocksRoute {
-    all(): Promise<TickerDetails[]> {
-        return get<TickerDetails[]>({ endpoint: "/stocks/all" });
+async function getStocksDetails(): Promise<void> {
+    const tickersDetails = await get<TickerDetails[]>({ endpoint: "/stocks/all" });
+    const stocksDetailsMap = new Map<string, TickerDetails>();
+    for (let i = 0; i < tickersDetails.length; i += 1) {
+        stocksDetailsMap.set(tickersDetails[i].ticker, tickersDetails[i]);
     }
+    stocksDetails.set(stocksDetailsMap);
 }
 
-export { StocksRoute, type TickerDetails };
+class StocksRoute {
+
+}
+
+export { StocksRoute, type TickerDetails, getStocksDetails };
