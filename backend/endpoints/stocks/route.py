@@ -23,4 +23,4 @@ def all_stocks(request: HttpRequest) -> List[TickerDetails]:
     stocks_details = []
     for company_ticker in companies_ticker:
         stocks_details.append(api.get_ticker_details(company_ticker))
-    return list(stocks_details)
+    return stocks_details

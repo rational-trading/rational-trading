@@ -89,9 +89,9 @@ class PolygonAPI():
     def get_ticker_details(self, ticker: str) -> TickerDetails:
         ticker_details = self.client.get_ticker_details(ticker)
 
-        assert ticker_details.ticker is str
-        assert ticker_details.name is str
-        assert ticker_details.primary_exchange is str
+        assert isinstance(ticker_details.ticker, str)
+        assert isinstance(ticker_details.name, str)
+        assert isinstance(ticker_details.primary_exchange, str)
 
         return TickerDetails(ticker=ticker_details.ticker, company_name=ticker_details.name, exchange=ticker_details.primary_exchange)
 
