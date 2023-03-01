@@ -43,7 +43,7 @@
                 text_evidence: textEvidence,
                 article_evidence: articles,
             });
-            alert("Trade successed.");
+            alert("Trade succeeded.");
             close();
         } catch {
             alert("Oops! Something went wrong.");
