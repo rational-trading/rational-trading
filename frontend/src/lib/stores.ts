@@ -2,10 +2,13 @@ import {
     readable, writable, type Readable, type Writable,
 } from "svelte/store";
 import type { Stock } from "$lib/types";
+import type { TickerDetails } from "./api/stocks";
 
 export const user: Writable<{ username: string } | null> = writable(null);
 
 export const currentStock: Writable<Stock> = writable({ ticker: "AAPL", name: "Apple Inc", exchange: "NASDAQ" });
+
+export const stocksDetails: Writable<Map<string, TickerDetails> | null> = writable(null);
 
 export const defaultWatchlist: Writable<string[]> = writable(["AAPL", "TSLA"]);
 
