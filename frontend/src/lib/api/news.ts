@@ -15,7 +15,7 @@ interface News {
 
 class NewsRoute {
     get(ticker: string, n: number): Promise<News[]> {
-        return get<News[]>({ endpoint: "/news/news", queryString: `ticker=${ticker}, n=${n}` });
+        return get<News[]>({ endpoint: "/news/get", queryString: `ticker=${ticker}&n=${n}` });
     }
 }
 
