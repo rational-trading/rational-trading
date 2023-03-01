@@ -73,11 +73,22 @@ class TickerPrice():
         return TickerPrice(time=agg.timestamp // 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
 
 
+@dataclass
+class TickerDetails():
+    ticker: str
+    company_name: str
+    exchange: str
+
+
 class PolygonAPI():
     def __init__(self) -> None:
         # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
         POLYGON_API_KEY = env("POLYGON_API_KEY")
         self.client = RESTClient(api_key=POLYGON_API_KEY)
+
+    def get_ticker_details(self, ticker: str) -> TickerDetails:
+        ticker_details = self.client.get_ticker_details(ticker)
+        return TickerDetails(ticker=ticker_details.ticker, company_name=ticker_details.name, exchange=ticker_details.primary_exchange)
 
     def get_dividend(self, ticker: str) -> TickerDividend:
         dividends = self.client.list_dividends(
@@ -214,7 +225,7 @@ def normalise_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
 
     for article in ret:
         article.score = rank(article)
-                        
+
     return ret
 
 
