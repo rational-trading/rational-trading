@@ -5,9 +5,9 @@
     import Search from "$components/Search.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
-    import News from "$components/News.svelte";
-    import NewsPanel from "$components/NewsPanel.svelte";
+    import NewsCard from "$components/NewsCard.svelte";
     import TradePanel from "$components/TradePanel.svelte";
+    import type { News } from "$lib/api/news";
 
     import {
         defaultWatchlist,
@@ -21,16 +21,6 @@
     let graphWidth = 0;
     let graphHeight = 0;
 
-    let activeTrade = false;
-
-    function click() {
-        if ($user) {
-            activeTrade = true;
-        } else {
-            alert("Please log in first.");
-        }
-    }
-
     const newWatchlistRequest = () =>
         api
             .user()
@@ -42,41 +32,24 @@
 
     $: if ($user && browser) newWatchlistRequest();
 
-    $: news = [
-        {
-            title: "Why one strategist sees a real risk of World War 3.1, whose battleground will be microchips",
-            publisher: "MarketWatch",
-            published_utc: "2023-02-26T13:56:00Z",
-            description:
-                "Peter Tchir, head of macro strategy at Academy Securities, dubs a potential war over semiconductors World War 3.1",
-            url: "https://www.marketwatch.com/story/why-one-strategist-sees-a-real-risk-of-world-war-3-1-whose-battleground-will-be-microchips-8eec0e96",
-            sentiment: true,
-        },
-        {
-            title: `Some Negative News About ${$currentStock.name}`,
-            publisher: "Newswires",
-            published_utc: "2023-02-21T10:00:00Z",
-            description: "Some description",
-            url: "/",
-            sentiment: false,
-        },
-        {
-            title: `Some Negative News About ${$currentStock.name}`,
-            publisher: "Newswires",
-            published_utc: "2023-02-20T18:11:51Z",
-            description: "Some description",
-            url: "/",
-            sentiment: false,
-        },
-        {
-            title: `Some Positive News About ${$currentStock.name}`,
-            publisher: "Newswires",
-            published_utc: "2023-02-20T13:00:00Z",
-            description: "Some description",
-            url: "/",
-            sentiment: true,
-        },
-    ];
+    let n = 5;
+    let newsRequest = api.pendingRequest<News[]>();
+    $: newNewsRequest = () => api.news().get($currentStock.ticker, n);
+
+    $: if (browser) newsRequest = newNewsRequest();
+
+    function clickNews() {
+        n += 5;
+    }
+
+    let activeTrade = false;
+    function clickTrade() {
+        if ($user) {
+            activeTrade = true;
+        } else {
+            alert("Please log in first.");
+        }
+    }
 </script>
 
 <!-- this fixes the issue of weird extra space to the right of the page -->
@@ -174,12 +147,28 @@
         <div style="height: calc(100vh - 53px - 10rem); overflow: auto;">
             <div class="block">
                 <h1 class="title is-5">News</h1>
-                {#each news as item}
-                    <News data={item} />
-                {/each}
+                {#await newsRequest}
+                    <div
+                        style="width: 100%; height: 3vh; display: flex; justify-content: center; align-items: center;">
+                        <p>Loading...</p>
+                    </div>
+                {:then responses}
+                    {#each responses as response}
+                        <NewsCard data={response} />
+                    {/each}
+                {:catch error}
+                    <div
+                        style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;">
+                        <p>{error.message}</p>
+                    </div>
+                {/await}
 
                 <div class="block is-flex is-justify-content-center">
-                    <NewsPanel />
+                    <button
+                        class="button is-outline is-small is-rounded"
+                        on:click={clickNews}>
+                        More news
+                    </button>
                 </div>
             </div>
         </div>
@@ -188,7 +177,7 @@
             <button
                 class="button is-medium is-info"
                 style="width: 100%"
-                on:click={click}>
+                on:click={clickTrade}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>

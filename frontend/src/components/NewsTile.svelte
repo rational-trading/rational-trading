@@ -43,7 +43,7 @@
     </nav>
 
     <div class="content">
-        <p>{capitalize(data.description)}</p>
+        <p>{data.description}</p>
     </div>
 </article>
 

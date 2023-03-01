@@ -38,7 +38,7 @@
             type: useUnits ? "UNITS" : "PRICE",
             amount: useUnits ? units : totalValue,
             text_evidence: textEvidence,
-            article_evidence: ["yada"],
+            article_evidence: ["TODO"],
         });
     }
 </script>
@@ -237,12 +237,16 @@
                                 </div>
                             {:then responses}
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.slice(0, responses.length / 2) as response}
+                                    {#each responses.filter( function (element, index) {
+                                            return index % 2 === 0;
+                                        } ) as response}
                                         <NewsTile data={response} />
                                     {/each}
                                 </div>
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.slice(responses.length / 2, responses.length) as response}
+                                    {#each responses.filter( function (element, index) {
+                                            return index % 2 === 1;
+                                        } ) as response}
                                         <NewsTile data={response} />
                                     {/each}
                                 </div>

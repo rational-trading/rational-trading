@@ -1,6 +1,4 @@
 <script lang="ts">
-    import NewsTile from "./NewsTile.svelte";
-
     let active = false;
 
     function click() {
@@ -33,23 +31,12 @@
                 <div class="tile is-ancestor mx-3 mb-3">
                     <div class="tile is-vertical is-8">
                         <div class="tile">
-                            <div class="tile is-parent is-vertical">
-                                <NewsTile />
-                                <NewsTile />
-                                <NewsTile />
-                                <NewsTile />
-                            </div>
-                            <div class="tile is-parent">
-                                <NewsTile />
-                            </div>
+                            <div class="tile is-parent is-vertical" />
+                            <div class="tile is-parent" />
                         </div>
-                        <div class="tile is-parent">
-                            <NewsTile />
-                        </div>
+                        <div class="tile is-parent" />
                     </div>
-                    <div class="tile is-parent">
-                        <NewsTile />
-                    </div>
+                    <div class="tile is-parent" />
                 </div>
             </div>
         </div>
