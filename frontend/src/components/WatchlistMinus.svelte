@@ -8,8 +8,7 @@
     } from "$lib/stores";
     import { findTicker } from "$lib/functions";
 
-    const newRequest = () =>
-        api.user().watchlist_remove({ ticker: $currentStock.ticker });
+    const newRequest = () => api.user().watchlist_remove({ ticker: $currentStock.ticker });
 
     function minus() {
         if ($user) {

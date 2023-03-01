@@ -12,14 +12,16 @@
     let useUnits = true;
     let units: number;
     let totalValue: number;
+
     // eslint-disable-next-line no-restricted-globals
     $: validUnits = units !== undefined && !isNaN(units) && units > 0;
-    // eslint-disable-next-line no-restricted-globals
+
     $: validTotalValue =
+        // eslint-disable-next-line no-restricted-globals
         totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
 
     export let ticker: string;
-    let stock = findTicker(ticker);
+    const stock = findTicker(ticker);
 
     let priceRequest = api.pendingRequest<TickerPrice>();
     const newPriceRequest = () => api.price(stock.ticker).recent();
@@ -75,9 +77,9 @@
                 <div class="block" style="height: 35%">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
-                            class="button is-large {buy
-                                ? 'is-info is-selected'
-                                : ''}"
+                            class="button is-large {buy ?
+                                'is-info is-selected' :
+                                ''}"
                             on:click={() => (buy = true)}
                             style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                             <div>
@@ -92,9 +94,9 @@
                             </div>
                         </button>
                         <button
-                            class="button is-large {buy
-                                ? ''
-                                : 'is-info is-selected'}"
+                            class="button is-large {buy ?
+                                '' :
+                                'is-info is-selected'}"
                             on:click={() => (buy = false)}
                             style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                             <div>
@@ -122,14 +124,14 @@
                         <div class="field" style="height: 25%">
                             <div class="control">
                                 <input
-                                    class="input {validUnits
-                                        ? ''
-                                        : 'is-danger'}"
+                                    class="input {validUnits ?
+                                        '' :
+                                        'is-danger'}"
                                     type="text"
                                     placeholder="Units"
                                     bind:value={units}
                                     on:input={async () => {
-                                        let price = await priceRequest;
+                                        const price = await priceRequest;
                                         totalValue =
                                             units *
                                             (buy ? price.high : price.low);
@@ -146,14 +148,14 @@
                         <div class="field" style="height: 25%">
                             <div class="control">
                                 <input
-                                    class="input {validTotalValue
-                                        ? ''
-                                        : 'is-danger'}"
+                                    class="input {validTotalValue ?
+                                        '' :
+                                        'is-danger'}"
                                     type="text"
                                     placeholder="Total value"
                                     bind:value={totalValue}
                                     on:input={async () => {
-                                        let price = await priceRequest;
+                                        const price = await priceRequest;
                                         units =
                                             totalValue /
                                             (buy ? price.high : price.low);
@@ -243,18 +245,14 @@
                                 </div>
                             {:then responses}
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.filter( function (element, index) {
-                                            return index % 2 === 0;
-                                        } ) as response}
+                                    {#each responses.filter((element, index) => index % 2 === 0) as response}
                                         <NewsTile
                                             data={response}
                                             bind:articles />
                                     {/each}
                                 </div>
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.filter( function (element, index) {
-                                            return index % 2 === 1;
-                                        } ) as response}
+                                    {#each responses.filter((element, index) => index % 2 === 1) as response}
                                         <NewsTile
                                             data={response}
                                             bind:articles />
@@ -307,7 +305,7 @@
 
                     <textarea
                         class="textarea"
-                        placeholder="3 lines of textarea"
+                        placeholder="Share your insights..."
                         rows="3"
                         bind:value={textEvidence} />
                 </div>

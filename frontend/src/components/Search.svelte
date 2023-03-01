@@ -4,9 +4,7 @@
 
     let text = "";
 
-    $: filteredStocks = [...getStocks()].filter((s) =>
-        matchAny(text, [s.exchange, s.name, s.ticker])
-    );
+    $: filteredStocks = [...getStocks()].filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>

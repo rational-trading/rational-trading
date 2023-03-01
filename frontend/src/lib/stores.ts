@@ -1,6 +1,4 @@
-import {
-    readable, writable, derived, type Readable, type Writable, get,
-} from "svelte/store";
+import { writable, type Writable } from "svelte/store";
 import type { Stock } from "$lib/types";
 
 export const user: Writable<{ username: string } | null> = writable(null);
