@@ -1,10 +1,10 @@
-from ninja import NinjaAPI
+from ninja import NinjaAPI, Schema
 from ninja.errors import AuthenticationError, ValidationError
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.conf import settings
 
-from endpoints.error import FriendlyClientException, FriendlyInternalException
+from lib.exceptions import FriendlyClientException, FriendlyInternalException
 
 from .auth.route import router as auth_router
 from .price.route import router as price_router
@@ -13,6 +13,7 @@ from .financials.route import router as financials_router
 from .trades.route import router as trades_router
 from .user.route import router as user_router
 from .stocks.route import router as stocks_router
+from .news.route import router as news_router
 
 api = NinjaAPI()
 
@@ -23,6 +24,11 @@ api.add_router("/user/", user_router)
 api.add_router("/financials/", financials_router)
 api.add_router("/trades/", trades_router)
 api.add_router("/stocks/", stocks_router)
+api.add_router("/news/", news_router)
+
+
+class ErrorResponse(Schema):
+    error: str
 
 
 @api.exception_handler(AuthenticationError)
