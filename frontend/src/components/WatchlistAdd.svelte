@@ -7,7 +7,7 @@
         userWatchlist,
     } from "$lib/stores";
     import { matchAny } from "$lib/functions";
-    import AddItem from "./AddItem.svelte";
+    import WatchlistAddItem from "./WatchlistAddItem.svelte";
 
     let text = $currentStock.ticker;
 
@@ -55,7 +55,7 @@
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
                         {#each filteredStocks as stock}
-                            <AddItem
+                            <WatchlistAddItem
                                 {stock}
                                 onClick={() => {
                                     active = false;

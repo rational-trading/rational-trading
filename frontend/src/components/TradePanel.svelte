@@ -30,16 +30,23 @@
     const newNewsRequest = () => api.news().get(stock.ticker, 20);
     newsRequest = newNewsRequest();
 
+    let articles: string[] = [];
     let textEvidence = "";
-    function submit() {
-        api.trades().make({
-            ticker: stock.ticker,
-            side: buy ? "BUY" : "SELL",
-            type: useUnits ? "UNITS" : "PRICE",
-            amount: useUnits ? units : totalValue,
-            text_evidence: textEvidence,
-            article_evidence: ["TODO"],
-        });
+    async function submit() {
+        try {
+            await api.trades().make({
+                ticker: stock.ticker,
+                side: buy ? "BUY" : "SELL",
+                type: useUnits ? "UNITS" : "PRICE",
+                amount: useUnits ? units : totalValue,
+                text_evidence: textEvidence,
+                article_evidence: articles,
+            });
+            alert("Trade successed.");
+            close();
+        } catch {
+            alert("Oops! Something went wrong.");
+        }
     }
 </script>
 
@@ -240,14 +247,18 @@
                                     {#each responses.filter( function (element, index) {
                                             return index % 2 === 0;
                                         } ) as response}
-                                        <NewsTile data={response} />
+                                        <NewsTile
+                                            data={response}
+                                            bind:articles />
                                     {/each}
                                 </div>
                                 <div class="tile is-parent is-vertical">
                                     {#each responses.filter( function (element, index) {
                                             return index % 2 === 1;
                                         } ) as response}
-                                        <NewsTile data={response} />
+                                        <NewsTile
+                                            data={response}
+                                            bind:articles />
                                     {/each}
                                 </div>
                             {:catch error}

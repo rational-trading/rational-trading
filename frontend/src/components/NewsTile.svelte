@@ -9,8 +9,17 @@
     export let data: News;
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
 
+    export let articles: string[];
     function click() {
         selected = !selected;
+        if (selected) {
+            articles = [...articles, data.article_id];
+        } else {
+            const index = articles.indexOf(data.article_id);
+            if (index !== -1) {
+                articles.splice(index, 1);
+            }
+        }
     }
 </script>
 
