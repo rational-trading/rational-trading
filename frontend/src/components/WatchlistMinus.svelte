@@ -5,10 +5,11 @@
         user,
         userWatchlist,
         defaultWatchlist,
-        stocks,
     } from "$lib/stores";
+    import { findTicker } from "$lib/functions";
 
-    const newRequest = () => api.user().watchlist_remove({ ticker: $currentStock.ticker });
+    const newRequest = () =>
+        api.user().watchlist_remove({ ticker: $currentStock.ticker });
 
     function minus() {
         if ($user) {
@@ -22,9 +23,9 @@
             });
 
             if ($userWatchlist.length === 0) {
-                currentStock.set($stocks.get("AAPL"));
+                currentStock.set(findTicker("AAPL"));
             } else {
-                currentStock.set($stocks.get($userWatchlist[0]));
+                currentStock.set(findTicker($userWatchlist[0]));
             }
         } else {
             defaultWatchlist.update((tickers: string[]) => {
@@ -36,9 +37,9 @@
             });
 
             if ($defaultWatchlist.length === 0) {
-                currentStock.set($stocks.get("AAPL"));
+                currentStock.set(findTicker("AAPL"));
             } else {
-                currentStock.set($stocks.get($defaultWatchlist[0]));
+                currentStock.set(findTicker($defaultWatchlist[0]));
             }
         }
     }

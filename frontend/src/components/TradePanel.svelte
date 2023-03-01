@@ -1,10 +1,9 @@
 <script lang="ts">
-    import type { Stock } from "$lib/types";
     import NewsTile from "$components/NewsTile.svelte";
-    import { stocks } from "$lib/stores";
     import api from "$lib/api";
     import type { TickerPrice } from "$lib/api/price";
     import type { News } from "$lib/api/news";
+    import { findTicker } from "$lib/functions";
 
     export let close: () => void;
 
@@ -20,7 +19,7 @@
         totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
 
     export let ticker: string;
-    let stock = $stocks.get(ticker);
+    let stock = findTicker(ticker);
 
     let priceRequest = api.pendingRequest<TickerPrice>();
     const newPriceRequest = () => api.price(stock.ticker).recent();

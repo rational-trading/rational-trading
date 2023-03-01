@@ -1,11 +1,10 @@
 <script lang="ts">
-    import { stocks } from "$lib/stores";
-    import { matchAny } from "$lib/functions";
+    import { getStocks, matchAny } from "$lib/functions";
     import SearchItem from "./SearchItem.svelte";
 
     let text = "";
 
-    $: filteredStocks = [...$stocks.values()].filter((s) =>
+    $: filteredStocks = [...getStocks()].filter((s) =>
         matchAny(text, [s.exchange, s.name, s.ticker])
     );
 

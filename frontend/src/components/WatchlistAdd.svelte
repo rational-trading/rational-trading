@@ -2,16 +2,15 @@
     import {
         currentStock,
         defaultWatchlist,
-        stocks,
         user,
         userWatchlist,
     } from "$lib/stores";
-    import { matchAny } from "$lib/functions";
+    import { getStocks, matchAny } from "$lib/functions";
     import WatchlistAddItem from "./WatchlistAddItem.svelte";
 
     let text = $currentStock.ticker;
 
-    $: filteredStocks = [...$stocks.values()].filter((s) =>
+    $: filteredStocks = [...getStocks()].filter((s) =>
         matchAny(text, [s.exchange, s.name, s.ticker])
     );
 
