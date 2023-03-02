@@ -1,17 +1,43 @@
 <script lang="ts">
-    import {
-        defaultWatchlist, stocks, user, userWatchlist,
-    } from "$lib/stores";
+    import { defaultWatchlist, stocks, user, userWatchlist } from "$lib/stores";
     import { matchAny } from "$lib/functions";
     import type { Stock } from "$lib/types";
     import WatchlistAddItem from "./WatchlistAddItem.svelte";
+    import SearchPane from "./search/SearchPane.svelte";
+    import api from "$lib/api";
 
-    export let stock: Stock;
+    export let currentStock: Stock;
     export let onAdd: (stock: Stock) => void;
 
-    let text = stock.ticker;
+    function onSelected(stock: Stock) {
+        const newRequest = () =>
+            api.user().watchlist_add({ ticker: stock.ticker });
 
-    $: filteredStocks = $stocks.all.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
+        if ($user) {
+            userWatchlist.update((tickers: string[]) => {
+                if (tickers.indexOf(stock.ticker) === -1) {
+                    newRequest();
+                    return [...tickers, stock.ticker];
+                }
+                return tickers;
+            });
+        } else {
+            defaultWatchlist.update((tickers: string[]) => {
+                if (tickers.indexOf(stock.ticker) === -1) {
+                    return [...tickers, stock.ticker];
+                }
+                return tickers;
+            });
+        }
+
+        onAdd(stock);
+    }
+
+    let text = currentStock.ticker;
+
+    $: filteredStocks = $stocks.all.filter((s) =>
+        matchAny(text, [s.exchange, s.name, s.ticker])
+    );
 
     let active = false;
 </script>
@@ -23,55 +49,20 @@
         on:click={() => {
             active = true;
             if (
-                ($user && $userWatchlist.includes(stock.ticker)) ||
-                (!$user && $defaultWatchlist.includes(stock.ticker))
+                ($user && $userWatchlist.includes(currentStock.ticker)) ||
+                (!$user && $defaultWatchlist.includes(currentStock.ticker))
             ) {
                 text = "";
             } else {
-                text = stock.ticker;
+                text = currentStock.ticker;
             }
         }}><i class="fas fa-plus" /></a>
 </span>
 
 {#if active}
-    <div class="modal is-active">
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="modal-background" on:click={() => (active = false)} />
-        <div class="modal-content">
-            <p class="control has-icons-left m-2">
-                <input
-                    class="input is-large"
-                    type="text"
-                    placeholder="Search"
-                    bind:value={text} />
-                <span class="icon is-large is-left">
-                    <i class="fas fa-magnifying-glass" />
-                </span>
-            </p>
-
-            <div class="table-container" style="overflow-y: auto;">
-                <table class="table is-hoverable is-fullwidth is-dark">
-                    <tbody>
-                        {#each filteredStocks as stock}
-                            <WatchlistAddItem
-                                {stock}
-                                onClick={(s) => {
-                                    active = false;
-                                    onAdd(s);
-                                }} />
-                        {/each}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <SearchPane
+        {onSelected}
+        exit={() => {
+            active = false;
+        }} />
 {/if}
-
-<style>
-    .modal-content {
-        width: 40vw;
-        height: 60vh;
-        background: #363636;
-        border-radius: 7px;
-    }
-</style>

@@ -12,7 +12,8 @@
     import api from "$lib/api";
     import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
-    import SearchPane from "./SearchPane.svelte";
+    import SearchPane from "../../components/search/SearchPane.svelte";
+    import SearchBar from "./SearchBar.svelte";
 
     let currentStock: Stock = {
         ticker: "AAPL",
@@ -23,13 +24,14 @@
     let graphWidth = 0;
     let graphHeight = 0;
 
-    const newWatchlistRequest = () => api
-        .user()
-        .watchlist()
-        .then((response) => {
-            userWatchlist.set(response.tickers);
-            return response.tickers;
-        });
+    const newWatchlistRequest = () =>
+        api
+            .user()
+            .watchlist()
+            .then((response) => {
+                userWatchlist.set(response.tickers);
+                return response.tickers;
+            });
 
     $: if ($user && browser) newWatchlistRequest();
 
@@ -77,9 +79,7 @@
                     <WatchlistMinus {setCurrentStock} {currentStock} />
                 </div>
                 <div class="level-item">
-                    <WatchlistAdd
-                        stock={currentStock}
-                        onAdd={setCurrentStock} />
+                    <WatchlistAdd {currentStock} onAdd={setCurrentStock} />
                 </div>
             </div>
         </nav>
@@ -135,7 +135,7 @@
 
             <div class="level-right" style="width: 50%">
                 <div class="level-item mr-3" style="width: 100%">
-                    <SearchPane onSelected={setCurrentStock} />
+                    <SearchBar onSelected={setCurrentStock} />
                 </div>
             </div>
         </nav>

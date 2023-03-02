@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Search from "$components/Search.svelte";
+    import SearchPane from "$components/search/SearchPane.svelte";
     import type { Stock } from "$lib/types";
 
     export let onSelected: (stock: Stock) => void;
@@ -29,24 +29,9 @@
 </button>
 
 {#if active}
-    <div class="modal is-active">
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="modal-background" on:click={() => (active = false)} />
-        <div class="modal-content">
-            <Search
-                onSelected={(stock) => {
-                    onSelected(stock);
-                    active = false;
-                }} />
-        </div>
-    </div>
+    <SearchPane
+        {onSelected}
+        exit={() => {
+            active = false;
+        }} />
 {/if}
-
-<style>
-    .modal-content {
-        width: 40vw;
-        height: 60vh;
-        background: #363636;
-        border-radius: 7px;
-    }
-</style>

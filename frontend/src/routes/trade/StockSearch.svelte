@@ -10,7 +10,7 @@
 </script>
 
 <script lang="ts">
-    import Search from "$components/Search.svelte";
+    import Search from "$components/search/Search.svelte";
     import { goto } from "$app/navigation";
 
     export let initialState: MakeTrade;
