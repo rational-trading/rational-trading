@@ -1,7 +1,8 @@
 <script lang="ts" context="module">
-    import { defaultForm } from "./+page.svelte";
+    import Search from "$components/search/Search.svelte";
     import type { MakeTrade } from "$lib/api/trades";
     import { toHex } from "$lib/functions";
+    import { defaultForm } from "./+page.svelte";
 
     export function nextStepUrl(ticker: string): string {
         const filledForm = { ...defaultForm(), ticker };
@@ -10,7 +11,6 @@
 </script>
 
 <script lang="ts">
-    import Search from "$components/search/Search.svelte";
     import { goto } from "$app/navigation";
 
     export let initialState: MakeTrade;

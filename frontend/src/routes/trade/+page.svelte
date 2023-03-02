@@ -32,9 +32,9 @@
         const stepString =
             (browser ? $page.url.searchParams.get("step") : null) ?? "";
         const parsed = parseInt(stepString, 10);
-        step = Number.isNaN(parsed)
-            ? 1
-            : Math.max(1, Math.min(parsed, steps.length));
+        step = Number.isNaN(parsed) ?
+            1 :
+            Math.max(1, Math.min(parsed, steps.length));
     }
 
     let initialState = defaultForm();
@@ -42,7 +42,6 @@
         const stateParam = browser ? $page.url.searchParams.get("state") : null;
         if (stateParam) {
             initialState = fromHex<MakeTrade>(stateParam);
-            console.log(initialState);
         }
     }
 </script>

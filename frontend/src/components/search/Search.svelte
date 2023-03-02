@@ -7,9 +7,7 @@
     export let onSelected: (s: Stock) => void;
     export let text = "";
 
-    $: filteredStocks = $stocks.all.filter((s) =>
-        matchAny(text, [s.exchange, s.name, s.ticker])
-    );
+    $: filteredStocks = $stocks.all.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 </script>
 
 <p class="control has-icons-left m-2">

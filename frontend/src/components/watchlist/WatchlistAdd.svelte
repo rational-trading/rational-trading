@@ -1,15 +1,14 @@
 <script lang="ts">
     import { defaultWatchlist, user, userWatchlist } from "$lib/stores";
     import type { Stock } from "$lib/types";
-    import SearchPane from "../search/SearchPane.svelte";
     import api from "$lib/api";
+    import SearchPane from "../search/SearchPane.svelte";
 
     export let currentStock: Stock;
     export let onAdd: (stock: Stock) => void;
 
     function onSelected(stock: Stock) {
-        const newRequest = () =>
-            api.user().watchlist_add({ ticker: stock.ticker });
+        const newRequest = () => api.user().watchlist_add({ ticker: stock.ticker });
 
         if ($user) {
             userWatchlist.update((tickers: string[]) => {
