@@ -4,9 +4,9 @@
     import type { Activity as ActivityData } from "$lib/types";
     import { stocksDetails } from "$lib/stores";
 
-    import { browser } from "$app/environment";
     import api from "$lib/api";
     import type { Holding } from "$lib/api/portfolio";
+    import { browser } from "$app/environment";
 
     let request = api.pendingRequest<Holding[]>();
     const newRequest = () => api.portfolio().holdings();
@@ -15,7 +15,7 @@
     function getCompanyNameFromTicker(ticker: string) {
         const stockDetail = $stocksDetails.get(ticker);
         if (stockDetail !== undefined) return stockDetail.company_name;
-        throw new Error("Company name not found for ticker " + ticker);
+        throw new Error(`Company name not found for ticker ${ticker}`);
     }
 
     const activities: ActivityData[] = [
