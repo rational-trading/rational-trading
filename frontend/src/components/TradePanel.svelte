@@ -67,14 +67,14 @@
             <!-- trading stats -->
             <div
                 class="column is-one-third ml-5"
-                style="height: 75vh; border-right: 1px solid #4a4a4a;">
+                style="height: 85vh; border-right: 1px solid #4a4a4a;">
                 <header class="title is-3 mb-0">
                     {stock.exchange}:{stock.ticker}
                 </header>
 
                 <hr style="background: #4a4a4a; height: 1px" />
 
-                <div class="block" style="height: 35%">
+                <div class="block" style="height: 30vh">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
                             class="button is-large {buy ?
@@ -172,7 +172,7 @@
 
                 <hr style="background: #4a4a4a; height: 1px" />
 
-                <div class="block" style="height: 20%">
+                <div class="block" style="height: 20vh">
                     <header class="title is-6">Order info</header>
 
                     <div style="display: flex; justify-content: space-between;">
@@ -214,7 +214,7 @@
                     <!-- force refresh button label -->
                     {#key units}
                         <button
-                            class="button is-large is-info"
+                            class="button is-large is-info mb-5"
                             style="width: 100%"
                             on:click={submit}
                             disabled={!validUnits}>
@@ -228,8 +228,8 @@
             </div>
 
             <!-- state the reason -->
-            <div class="column" style="height: 75vh;">
-                <div class="block mr-5" style="height: 55%;">
+            <div class="column" style="height: 85vh;">
+                <div class="block mr-5" style="height: 50vh;">
                     <header class="title is-5">
                         Did some news articles push you towards making this
                         trade? (Click to select)
@@ -319,10 +319,9 @@
 
 <style>
     .modal-content {
-        width: 80vw;
-        height: 80vh;
+        width: 90vw;
+        height: 90vh;
         overflow-x: hidden;
-        overflow-y: hidden;
         background: #363636;
         border-radius: 7px;
     }
