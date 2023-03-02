@@ -3,7 +3,7 @@
     import api from "$lib/api";
     import type { TickerPrice } from "$lib/api/price";
     import type { News } from "$lib/api/news";
-    import { findTicker } from "$lib/functions";
+    import { stocks } from "$lib/stores";
 
     export let close: () => void;
 
@@ -21,7 +21,11 @@
         totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
 
     export let ticker: string;
-    const stock = findTicker(ticker);
+    $: stock = $stocks?.get(ticker) ?? {
+        ticker,
+        name: "Loading...",
+        exchange: "Loading...",
+    };
 
     let priceRequest = api.pendingRequest<TickerPrice>();
     const newPriceRequest = () => api.price(stock.ticker).recent();
@@ -77,9 +81,9 @@
                 <div class="block" style="height: 30vh">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
-                            class="button is-large {buy ?
-                                'is-info is-selected' :
-                                ''}"
+                            class="button is-large {buy
+                                ? 'is-info is-selected'
+                                : ''}"
                             on:click={() => (buy = true)}
                             style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                             <div>
@@ -94,9 +98,9 @@
                             </div>
                         </button>
                         <button
-                            class="button is-large {buy ?
-                                '' :
-                                'is-info is-selected'}"
+                            class="button is-large {buy
+                                ? ''
+                                : 'is-info is-selected'}"
                             on:click={() => (buy = false)}
                             style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                             <div>
@@ -124,9 +128,9 @@
                         <div class="field" style="height: 25%">
                             <div class="control">
                                 <input
-                                    class="input {validUnits ?
-                                        '' :
-                                        'is-danger'}"
+                                    class="input {validUnits
+                                        ? ''
+                                        : 'is-danger'}"
                                     type="text"
                                     placeholder="Units"
                                     bind:value={units}
@@ -148,9 +152,9 @@
                         <div class="field" style="height: 25%">
                             <div class="control">
                                 <input
-                                    class="input {validTotalValue ?
-                                        '' :
-                                        'is-danger'}"
+                                    class="input {validTotalValue
+                                        ? ''
+                                        : 'is-danger'}"
                                     type="text"
                                     placeholder="Total value"
                                     bind:value={totalValue}
@@ -245,14 +249,14 @@
                                 </div>
                             {:then responses}
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.filter((element, index) => index % 2 === 0) as response}
+                                    {#each responses.filter((_element, index) => index % 2 === 0) as response}
                                         <NewsTile
                                             data={response}
                                             bind:articles />
                                     {/each}
                                 </div>
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.filter((element, index) => index % 2 === 1) as response}
+                                    {#each responses.filter((_element, index) => index % 2 === 1) as response}
                                         <NewsTile
                                             data={response}
                                             bind:articles />
