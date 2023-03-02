@@ -4,6 +4,7 @@
 
     export let onSelected: (stock: Stock) => void;
     export let exit: () => void;
+    export let text = "";
 </script>
 
 <div class="modal is-active">
@@ -14,7 +15,8 @@
             onSelected={(stock) => {
                 onSelected(stock);
                 exit();
-            }} />
+            }}
+            {text} />
     </div>
 </div>
 

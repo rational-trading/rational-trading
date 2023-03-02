@@ -1,7 +1,7 @@
 <script lang="ts">
-    import WatchlistItem from "$components/WatchlistItem.svelte";
-    import WatchlistAdd from "$components/WatchlistAdd.svelte";
-    import WatchlistMinus from "$components/WatchlistMinus.svelte";
+    import WatchlistItem from "$components/watchlist/WatchlistItem.svelte";
+    import WatchlistAdd from "$components/watchlist/WatchlistAdd.svelte";
+    import WatchlistMinus from "$components/watchlist/WatchlistMinus.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
     import NewsCard from "$components/NewsCard.svelte";
@@ -12,7 +12,6 @@
     import api from "$lib/api";
     import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
-    import SearchPane from "../../components/search/SearchPane.svelte";
     import SearchBar from "./SearchBar.svelte";
 
     let currentStock: Stock = {

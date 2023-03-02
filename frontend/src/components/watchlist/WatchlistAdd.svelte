@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { defaultWatchlist, stocks, user, userWatchlist } from "$lib/stores";
-    import { matchAny } from "$lib/functions";
+    import { defaultWatchlist, user, userWatchlist } from "$lib/stores";
     import type { Stock } from "$lib/types";
-    import WatchlistAddItem from "./WatchlistAddItem.svelte";
-    import SearchPane from "./search/SearchPane.svelte";
+    import SearchPane from "../search/SearchPane.svelte";
     import api from "$lib/api";
 
     export let currentStock: Stock;
@@ -35,10 +33,6 @@
 
     let text = currentStock.ticker;
 
-    $: filteredStocks = $stocks.all.filter((s) =>
-        matchAny(text, [s.exchange, s.name, s.ticker])
-    );
-
     let active = false;
 </script>
 
@@ -47,7 +41,6 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <a
         on:click={() => {
-            active = true;
             if (
                 ($user && $userWatchlist.includes(currentStock.ticker)) ||
                 (!$user && $defaultWatchlist.includes(currentStock.ticker))
@@ -56,12 +49,14 @@
             } else {
                 text = currentStock.ticker;
             }
+            active = true;
         }}><i class="fas fa-plus" /></a>
 </span>
 
 {#if active}
     <SearchPane
         {onSelected}
+        {text}
         exit={() => {
             active = false;
         }} />
