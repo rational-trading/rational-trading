@@ -3,7 +3,6 @@
     export let currentIndex: number;
 
     $: entries = Array.from(steps.entries());
-    $: console.log(currentIndex);
 </script>
 
 <ul class="steps has-content-centered">

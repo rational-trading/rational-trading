@@ -1,9 +1,6 @@
 <script lang="ts">
     import type { News } from "$lib/api/news";
-    import { capitalize } from "$lib/functions";
-    import TimeAgo from "javascript-time-ago";
-
-    const timeAgo = new TimeAgo("en-US");
+    import { capitalize, timeAgo } from "$lib/functions";
 
     let selected = false;
 
@@ -40,7 +37,7 @@
                     href={data.url}
                     target="_blank"
                     rel="noopener noreferrer">
-                    {capitalize(timeAgo.format(new Date(data.date * 1000)))} · {data.publisher}
+                    {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
                 </a>
             </div>
         </div>
@@ -49,9 +46,9 @@
         <div class="level-right">
             <span class="icon has-text-{color}">
                 <i
-                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0 ?
-                        'up' :
-                        'down'}" />
+                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0
+                        ? 'up'
+                        : 'down'}" />
             </span>
         </div>
     </nav>

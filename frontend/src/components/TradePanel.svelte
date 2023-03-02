@@ -4,6 +4,7 @@
     import type { TickerPrice } from "$lib/api/price";
     import type { News } from "$lib/api/news";
     import { stocks } from "$lib/stores";
+    import { browser } from "$app/environment";
 
     export let close: () => void;
 
@@ -21,19 +22,15 @@
         totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
 
     export let ticker: string;
-    $: stock = $stocks?.get(ticker) ?? {
-        ticker,
-        name: "Loading...",
-        exchange: "Loading...",
-    };
+    $: stock = $stocks.get(ticker);
 
     let priceRequest = api.pendingRequest<TickerPrice>();
-    const newPriceRequest = () => api.price(stock.ticker).recent();
-    priceRequest = newPriceRequest();
+    $: newPriceRequest = () => api.price(stock.ticker).recent();
+    $: if (browser) priceRequest = newPriceRequest();
 
     let newsRequest = api.pendingRequest<News[]>();
-    const newNewsRequest = () => api.news().get(stock.ticker, 20);
-    newsRequest = newNewsRequest();
+    $: newNewsRequest = () => api.news().get(stock.ticker, 20);
+    $: if (browser) newsRequest = newNewsRequest();
 
     let articles: string[] = [];
     let textEvidence = "";
