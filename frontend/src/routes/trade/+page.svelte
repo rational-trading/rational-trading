@@ -30,17 +30,17 @@
     $: {
         const stepString = $page.url.searchParams.get("step") ?? "";
         const parsed = parseInt(stepString, 10);
-        step = Number.isNaN(parsed) ?
-            0 :
-            Math.max(1, Math.min(parsed, steps.length)) - 1;
+        step = Number.isNaN(parsed)
+            ? 1
+            : Math.max(1, Math.min(parsed, steps.length));
     }
 
     let initialState = defaultForm();
-
     $: {
         const stateParam = $page.url.searchParams.get("state");
         if (stateParam) {
             initialState = fromHex<MakeTrade>(stateParam);
+            console.log(initialState);
         }
     }
 </script>
@@ -53,8 +53,8 @@
     <div class="column is-one-fifth" />
     <div class="column is-three-fifths">
         <div class="box mx-5 has-background-grey-darker">
-            <Steps {steps} currentIndex={step} />
-            {#if step === 0}
+            <Steps {steps} currentIndex={step - 1} />
+            {#if step === 1}
                 <StockSearch {initialState} />
             {/if}
         </div>

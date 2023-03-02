@@ -27,7 +27,8 @@ export function toHex<T>(object: T): string {
 }
 
 export function fromHex<T>(hex: string): T {
-    return JSON.parse(hex.split("")
-        .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
+    return JSON.parse(hex.split(/(\w\w)/g)
+        .filter((p) => !!p)
+        .map((c) => String.fromCharCode(parseInt(c, 16)))
         .join(""));
 }

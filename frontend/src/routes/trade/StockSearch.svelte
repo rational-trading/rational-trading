@@ -18,4 +18,4 @@
     $: ({ ticker } = initialState);
 </script>
 
-<Search onSelected={(stock) => goto(nextStepUrl(stock.ticker))} />
+<Search text={ticker} onSelected={(stock) => goto(nextStepUrl(stock.ticker))} />
