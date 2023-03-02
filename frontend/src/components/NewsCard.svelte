@@ -18,9 +18,9 @@
         <div class="card-header-icon has-text-{color}">
             <span class="icon">
                 <i
-                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0
-                        ? 'up'
-                        : 'down'}" />
+                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0 ?
+                        'up' :
+                        'down'}" />
             </span>
         </div>
     </header>

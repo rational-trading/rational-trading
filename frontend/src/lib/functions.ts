@@ -19,3 +19,15 @@ export function capitalize(s: string): string {
 export function timeAgo(datetime: Date): string {
     return new TimeAgo("en-US").format(datetime);
 }
+
+export function toHex<T>(object: T): string {
+    return JSON.stringify(object).split("")
+        .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .join("");
+}
+
+export function fromHex<T>(hex: string): T {
+    return JSON.parse(hex.split("")
+        .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .join(""));
+}

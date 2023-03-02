@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { currentStock } from "$lib/stores";
+    import type { Stock } from "$lib/types";
+
+    export let stock: Stock;
 
     let keyStats = true;
 
@@ -31,7 +33,7 @@
     <!-- Key Stats -->
     <div class="block mx-2">
         <p>
-            Current stock: {$currentStock.ticker}, {$currentStock.name}, {$currentStock.exchange}
+            Current stock: {stock.ticker}, {stock.name}, {stock.exchange}
         </p>
     </div>
 {:else}

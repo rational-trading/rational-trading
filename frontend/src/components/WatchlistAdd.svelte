@@ -1,19 +1,17 @@
 <script lang="ts">
     import {
-        currentStock,
-        defaultWatchlist,
-        stocks,
-        user,
-        userWatchlist,
+        defaultWatchlist, stocks, user, userWatchlist,
     } from "$lib/stores";
     import { matchAny } from "$lib/functions";
+    import type { Stock } from "$lib/types";
     import WatchlistAddItem from "./WatchlistAddItem.svelte";
 
-    let text = $currentStock.ticker;
+    export let stock: Stock;
+    export let onAdd: (stock: Stock) => void;
 
-    $: filteredStocks = $stocks.all.filter((s) =>
-        matchAny(text, [s.exchange, s.name, s.ticker])
-    );
+    let text = stock.ticker;
+
+    $: filteredStocks = $stocks.all.filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>
@@ -25,12 +23,12 @@
         on:click={() => {
             active = true;
             if (
-                ($user && $userWatchlist.includes($currentStock.ticker)) ||
-                (!$user && $defaultWatchlist.includes($currentStock.ticker))
+                ($user && $userWatchlist.includes(stock.ticker)) ||
+                (!$user && $defaultWatchlist.includes(stock.ticker))
             ) {
                 text = "";
             } else {
-                text = $currentStock.ticker;
+                text = stock.ticker;
             }
         }}><i class="fas fa-plus" /></a>
 </span>
@@ -57,8 +55,9 @@
                         {#each filteredStocks as stock}
                             <WatchlistAddItem
                                 {stock}
-                                onClick={() => {
+                                onClick={(s) => {
                                     active = false;
+                                    onAdd(s);
                                 }} />
                         {/each}
                     </tbody>

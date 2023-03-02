@@ -1,16 +1,47 @@
+<script lang="ts" context="module">
+    import { fromHex, toHex } from "$lib/functions";
+    import type { MakeTrade } from "$lib/api/trades";
+
+    export function defaultForm(): MakeTrade {
+        return {
+            ticker: "",
+            side: "BUY",
+            type: "UNITS",
+            amount: 0,
+            text_evidence: "",
+            article_evidence: [],
+        };
+    }
+
+    export function stepUrl(step: number, currentForm: MakeTrade) {
+        return `/trade/?step=${step}&state=${toHex<MakeTrade>(currentForm)}`;
+    }
+</script>
+
 <script lang="ts">
     import { page } from "$app/stores";
-    import Steps from "./Steps.svelte";
 
-    let steps = ["Select Stock", "Add Evidence", "Create Order", "Confirm"];
+    import Steps from "./Steps.svelte";
+    import StockSearch from "./StockSearch.svelte";
+
+    const steps = ["Select Stock", "Add Evidence", "Create Order", "Confirm"];
     let step: number;
 
     $: {
-        let stepString = $page.url.searchParams.get("step") ?? "";
-        let parsed = parseInt(stepString);
-        step = isNaN(parsed)
-            ? 0
-            : Math.max(1, Math.min(parsed, steps.length)) - 1;
+        const stepString = $page.url.searchParams.get("step") ?? "";
+        const parsed = parseInt(stepString, 10);
+        step = Number.isNaN(parsed) ?
+            0 :
+            Math.max(1, Math.min(parsed, steps.length)) - 1;
+    }
+
+    let initialState = defaultForm();
+
+    $: {
+        const stateParam = $page.url.searchParams.get("state");
+        if (stateParam) {
+            initialState = fromHex<MakeTrade>(stateParam);
+        }
     }
 </script>
 
@@ -23,27 +54,9 @@
     <div class="column is-three-fifths">
         <div class="box mx-5 has-background-grey-darker">
             <Steps {steps} currentIndex={step} />
-            <div>
-                <p class="heading">Current value</p>
-                <p class="title">£13,267.39</p>
-            </div>
-            <div class="block" style="height: 20%" />
-            <div class="columns">
-                <div class="column">
-                    <div>
-                        <p class="heading">Today's gain/loss</p>
-                        <p class="subtitle has-text-success">£28.27 (1.50%)</p>
-                    </div>
-                </div>
-                <div class="column">
-                    <div>
-                        <p class="heading">Overall gain/loss</p>
-                        <p class="subtitle has-text-success">
-                            £1,937.25 (14.60%)
-                        </p>
-                    </div>
-                </div>
-            </div>
+            {#if step === 0}
+                <StockSearch {initialState} />
+            {/if}
         </div>
     </div>
     <div class="column is-one-fifth" />

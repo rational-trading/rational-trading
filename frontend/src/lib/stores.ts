@@ -3,8 +3,6 @@ import type { Stock } from "$lib/types";
 
 export const user: Writable<{ username: string } | null> = writable(null);
 
-export const currentStock: Writable<Stock> = writable({ ticker: "AAPL", name: "Apple Inc.", exchange: "XNAS" });
-
 export const stocks: Writable<{ get: (ticker: string) => Stock, all: Stock[] }> = writable({
     get: (ticker) => ({
         ticker,

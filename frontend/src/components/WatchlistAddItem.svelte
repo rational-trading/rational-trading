@@ -1,15 +1,10 @@
 <script lang="ts">
     import api from "$lib/api";
-    import {
-        defaultWatchlist,
-        userWatchlist,
-        currentStock,
-        user,
-    } from "$lib/stores";
+    import { defaultWatchlist, userWatchlist, user } from "$lib/stores";
     import type { Stock } from "$lib/types";
 
     export let stock: Stock;
-    export let onClick: () => void;
+    export let onClick: (stock: Stock) => void;
 
     const newRequest = () => api.user().watchlist_add({ ticker: stock.ticker });
 
@@ -30,11 +25,7 @@
                 return tickers;
             });
         }
-
-        if ($currentStock !== stock) {
-            currentStock.set(stock);
-        }
-        onClick();
+        onClick(stock);
     }
 </script>
 

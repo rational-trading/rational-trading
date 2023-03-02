@@ -1,8 +1,11 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { currentStock, stocks } from "$lib/stores";
+    import { stocks } from "$lib/stores";
+    import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
 
+    export let selected: boolean;
+    export let onClick: (stock: Stock) => void;
     export let ticker: string;
     const stock = $stocks.get(ticker);
 
@@ -13,44 +16,41 @@
         color: "success" | "warning";
     }>();
 
-    $: newRequest = () =>
-        api
-            .price(stock.ticker)
-            .recent()
-            .then((response) => {
-                const last = response.close;
-                const change = last - response.open;
-                const percentChange = (change / response.open) * 100;
-                const color: "success" | "warning" =
+    $: newRequest = () => api
+        .price(stock.ticker)
+        .recent()
+        .then((response) => {
+            const last = response.close;
+            const change = last - response.open;
+            const percentChange = (change / response.open) * 100;
+            const color: "success" | "warning" =
                     change >= 0 ? "success" : "warning";
-                return {
-                    last,
-                    change,
-                    percentChange,
-                    color,
-                };
-            });
+            return {
+                last,
+                change,
+                percentChange,
+                color,
+            };
+        });
 
     $: if (browser) request = newRequest();
-
-    $: selected = stock.ticker === $currentStock.ticker;
-
-    function click() {
-        if ($currentStock !== stock) {
-            currentStock.set(stock);
-        }
-    }
 </script>
 
 {#await request}
-    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+    <tr
+        class:is-selected={selected}
+        style="cursor: pointer;"
+        on:click={() => onClick(stock)}>
         <th class="has-text-left">{stock.ticker}</th>
         <td class="has-text-right">-</td>
         <td class="has-text-right has-text-grey">-</td>
         <td class="has-text-right has-text-grey">-</td>
     </tr>
 {:then data}
-    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+    <tr
+        class:is-selected={selected}
+        style="cursor: pointer;"
+        on:click={() => onClick(stock)}>
         <th class="has-text-left">{stock.ticker}</th>
         <td class="has-text-right">{data.last.toFixed(2)}</td>
         <td class="has-text-right has-text-{data.color}"
@@ -59,7 +59,10 @@
             >{data.percentChange.toFixed(2)}%</td>
     </tr>
 {:catch}
-    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+    <tr
+        class:is-selected={selected}
+        style="cursor: pointer;"
+        on:click={() => onClick(stock)}>
         <th class="has-text-left">-</th>
         <td class="has-text-right">-</td>
         <td class="has-text-right has-text-grey">-</td>
