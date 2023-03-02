@@ -23,12 +23,14 @@
 
     import Steps from "./Steps.svelte";
     import StockSearch from "./StockSearch.svelte";
+    import { browser } from "$app/environment";
 
     const steps = ["Select Stock", "Add Evidence", "Create Order", "Confirm"];
     let step: number;
 
     $: {
-        const stepString = $page.url.searchParams.get("step") ?? "";
+        const stepString =
+            (browser ? $page.url.searchParams.get("step") : null) ?? "";
         const parsed = parseInt(stepString, 10);
         step = Number.isNaN(parsed)
             ? 1
@@ -37,7 +39,7 @@
 
     let initialState = defaultForm();
     $: {
-        const stateParam = $page.url.searchParams.get("state");
+        const stateParam = browser ? $page.url.searchParams.get("state") : null;
         if (stateParam) {
             initialState = fromHex<MakeTrade>(stateParam);
             console.log(initialState);
