@@ -8,7 +8,7 @@ export const user: Writable<{ username: string } | null> = writable(null);
 
 export const currentStock: Writable<Stock> = writable({ ticker: "AAPL", name: "Apple Inc", exchange: "NASDAQ" });
 
-export const stocksDetails: Writable<Map<string, TickerDetails> | null> = writable(null);
+export const stocksDetails: Writable<Map<string, TickerDetails>> = writable(new Map());
 
 export const defaultWatchlist: Writable<string[]> = writable(["AAPL", "TSLA"]);
 

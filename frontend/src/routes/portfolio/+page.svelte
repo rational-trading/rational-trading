@@ -2,6 +2,7 @@
     import Activity from "$components/Activity.svelte";
     import Asset from "$components/Asset.svelte";
     import type { Activity as ActivityData } from "$lib/types";
+    import { stocksDetails } from "$lib/stores";
 
     import { browser } from "$app/environment";
     import api from "$lib/api";
@@ -10,6 +11,12 @@
     let request = api.pendingRequest<Holding[]>();
     const newRequest = () => api.portfolio().holdings();
     $: if (browser) request = newRequest();
+
+    function getCompanyNameFromTicker(ticker: string) {
+        const stockDetail = $stocksDetails.get(ticker);
+        if (stockDetail !== undefined) return stockDetail.company_name;
+        throw new Error("Company name not found for ticker " + ticker);
+    }
 
     const activities: ActivityData[] = [
         {
@@ -113,7 +120,7 @@
             {#each response as holding, i}
                 <Asset
                     data={{
-                        company: "Apple, Inc.",
+                        company: getCompanyNameFromTicker(holding.ticker),
                         symbol: holding.ticker,
                         qty: holding.units,
                         currentVal: holding.value,
