@@ -32,9 +32,9 @@
     $: if ($user && browser) newWatchlistRequest();
 
     let n = 5;
+    
     let newsRequest = api.pendingRequest<News[]>();
     $: newNewsRequest = () => api.news().get($currentStock.ticker, n);
-
     $: if (browser) newsRequest = newNewsRequest();
 
     function clickNews() {

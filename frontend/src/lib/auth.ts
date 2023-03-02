@@ -28,7 +28,7 @@ async function authenticate(token: string | null = null) {
     try {
         user.set(await api.user().whoami());
     } catch {
-        logout();
+        user.set(null);
         throw new AuthError("Invalid access token!");
     }
 }
