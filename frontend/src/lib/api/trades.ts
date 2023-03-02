@@ -13,9 +13,9 @@ interface MakeTrade {
     ticker: string,
     side: "BUY" | "SELL",
     type: "UNITS" | "PRICE",
-    amount: number | string,
+    amount: number,
     text_evidence: string,
-    article_evidence: string,
+    article_evidence: string[],
 }
 
 

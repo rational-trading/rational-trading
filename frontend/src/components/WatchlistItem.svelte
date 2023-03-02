@@ -1,10 +1,11 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { currentStock, stocks } from "$lib/stores";
+    import { currentStock } from "$lib/stores";
+    import { findTicker } from "$lib/functions";
     import { browser } from "$app/environment";
 
     export let ticker: string;
-    const stock = $stocks.get(ticker);
+    const stock = findTicker(ticker);
 
     let request = api.pendingRequest<{
         last: number;
@@ -58,5 +59,10 @@
             >{data.percentChange.toFixed(2)}%</td>
     </tr>
 {:catch error}
-    <p>{error.message}</p>
+    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+        <th class="has-text-left">-</th>
+        <td class="has-text-right">-</td>
+        <td class="has-text-right has-text-grey">-</td>
+        <td class="has-text-right has-text-grey">-</td>
+    </tr>
 {/await}

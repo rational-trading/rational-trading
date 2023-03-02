@@ -1,3 +1,4 @@
+from typing import List
 from ninja import Router, Schema
 from django.http.request import HttpRequest
 from lib.nlp.scoring import current_article_recency, current_article_relevance, current_article_reputation
@@ -13,7 +14,7 @@ class ArticleSchema(Schema):
     title: str
     description: str
     date: int
-    tickers: list[str]
+    tickers: List[str]
     normalised_sentiment: float
     reputation: float
     recency: float
@@ -33,8 +34,8 @@ class ArticleSchema(Schema):
             recency=current_article_recency(model))
 
 
-@router.get("/news/", response=list[ArticleSchema])
-def news(request: HttpRequest, ticker: str, n: int = 20) -> list[ArticleSchema]:
+@router.get("/get", response=List[ArticleSchema])
+def get_news(request: HttpRequest, ticker: str, n: int = 20) -> List[ArticleSchema]:
     """
     Gets the list of the n most objective articles about ticker.
     """

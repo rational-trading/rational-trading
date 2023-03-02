@@ -1,11 +1,16 @@
 <script lang="ts">
-    import { currentStock, stocks } from "$lib/stores";
-    import { matchAny } from "$lib/functions";
-    import AddItem from "./AddItem.svelte";
+    import {
+        currentStock,
+        defaultWatchlist,
+        user,
+        userWatchlist,
+    } from "$lib/stores";
+    import { getStocks, matchAny } from "$lib/functions";
+    import WatchlistAddItem from "./WatchlistAddItem.svelte";
 
     let text = $currentStock.ticker;
 
-    $: filteredStocks = [...$stocks.values()].filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
+    $: filteredStocks = [...getStocks()].filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>
@@ -13,18 +18,24 @@
 <span class="icon">
     <!-- svelte-ignore a11y-missing-attribute -->
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <a on:click={() => (active = true)}><i class="fas fa-plus" /></a>
+    <a
+        on:click={() => {
+            active = true;
+            if (
+                ($user && $userWatchlist.includes($currentStock.ticker)) ||
+                (!$user && $defaultWatchlist.includes($currentStock.ticker))
+            ) {
+                text = "";
+            } else {
+                text = $currentStock.ticker;
+            }
+        }}><i class="fas fa-plus" /></a>
 </span>
 
 {#if active}
     <div class="modal is-active">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div
-            class="modal-background"
-            on:click={() => {
-                active = false;
-                text = $currentStock.ticker;
-            }} />
+        <div class="modal-background" on:click={() => (active = false)} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
                 <input
@@ -41,10 +52,9 @@
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <tbody>
                         {#each filteredStocks as stock}
-                            <AddItem
+                            <WatchlistAddItem
                                 {stock}
                                 onClick={() => {
-                                    text = "";
                                     active = false;
                                 }} />
                         {/each}
