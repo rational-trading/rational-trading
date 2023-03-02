@@ -3,9 +3,9 @@
     import { user } from "$lib/stores";
     import { authenticate } from "$lib/auth";
     import { loadTickerDetails } from "$lib/stocks";
-    import Login from "$components/Login.svelte";
-    import Signup from "$components/Signup.svelte";
-    import Logout from "$components/Logout.svelte";
+    import Login from "$components/auth/Login.svelte";
+    import Signup from "$components/auth/Signup.svelte";
+    import Logout from "$components/auth/Logout.svelte";
     import { browser } from "$app/environment";
 
     // Attempt to re-authenticate on refresh.

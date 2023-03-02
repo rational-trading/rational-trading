@@ -4,7 +4,7 @@
     import WatchlistMinus from "$components/watchlist/WatchlistMinus.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
-    import NewsCard from "$components/NewsCard.svelte";
+    import NewsCard from "$components/news/NewsCard.svelte";
     import TradePanel from "$components/TradePanel.svelte";
     import type { News } from "$lib/api/news";
 
