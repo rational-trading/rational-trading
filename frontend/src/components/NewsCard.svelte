@@ -8,7 +8,11 @@
 
 <div class="block card" style="cursor: pointer;">
     <header class="card-header">
-        <a class="card-header-title has-text-{color}" href={data.url}>
+        <a
+            class="card-header-title has-text-{color}"
+            href={data.url}
+            rel="noreferrer"
+            target="_blank">
             {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
         </a>
         <div class="card-header-icon has-text-{color}">

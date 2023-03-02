@@ -36,7 +36,7 @@
                     class="subtitle is-6 has-text-{color}"
                     href={data.url}
                     target="_blank"
-                    rel="noopener noreferrer">
+                    rel="noreferrer">
                     {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
                 </a>
             </div>

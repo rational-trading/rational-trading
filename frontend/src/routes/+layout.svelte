@@ -31,10 +31,11 @@
         <div class="navbar-start">
             <a class="navbar-item" href="/"> Home </a>
 
-            <a class="navbar-item" href="/explore"> Explore </a>
+            <a class="navbar-item" href="/explore/"> Explore </a>
 
             {#if $user}
-                <a class="navbar-item" href="/portfolio"> Portfolio </a>
+                <a class="navbar-item" href="/portfolio/"> Portfolio </a>
+                <a class="navbar-item" href="/trade/"> Trade </a>
             {/if}
         </div>
 
