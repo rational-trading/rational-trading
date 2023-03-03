@@ -1,5 +1,8 @@
-import type { Stock } from "./types";
-import { stocksDetails } from "./stores";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+TimeAgo.addDefaultLocale(en);
+
 
 export function matchAny(search: string, options: string[]): boolean {
     const searchLower = search.toLowerCase();
@@ -11,6 +14,10 @@ export function matchAny(search: string, options: string[]): boolean {
 
 export function capitalize(s: string): string {
     return s[0].toUpperCase() + s.slice(1);
+}
+
+export function timeAgo(datetime: Date): string {
+    return new TimeAgo("en-US").format(datetime);
 }
 
 export function convertUnixDate(unixDate: number): string {
@@ -36,24 +43,16 @@ export function calculatePercentage(a: number, b: number) {
     return `${((a / b) * 100).toFixed(2)}%`;
 }
 
-// may need to call the wrappers more than once, triggered by change in store value
-let stocksMap: Map<string, Stock> | null;
-stocksDetails.subscribe((x) => { stocksMap = x; });
 
-// wrapper method for getting stock details based on ticker
-export function findTicker(ticker: string) {
-    if (stocksMap === null) {
-        return { ticker, name: "Loading...", exchange: "Loading..." };
-    }
-
-    return stocksMap.get(ticker);
+export function toHex<T>(object: T): string {
+    return JSON.stringify(object).split("")
+        .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .join("");
 }
 
-// wrapper method for getting details of all supported stocks
-export function getStocks() {
-    if (stocksMap === null) {
-        return [{ ticker: "Loading...", name: "Loading...", exchange: "Loading..." }];
-    }
-
-    return stocksMap.values();
+export function fromHex<T>(hex: string): T {
+    return JSON.parse(hex.split(/(\w\w)/g)
+        .filter((p) => !!p)
+        .map((c) => String.fromCharCode(parseInt(c, 16)))
+        .join(""));
 }

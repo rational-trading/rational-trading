@@ -1,22 +1,24 @@
 <script lang="ts">
-    import WatchlistItem from "$components/WatchlistItem.svelte";
-    import WatchlistAdd from "$components/WatchlistAdd.svelte";
-    import WatchlistMinus from "$components/WatchlistMinus.svelte";
-    import Search from "$components/Search.svelte";
+    import WatchlistItem from "$components/watchlist/WatchlistItem.svelte";
+    import WatchlistAdd from "$components/watchlist/WatchlistAdd.svelte";
+    import WatchlistMinus from "$components/watchlist/WatchlistMinus.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
-    import NewsCard from "$components/NewsCard.svelte";
+    import NewsCard from "$components/news/NewsCard.svelte";
     import TradePanel from "$components/TradePanel.svelte";
     import type { News } from "$lib/api/news";
 
-    import {
-        defaultWatchlist,
-        currentStock,
-        user,
-        userWatchlist,
-    } from "$lib/stores";
+    import { defaultWatchlist, user, userWatchlist } from "$lib/stores";
     import api from "$lib/api";
+    import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
+    import SearchBar from "./SearchBar.svelte";
+
+    let currentStock: Stock = {
+        ticker: "AAPL",
+        name: "Apple Inc.",
+        exchange: "XNAS",
+    };
 
     let graphWidth = 0;
     let graphHeight = 0;
@@ -32,9 +34,9 @@
     $: if ($user && browser) newWatchlistRequest();
 
     let n = 5;
-    let newsRequest = api.pendingRequest<News[]>();
-    $: newNewsRequest = () => api.news().get($currentStock.ticker, n);
 
+    let newsRequest = api.pendingRequest<News[]>();
+    $: newNewsRequest = () => api.news().get(currentStock.ticker, n);
     $: if (browser) newsRequest = newNewsRequest();
 
     function clickNews() {
@@ -47,6 +49,12 @@
             activeTrade = true;
         } else {
             alert("Please log in first.");
+        }
+    }
+
+    function setCurrentStock(stock: Stock) {
+        if (currentStock !== stock) {
+            currentStock = stock;
         }
     }
 </script>
@@ -66,10 +74,10 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    <WatchlistMinus />
+                    <WatchlistMinus {setCurrentStock} {currentStock} />
                 </div>
                 <div class="level-item">
-                    <WatchlistAdd />
+                    <WatchlistAdd {currentStock} onAdd={setCurrentStock} />
                 </div>
             </div>
         </nav>
@@ -89,15 +97,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#if $user}
-                            {#each $userWatchlist as ticker (ticker)}
-                                <WatchlistItem {ticker} />
-                            {/each}
-                        {:else}
-                            {#each $defaultWatchlist as ticker (ticker)}
-                                <WatchlistItem {ticker} />
-                            {/each}
-                        {/if}
+                        {#each $user ? $userWatchlist : $defaultWatchlist as ticker (ticker)}
+                            <WatchlistItem
+                                {ticker}
+                                onClick={setCurrentStock}
+                                selected={ticker === currentStock.ticker} />
+                        {/each}
                     </tbody>
                 </table>
             </div>
@@ -109,26 +114,26 @@
         <!-- graph side header bar -->
         <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
-                {#if $currentStock.name === "Loading..."}
+                {#if currentStock.name === "Loading..."}
                     <div class="level-item">
-                        <h1 class="subtitle is-5">{$currentStock.name}</h1>
+                        <h1 class="subtitle is-5">{currentStock.name}</h1>
                     </div>
                 {:else}
                     <div class="level-item">
-                        <h1 class="subtitle is-5">{$currentStock.name}</h1>
+                        <h1 class="subtitle is-5">{currentStock.name}</h1>
                     </div>
                     <div class="level-item">
                         <h1 class="subtitle is-5">•</h1>
                     </div>
                     <div class="level-item">
-                        <h1 class="subtitle is-5">{$currentStock.exchange}</h1>
+                        <h1 class="subtitle is-5">{currentStock.exchange}</h1>
                     </div>
                 {/if}
             </div>
 
             <div class="level-right" style="width: 50%">
                 <div class="level-item mr-3" style="width: 100%">
-                    <Search />
+                    <SearchBar onSelected={setCurrentStock} />
                 </div>
             </div>
         </nav>
@@ -138,11 +143,13 @@
             style="height: 50vh; display: flex; justify-content: center; align-items: center;"
             bind:clientWidth={graphWidth}
             bind:clientHeight={graphHeight}>
-            <Graph dimensions={{ width: graphWidth, height: graphHeight }} />
+            <Graph
+                stock={currentStock}
+                dimensions={{ width: graphWidth, height: graphHeight }} />
         </div>
 
         <!-- information tab -->
-        <Information />
+        <Information stock={currentStock} />
     </div>
 
     <!-- news column -->
@@ -190,6 +197,6 @@
 
 {#if activeTrade}
     <TradePanel
-        ticker={$currentStock.ticker}
+        ticker={currentStock.ticker}
         close={() => (activeTrade = false)} />
 {/if}

@@ -1,17 +1,8 @@
 <script lang="ts">
     import type { Stock } from "$lib/types";
-    import { currentStock } from "$lib/stores";
-
+    
     export let stock: Stock;
-
-    export let onClick: () => void;
-
-    function click() {
-        if ($currentStock !== stock) {
-            currentStock.set(stock);
-        }
-        onClick();
-    }
+    export let onClick: (s: Stock) => void;
 </script>
 
 {#if stock.name === "Loading..."}
@@ -20,7 +11,7 @@
         <p>Loading...</p>
     </div>
 {:else}
-    <tr style="cursor: pointer;" on:click={click}>
+    <tr style="cursor: pointer;" on:click={() => onClick(stock)}>
         <th class="has-text-left">{stock.ticker}</th>
         <td class="has-text-left">{stock.name}</td>
         <td class="has-text-right">{stock.exchange}</td>
