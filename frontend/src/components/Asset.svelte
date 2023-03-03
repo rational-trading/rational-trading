@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { calculatePercentage, convertValueToMoney } from "$lib/functions";
     import TradePanel from "./TradePanel.svelte";
 
     interface Asset {
@@ -45,17 +46,19 @@
         <div class="column is-2 has-text-centered">
             <div>
                 <p class="heading">Current value</p>
-                <p class="title is-5">£{data.currentVal}</p>
+                <p class="title is-5">{convertValueToMoney(data.currentVal)}</p>
             </div>
         </div>
         <div class="column is-2 has-text-centered">
             <div>
                 <p class="heading">Today's gain/loss</p>
                 <p class="title is-5 has-text-{colorToday}">
-                    {data.glToday >= 0 ? "" : "-"}£{Math.abs(data.glToday)} ({(
-                        (data.glToday / (data.currentVal - data.glToday)) *
-                        100
-                    ).toFixed(2)}%)
+                    {data.glToday >= 0 ? "" : "-"}
+                    {convertValueToMoney(Math.abs(data.glToday))}
+                    ({calculatePercentage(
+                        data.glToday,
+                        data.currentVal - data.glToday,
+                    )})
                 </p>
             </div>
         </div>
@@ -63,10 +66,12 @@
             <div>
                 <p class="heading">Overall gain/loss</p>
                 <p class="title is-5 has-text-{colorOverall}">
-                    {data.glOverall >= 0 ? "" : "-"}£{Math.abs(data.glOverall)} ({(
-                        (data.glOverall / (data.currentVal - data.glOverall)) *
-                        100
-                    ).toFixed(2)}%)
+                    {data.glOverall >= 0 ? "" : "-"}
+                    {convertValueToMoney(Math.abs(data.glOverall))}
+                    ({calculatePercentage(
+                        data.glOverall,
+                        data.currentVal - data.glOverall,
+                    )})
                 </p>
             </div>
         </div>
