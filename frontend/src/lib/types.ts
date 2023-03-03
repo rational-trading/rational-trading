@@ -1,5 +1,5 @@
 export interface Activity {
-    time: string;
+    time: number;
     symbol: string;
     quantity_bought: number;
     price: number;
