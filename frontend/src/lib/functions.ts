@@ -24,3 +24,11 @@ export function convertUnixDate(unixDate: number): string {
     const formatedDate = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     return formatedDate;
 }
+
+export function convertValueToMoney(value: number): string {
+    return `£${new Intl.NumberFormat().format(Math.round(value * 100) / 100)}`;
+}
+
+export function calculatePercentage(a: number, b: number) {
+    return `${((a / b) * 100).toFixed(2)}%`;
+}

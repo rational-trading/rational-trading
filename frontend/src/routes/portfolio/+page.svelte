@@ -4,8 +4,9 @@
     import { stocksDetails } from "$lib/stores";
 
     import api from "$lib/api";
-    import type { Holding } from "$lib/api/portfolio";
+    import type { Holding, PortfolioStats } from "$lib/api/portfolio";
     import type { Trade } from "$lib/api/trades";
+    import { calculatePercentage, convertValueToMoney } from "$lib/functions";
     import { browser } from "$app/environment";
 
     let requestHoldings = api.pendingRequest<Holding[]>();
@@ -14,9 +15,13 @@
     let requestTrades = api.pendingRequest<Trade[]>();
     const newRequestTrades = () => api.trades().personal();
 
+    let requestStats = api.pendingRequest<PortfolioStats>();
+    const newRequestStats = () => api.portfolio().stats();
+
     $: if (browser) {
         requestHoldings = newRequestHoldings();
         requestTrades = newRequestTrades();
+        requestStats = newRequestStats();
     }
 
     function getCompanyNameFromTicker(ticker: string) {
@@ -37,27 +42,40 @@
             class="box mx-5 has-background-grey-darker"
             style="height: 85%; overflow-y: auto;"
         >
-            <div>
-                <p class="heading">Current value</p>
-                <p class="title">£13,267.39</p>
-            </div>
-            <div class="block" style="height: 20%" />
-            <div class="columns">
-                <div class="column">
-                    <div>
-                        <p class="heading">Today's gain/loss</p>
-                        <p class="subtitle has-text-success">£28.27 (1.50%)</p>
+            {#await requestStats}
+                <p>Retrieving your portfolio summary...</p>
+            {:then response}
+                <div>
+                    <p class="heading">Current value</p>
+                    <p class="title">
+                        {convertValueToMoney(response.holdings_value)}
+                    </p>
+                </div>
+                <div class="block" style="height: 20%" />
+                <div class="columns">
+                    <div class="column">
+                        <div>
+                            <p class="heading">Today's gain/loss</p>
+                            <p class="subtitle has-text-success">TODO</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div>
+                            <p class="heading">Overall gain/loss</p>
+                            <p class="subtitle has-text-success">
+                                {convertValueToMoney(response.unrealised_gain)}
+                                (
+                                {calculatePercentage(
+                                    response.unrealised_gain,
+                                    response.holdings_value,
+                                )})
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="column">
-                    <div>
-                        <p class="heading">Overall gain/loss</p>
-                        <p class="subtitle has-text-success">
-                            £1,937.25 (14.60%)
-                        </p>
-                    </div>
-                </div>
-            </div>
+            {:catch error}
+                console.log({error.message});
+            {/await}
         </div>
     </div>
 
