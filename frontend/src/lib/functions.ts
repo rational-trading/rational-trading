@@ -26,7 +26,7 @@ export function convertUnixDate(unixDate: number): string {
 }
 
 export function convertValueToMoney(value: number): string {
-    return `£${new Intl.NumberFormat().format(Math.round(value * 100) / 100)}`;
+    return `$${new Intl.NumberFormat().format(Math.round(value * 100) / 100)}`;
 }
 
 export function calculatePercentage(a: number, b: number) {
