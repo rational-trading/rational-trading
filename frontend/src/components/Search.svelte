@@ -1,11 +1,10 @@
 <script lang="ts">
-    import { stocks } from "$lib/stores";
-    import { matchAny } from "$lib/functions";
+    import { getStocks, matchAny } from "$lib/functions";
     import SearchItem from "./SearchItem.svelte";
 
     let text = "";
 
-    $: filteredStocks = [...$stocks.values()].filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
+    $: filteredStocks = [...getStocks()].filter((s) => matchAny(text, [s.exchange, s.name, s.ticker]));
 
     let active = false;
 </script>
@@ -13,7 +12,10 @@
 <button
     class="button is-rounded"
     style="width: 100%"
-    on:click={() => (active = true)}>
+    on:click={() => {
+        active = true;
+        text = "";
+    }}>
     <div class="level" style="width: 100%">
         <div class="level-left">
             <div class="level-item">
@@ -33,12 +35,7 @@
 {#if active}
     <div class="modal is-active">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div
-            class="modal-background"
-            on:click={() => {
-                active = false;
-                text = "";
-            }} />
+        <div class="modal-background" on:click={() => (active = false)} />
         <div class="modal-content">
             <p class="control has-icons-left m-2">
                 <input

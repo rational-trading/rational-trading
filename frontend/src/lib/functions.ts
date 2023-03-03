@@ -1,3 +1,6 @@
+import type { Stock } from "./types";
+import { stocksDetails } from "./stores";
+
 export function matchAny(search: string, options: string[]): boolean {
     const searchLower = search.toLowerCase();
     return (
@@ -31,4 +34,26 @@ export function convertValueToMoney(value: number): string {
 
 export function calculatePercentage(a: number, b: number) {
     return `${((a / b) * 100).toFixed(2)}%`;
+}
+
+// may need to call the wrappers more than once, triggered by change in store value
+let stocksMap: Map<string, Stock> | null;
+stocksDetails.subscribe((x) => { stocksMap = x; });
+
+// wrapper method for getting stock details based on ticker
+export function findTicker(ticker: string) {
+    if (stocksMap === null) {
+        return { ticker, name: "Loading...", exchange: "Loading..." };
+    }
+
+    return stocksMap.get(ticker);
+}
+
+// wrapper method for getting details of all supported stocks
+export function getStocks() {
+    if (stocksMap === null) {
+        return [{ ticker: "Loading...", name: "Loading...", exchange: "Loading..." }];
+    }
+
+    return stocksMap.values();
 }

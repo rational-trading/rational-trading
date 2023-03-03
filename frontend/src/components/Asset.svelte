@@ -82,5 +82,5 @@
 </div>
 
 {#if activeTrade}
-    <TradePanel close={() => (activeTrade = false)} />
+    <TradePanel ticker={data.symbol} close={() => (activeTrade = false)} />
 {/if}
