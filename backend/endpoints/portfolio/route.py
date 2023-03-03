@@ -82,8 +82,8 @@ class HoldingSchema(Schema):
                 calculate_unrealised_gain(model, current_price), 2))
 
 
-@ router.get("/holdings", response=List[HoldingSchema])
-@ transaction.atomic
+@router.get("/holdings", response=List[HoldingSchema])
+@transaction.atomic
 def holdings(request: AuthenticatedRequest) -> List[HoldingSchema]:
     user = UserModel.objects.get(username=request.auth)
     holdings = HoldingModel.objects.filter(user=user)
