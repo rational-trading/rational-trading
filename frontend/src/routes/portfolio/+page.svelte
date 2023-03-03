@@ -1,46 +1,29 @@
 <script lang="ts">
     import Activity from "$components/Activity.svelte";
     import Asset from "$components/Asset.svelte";
-    import type { Activity as ActivityData } from "$lib/types";
     import { stocksDetails } from "$lib/stores";
 
     import api from "$lib/api";
     import type { Holding } from "$lib/api/portfolio";
+    import type { Trade } from "$lib/api/trades";
     import { browser } from "$app/environment";
 
-    let request = api.pendingRequest<Holding[]>();
-    const newRequest = () => api.portfolio().holdings();
-    $: if (browser) request = newRequest();
+    let requestHoldings = api.pendingRequest<Holding[]>();
+    const newRequestHoldings = () => api.portfolio().holdings();
+
+    let requestTrades = api.pendingRequest<Trade[]>();
+    const newRequestTrades = () => api.trades().personal();
+
+    $: if (browser) {
+        requestHoldings = newRequestHoldings();
+        requestTrades = newRequestTrades();
+    }
 
     function getCompanyNameFromTicker(ticker: string) {
         const stockDetail = $stocksDetails.get(ticker);
         if (stockDetail !== undefined) return stockDetail.company_name;
         throw new Error(`Company name not found for ticker ${ticker}`);
     }
-
-    const activities: ActivityData[] = [
-        {
-            time: "2023-02-08 21:09:19",
-            symbol: "AAPL",
-            quantity_bought: 10,
-            price: 151.66,
-            status: "Pending",
-        },
-        {
-            time: "2023-02-08 21:09:19",
-            symbol: "AAPL",
-            quantity_bought: 10,
-            price: 151.66,
-            status: "Filled",
-        },
-        {
-            time: "2023-02-08 21:09:19",
-            symbol: "AAPL",
-            quantity_bought: 10,
-            price: 151.66,
-            status: "Rejected",
-        },
-    ];
 </script>
 
 <div class="block mt-5 ml-5">
@@ -84,26 +67,40 @@
             class="box mx-5 py-2 has-background-grey-darker"
             style="height: 85%; overflow-y: auto;"
         >
-            <table class="table is-fullwidth is-dark">
-                <thead>
-                    <tr>
-                        <th class="has-text-left">Time</th>
-                        <th class="has-text-left">Symbol</th>
-                        <th class="has-text-left">Side</th>
-                        <th class="has-text-left"
-                            ><abbr title="Quantity">Qty</abbr></th
-                        >
-                        <th>Price</th>
-                        <th>Total value</th>
-                        <th class="has-text-left">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each activities as item}
-                        <Activity data={item} />
-                    {/each}
-                </tbody>
-            </table>
+            {#await requestTrades}
+                <p>Fetching your trades ...</p>
+            {:then response}
+                <table class="table is-fullwidth is-dark">
+                    <thead>
+                        <tr>
+                            <th class="has-text-left">Time</th>
+                            <th class="has-text-left">Symbol</th>
+                            <th class="has-text-left">Side</th>
+                            <th class="has-text-left"
+                                ><abbr title="Quantity">Qty</abbr></th
+                            >
+                            <th>Price</th>
+                            <th>Total value</th>
+                            <th class="has-text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each response as trade}
+                            <Activity
+                                data={{
+                                    time: trade.time,
+                                    symbol: trade.ticker,
+                                    quantity_bought: trade.units_change,
+                                    price: trade.balance_change,
+                                    status: "Filled",
+                                }}
+                            />
+                        {/each}
+                    </tbody>
+                </table>
+            {:catch error}
+                <p>{error.message}</p>
+            {/await}
         </div>
     </div>
 </div>
@@ -114,7 +111,7 @@
         class="box mx-5 has-background-grey-darker"
         style="height: 85%; overflow-y: auto;"
     >
-        {#await request}
+        {#await requestHoldings}
             <p>Fetching your portfolio ...</p>
         {:then response}
             {#each response as holding, i}
