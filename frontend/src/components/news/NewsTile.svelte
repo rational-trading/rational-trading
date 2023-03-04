@@ -27,7 +27,8 @@
                     class="subtitle is-6 has-text-{color}"
                     href={data.url}
                     target="_blank"
-                    rel="noreferrer">
+                    rel="noreferrer"
+                    on:click={(e) => e.stopPropagation()}>
                     {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
                 </a>
             </div>
