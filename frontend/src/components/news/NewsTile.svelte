@@ -16,10 +16,10 @@
 <article
     class="tile is-child box"
     on:click={() => toggleArticle(data.article_id)}
-    style="background-color: {selected ? '#2C4869' : ''}">
+    style="cursor: pointer; background-color: {selected ? '#2C4869' : ''}">
     <p class="title is-5 mb-1">{data.title}</p>
 
-    <nav class="level">
+    <div class="level">
         <!-- Left side -->
         <div class="level-left">
             <div class="level-item">
@@ -43,7 +43,7 @@
                         : 'down'}" />
             </span>
         </div>
-    </nav>
+    </div>
 
     <div class="content">
         <p>{data.description}</p>
