@@ -5,7 +5,6 @@
     import type { TickerPrice } from "$lib/api/price";
     import { stocks } from "$lib/stores";
     import { stepUrl } from "./Steps.svelte";
-    import { goto } from "$app/navigation";
 
     export let initialState: MakeTrade;
     export let currentState: MakeTrade;
@@ -91,7 +90,7 @@
                         type="text"
                         placeholder={UNITS ? "Units" : "Total Value"}
                         value={textAmount}
-                        on:change={(e) =>
+                        on:keyup={(e) =>
                             (textAmount = e.currentTarget.value)} />
                 </div>
                 <div class="control">
@@ -105,6 +104,8 @@
             </div>
             {#if !validAmount}
                 <p class="help is-danger">Please enter a valid number.</p>
+            {:else}
+                <p class="help"><wbr /></p>
             {/if}
         </div>
 

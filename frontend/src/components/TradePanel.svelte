@@ -2,7 +2,7 @@
     import NewsTile from "$components/news/NewsTile.svelte";
     import api from "$lib/api";
     import type { TickerPrice } from "$lib/api/price";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
     import { stocks } from "$lib/stores";
     import { browser } from "$app/environment";
 
@@ -28,8 +28,8 @@
     $: newPriceRequest = () => api.price(stock.ticker).recent();
     $: if (browser) priceRequest = newPriceRequest();
 
-    let newsRequest = api.pendingRequest<News[]>();
-    $: newNewsRequest = () => api.news().get(stock.ticker, 20);
+    let newsRequest = api.pendingRequest<Article[]>();
+    $: newNewsRequest = () => api.news().about(stock.ticker, 20);
     $: if (browser) newsRequest = newNewsRequest();
 
     let articles: string[] = [];
@@ -78,9 +78,9 @@
                 <div class="block" style="height: 30vh">
                     <div class="buttons has-addons is-centered mb-2">
                         <button
-                            class="button is-large {buy ?
-                                'is-info is-selected' :
-                                ''}"
+                            class="button is-large {buy
+                                ? 'is-info is-selected'
+                                : ''}"
                             on:click={() => (buy = true)}
                             style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                             <div>
@@ -95,9 +95,9 @@
                             </div>
                         </button>
                         <button
-                            class="button is-large {buy ?
-                                '' :
-                                'is-info is-selected'}"
+                            class="button is-large {buy
+                                ? ''
+                                : 'is-info is-selected'}"
                             on:click={() => (buy = false)}
                             style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                             <div>
@@ -125,9 +125,9 @@
                         <div class="field" style="height: 25%">
                             <div class="control">
                                 <input
-                                    class="input {validUnits ?
-                                        '' :
-                                        'is-danger'}"
+                                    class="input {validUnits
+                                        ? ''
+                                        : 'is-danger'}"
                                     type="text"
                                     placeholder="Units"
                                     bind:value={units}
@@ -149,9 +149,9 @@
                         <div class="field" style="height: 25%">
                             <div class="control">
                                 <input
-                                    class="input {validTotalValue ?
-                                        '' :
-                                        'is-danger'}"
+                                    class="input {validTotalValue
+                                        ? ''
+                                        : 'is-danger'}"
                                     type="text"
                                     placeholder="Total value"
                                     bind:value={totalValue}

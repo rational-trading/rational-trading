@@ -1,6 +1,6 @@
 import { get } from "../request";
 
-interface News {
+interface Article {
     article_id: string,
     publisher: string,
     url: string,
@@ -14,9 +14,14 @@ interface News {
 }
 
 class NewsRoute {
-    get(ticker: string, n: number): Promise<News[]> {
-        return get<News[]>({ endpoint: "/news/get", queryString: `ticker=${ticker}&n=${n}` });
+    about(ticker: string, n: number): Promise<Article[]> {
+        return get<Article[]>({ endpoint: "/news/about", queryString: `ticker=${ticker}&n=${n}` });
+    }
+
+    articles(articleIds: string[]): Promise<Article[]> {
+        const queryString = articleIds.map((id) => `article_ids=${id}`).join("&");
+        return get<Article[]>({ endpoint: "/news/articles", queryString });
     }
 }
 
-export { NewsRoute, type News };
+export { NewsRoute, type Article };

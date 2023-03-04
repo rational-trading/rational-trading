@@ -1,22 +1,24 @@
 <script lang="ts">
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
     import { capitalize, timeAgo } from "$lib/functions";
 
-    export let data: News;
+    export let data: Article;
+    export let selected: boolean = false;
+    export let toggleArticle: ((id: string) => void) | null;
+    export let light: boolean = false;
+    export let description: boolean = true;
+
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
-
-    export let articles: string[];
-
-    export let toggleArticle: (id: string) => void;
-
-    $: selected = articles.includes(data.article_id);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <article
     class="tile is-child box"
-    on:click={() => toggleArticle(data.article_id)}
-    style="cursor: pointer; background-color: {selected ? '#2C4869' : ''}">
+    class:has-background-grey-dark={light}
+    on:click={() => (toggleArticle ? toggleArticle(data.article_id) : null)}
+    style="background-color: {selected ? '#2C4869' : ''}"
+    style:cursor={toggleArticle ? "pointer" : ""}
+    class:hoverable={toggleArticle}>
     <p class="title is-5 mb-1">{data.title}</p>
 
     <div class="level">
@@ -45,9 +47,11 @@
         </div>
     </div>
 
-    <div class="content">
-        <p>{data.description}</p>
-    </div>
+    {#if description}
+        <div class="content">
+            <p>{data.description}</p>
+        </div>
+    {/if}
 </article>
 
 <style>
@@ -55,7 +59,7 @@
         transition: background-color 0s;
     }
 
-    article:hover {
+    .hoverable:hover {
         background-color: #181818;
     }
 

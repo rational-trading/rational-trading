@@ -6,7 +6,7 @@
     import Information from "$components/Information.svelte";
     import NewsCard from "$components/news/NewsCard.svelte";
     import TradePanel from "$components/TradePanel.svelte";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
 
     import { defaultWatchlist, user, userWatchlist } from "$lib/stores";
     import api from "$lib/api";
@@ -23,20 +23,21 @@
     let graphWidth = 0;
     let graphHeight = 0;
 
-    const newWatchlistRequest = () => api
-        .user()
-        .watchlist()
-        .then((response) => {
-            userWatchlist.set(response.tickers);
-            return response.tickers;
-        });
+    const newWatchlistRequest = () =>
+        api
+            .user()
+            .watchlist()
+            .then((response) => {
+                userWatchlist.set(response.tickers);
+                return response.tickers;
+            });
 
     $: if ($user && browser) newWatchlistRequest();
 
     let n = 5;
 
-    let newsRequest = api.pendingRequest<News[]>();
-    $: newNewsRequest = () => api.news().get(currentStock.ticker, n);
+    let newsRequest = api.pendingRequest<Article[]>();
+    $: newNewsRequest = () => api.news().about(currentStock.ticker, n);
     $: if (browser) newsRequest = newNewsRequest();
 
     function clickNews() {

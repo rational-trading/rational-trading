@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import { fromHex, toHex } from "$lib/functions";
+    import { fromHex } from "$lib/functions";
     import type { MakeTrade } from "$lib/api/trades";
 
     export function defaultForm(): MakeTrade {
@@ -18,10 +18,11 @@
     import { page } from "$app/stores";
 
     import Steps from "./Steps.svelte";
-    import StockSearch from "./StockSearch.svelte";
+    import SelectStock from "./SelectStock.svelte";
     import { browser } from "$app/environment";
     import AddEvidence from "./AddEvidence.svelte";
     import ChooseAmount from "./ChooseAmount.svelte";
+    import Review from "./Review.svelte";
 
     const steps = [
         {
@@ -69,6 +70,7 @@
 
 <br />
 <br />
+
 <div class="columns" style="height: 17rem; width: calc(100vw + 12px);">
     <div class="column" />
     <div class="column is-four-fifths">
@@ -76,11 +78,13 @@
             <Steps {steps} currentIndex={step - 1} {currentState} />
             <br />
             {#if step === 1}
-                <StockSearch {initialState} />
+                <SelectStock {initialState} />
             {:else if step === 2}
                 <AddEvidence {initialState} bind:currentState />
             {:else if step === 3}
                 <ChooseAmount {initialState} bind:currentState />
+            {:else if step === 4}
+                <Review {initialState} />
             {/if}
         </div>
     </div>

@@ -1,10 +1,9 @@
 <script lang="ts">
     import type { MakeTrade } from "$lib/api/trades";
-    import { goto } from "$app/navigation";
     import { stepUrl } from "./Steps.svelte";
     import api from "$lib/api";
     import { browser } from "$app/environment";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
     import NewsTile from "$components/news/NewsTile.svelte";
 
     export let initialState: MakeTrade;
@@ -13,8 +12,8 @@
     $: ({ ticker, article_evidence, text_evidence } = initialState);
     $: currentState = { ...initialState, article_evidence, text_evidence };
 
-    let newsRequest = api.pendingRequest<News[]>();
-    $: newNewsRequest = () => api.news().get(ticker, 20);
+    let newsRequest = api.pendingRequest<Article[]>();
+    $: newNewsRequest = () => api.news().about(ticker, 20);
     $: if (browser) newsRequest = newNewsRequest();
 
     function toggleArticle(id: string) {
@@ -49,7 +48,9 @@
                                 <NewsTile
                                     {toggleArticle}
                                     data={response}
-                                    bind:articles={article_evidence} />
+                                    selected={article_evidence.includes(
+                                        response.article_id
+                                    )} />
                             {/each}
                         </div>
                     {:catch error}
