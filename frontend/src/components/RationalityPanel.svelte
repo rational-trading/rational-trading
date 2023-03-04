@@ -54,8 +54,8 @@
                             needleTransitionDuration={3000}
                             needleTransition="easeElastic"
                             needleHeightRatio={0.7}
-                            startColor="#ffdd57"
-                            endColor="#60c689"
+                            startColor="#e91e63"
+                            endColor="#276cb0"
                             ringWidth={5}
                             textColor="#f5f5f5"
                             currentValueText="Controversy: {controversy > 500
@@ -80,8 +80,8 @@
                             needleTransitionDuration={3000}
                             needleTransition="easeElastic"
                             needleHeightRatio={0.7}
-                            startColor="#ffdd57"
-                            endColor="#60c689"
+                            startColor="#e91e63"
+                            endColor="#276cb0"
                             ringWidth={5}
                             textColor="#f5f5f5"
                             currentValueText="Risk: {risk > 500

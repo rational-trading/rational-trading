@@ -43,10 +43,12 @@
         <h2 class="title is-5 ml-5">Summary</h2>
         <div
             class="box mx-5 has-background-grey-darker"
-            style="height: 85%; overflow-y: auto;"
-        >
+            style="height: 85%; overflow-y: auto;">
             {#await requestStats}
-                <p>Retrieving your portfolio summary...</p>
+                <div
+                    style="height: 20%; display: flex; justify-content: center; align-items: center;">
+                    <p>Retrieving your portfolio summary...</p>
+                </div>
             {:then response}
                 <div>
                     <p class="heading">Current value</p>
@@ -70,7 +72,7 @@
                                 (
                                 {calculatePercentage(
                                     response.unrealised_gain,
-                                    response.holdings_value,
+                                    response.holdings_value
                                 )})
                             </p>
                         </div>
@@ -86,8 +88,7 @@
         <h2 class="title is-5 ml-5">Recent Activities</h2>
         <div
             class="box mx-5 py-2 has-background-grey-darker"
-            style="height: 85%; overflow-y: auto;"
-        >
+            style="height: 85%; overflow-y: auto;">
             {#await requestTrades}
                 <p>Fetching your trades ...</p>
             {:then response}
@@ -98,8 +99,7 @@
                             <th class="has-text-left">Symbol</th>
                             <th class="has-text-left">Side</th>
                             <th class="has-text-left"
-                                ><abbr title="Quantity">Qty</abbr></th
-                            >
+                                ><abbr title="Quantity">Qty</abbr></th>
                             <th>Price</th>
                             <th>Total value</th>
                             <th class="has-text-left">Status</th>
@@ -114,8 +114,7 @@
                                     quantity_bought: trade.units_change,
                                     price: trade.balance_change,
                                     status: "Filled",
-                                }}
-                            />
+                                }} />
                         {/each}
                     </tbody>
                 </table>
@@ -130,8 +129,7 @@
     <h2 class="title is-5 ml-5">Details</h2>
     <div
         class="box mx-5 has-background-grey-darker"
-        style="height: 85%; overflow-y: auto;"
-    >
+        style="height: 85%; overflow-y: auto;">
         {#await requestHoldings}
             <p>Fetching your portfolio ...</p>
         {:then response}
@@ -144,8 +142,7 @@
                         currentVal: holding.value,
                         glToday: 0,
                         glOverall: holding.unrealised_gain,
-                    }}
-                />
+                    }} />
                 {#if i < response.length - 1}
                     <hr style="background: #4a4a4a;" />
                 {/if}
