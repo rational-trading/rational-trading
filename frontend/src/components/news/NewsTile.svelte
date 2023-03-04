@@ -5,18 +5,21 @@
     export let data: Article;
     export let selected: boolean = false;
     export let toggleArticle: ((id: string) => void) | null;
-    export let light: boolean = false;
     export let description: boolean = true;
 
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
+    let hovered: boolean = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <article
-    class="tile is-child box"
-    class:has-background-grey-dark={light}
+    class="box"
+    class:has-background-grey-dark={!toggleArticle || (!selected && !hovered)}
+    class:has-background-info={selected && !hovered}
+    class:has-background-info-dark={selected && hovered}
     on:click={() => (toggleArticle ? toggleArticle(data.article_id) : null)}
-    style="background-color: {selected ? '#2C4869' : ''}"
+    on:mouseenter={() => (hovered = true)}
+    on:mouseleave={() => (hovered = false)}
     style:cursor={toggleArticle ? "pointer" : ""}
     class:hoverable={toggleArticle}>
     <p class="title is-5 mb-1">{data.title}</p>
@@ -57,10 +60,6 @@
 <style>
     article {
         transition: background-color 0s;
-    }
-
-    .hoverable:hover {
-        background-color: #181818;
     }
 
     a:hover {

@@ -24,6 +24,17 @@
     $: ({ ticker } = initialState);
 </script>
 
-<Search
-    text={ticker}
-    onSelected={(stock) => goto(nextStepUrl(stock.ticker, initialState))} />
+<div class="level">
+    <div class="level-item">
+        <div>
+            <h2 class="block title is-2">Select Stock</h2>
+            <br />
+            <div class="block">
+                <Search
+                    text={ticker}
+                    onSelected={(stock) =>
+                        goto(nextStepUrl(stock.ticker, initialState))} />
+            </div>
+        </div>
+    </div>
+</div>

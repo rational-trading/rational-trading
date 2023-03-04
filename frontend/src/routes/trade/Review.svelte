@@ -64,7 +64,6 @@
                         <div class="tile is-parent is-vertical">
                             {#each responses as response}
                                 <NewsTile
-                                    light
                                     toggleArticle={null}
                                     data={response}
                                     description={false} />
