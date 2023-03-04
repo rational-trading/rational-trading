@@ -25,16 +25,37 @@
     import StockSearch from "./StockSearch.svelte";
     import { browser } from "$app/environment";
 
-    const steps = ["Select Stock", "Add Evidence", "Create Order", "Confirm"];
+    const steps = [
+        {
+            title: "Select Stock",
+            icon: "mouse-pointer",
+        },
+        {
+            title: "Add Evidence",
+            icon: "plus",
+        },
+        {
+            title: "Choose Amount",
+            icon: "dollar",
+        },
+        {
+            title: "Review",
+            icon: "shopping-cart",
+        },
+        {
+            title: "Confirmation",
+            icon: "check",
+        },
+    ];
     let step: number;
 
     $: {
         const stepString =
             (browser ? $page.url.searchParams.get("step") : null) ?? "";
         const parsed = parseInt(stepString, 10);
-        step = Number.isNaN(parsed) ?
-            1 :
-            Math.max(1, Math.min(parsed, steps.length));
+        step = Number.isNaN(parsed)
+            ? 1
+            : Math.max(1, Math.min(parsed, steps.length));
     }
 
     let initialState = defaultForm();
@@ -51,8 +72,8 @@
 </div>
 
 <div class="columns mt-5" style="height: 17rem; width: calc(100vw + 12px);">
-    <div class="column is-one-fifth" />
-    <div class="column is-three-fifths">
+    <div class="column" />
+    <div class="column is-four-fifths">
         <div class="box mx-5 has-background-grey-darker">
             <Steps {steps} currentIndex={step - 1} />
             {#if step === 1}
@@ -60,5 +81,5 @@
             {/if}
         </div>
     </div>
-    <div class="column is-one-fifth" />
+    <div class="column" />
 </div>
