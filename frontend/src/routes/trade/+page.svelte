@@ -12,10 +12,6 @@
             article_evidence: [],
         };
     }
-
-    export function stepUrl(step: number, currentForm: MakeTrade) {
-        return `/trade/?step=${step}&state=${toHex<MakeTrade>(currentForm)}`;
-    }
 </script>
 
 <script lang="ts">
@@ -24,6 +20,7 @@
     import Steps from "./Steps.svelte";
     import StockSearch from "./StockSearch.svelte";
     import { browser } from "$app/environment";
+    import AddEvidence from "./AddEvidence.svelte";
 
     const steps = [
         {
@@ -65,19 +62,21 @@
             initialState = fromHex<MakeTrade>(stateParam);
         }
     }
+
+    let currentState: MakeTrade = defaultForm();
 </script>
 
-<div class="block mt-5 ml-5">
-    <h1 class="title is-2">Select Trade</h1>
-</div>
-
+<br />
+<br />
 <div class="columns mt-5" style="height: 17rem; width: calc(100vw + 12px);">
     <div class="column" />
     <div class="column is-four-fifths">
         <div class="box mx-5 has-background-grey-darker">
-            <Steps {steps} currentIndex={step - 1} />
+            <Steps {steps} currentIndex={step - 1} {currentState} />
             {#if step === 1}
                 <StockSearch {initialState} />
+            {:else if step === 2}
+                <AddEvidence bind:currentState {initialState} />
             {/if}
         </div>
     </div>
