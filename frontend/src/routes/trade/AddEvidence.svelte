@@ -110,9 +110,7 @@
                     <div class="column" style="text-align:right;">
                         <a
                             href={stepUrl(3, currentState)}
-                            class="button is-info"
-                            on:click={() => goto(stepUrl(3, currentState))}
-                            >Continue</a>
+                            class="button is-info">Continue</a>
                     </div>
                 </div>
             </div>

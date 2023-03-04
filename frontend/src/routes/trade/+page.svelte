@@ -21,6 +21,7 @@
     import StockSearch from "./StockSearch.svelte";
     import { browser } from "$app/environment";
     import AddEvidence from "./AddEvidence.svelte";
+    import ChooseAmount from "./ChooseAmount.svelte";
 
     const steps = [
         {
@@ -78,6 +79,8 @@
                 <StockSearch {initialState} />
             {:else if step === 2}
                 <AddEvidence {initialState} bind:currentState />
+            {:else if step === 3}
+                <ChooseAmount {initialState} bind:currentState />
             {/if}
         </div>
     </div>
