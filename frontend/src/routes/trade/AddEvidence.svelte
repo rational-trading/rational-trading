@@ -30,9 +30,9 @@
 
 <div class="block mr-5">
     <div class="columns">
-        <div class="column is-half mx-4">
+        <div class="column is-half px-5">
             <header class="title is-4">
-                Which articles help to justify your trade decision?
+                Which articles helped you decide on your position?
             </header>
             <div
                 class="block"
@@ -45,15 +45,7 @@
                         </div>
                     {:then responses}
                         <div class="tile is-parent is-vertical">
-                            {#each responses.filter((_element, index) => index % 2 === 0) as response}
-                                <NewsTile
-                                    {toggleArticle}
-                                    data={response}
-                                    bind:articles={article_evidence} />
-                            {/each}
-                        </div>
-                        <div class="tile is-parent is-vertical">
-                            {#each responses.filter((_element, index) => index % 2 === 1) as response}
+                            {#each responses as response}
                                 <NewsTile
                                     {toggleArticle}
                                     data={response}
@@ -69,12 +61,12 @@
                 </div>
             </div>
         </div>
-        <div class="column is-half  mx-4">
+        <div class="column is-half px-5">
             <header class="title is-4">
                 Are there any relevant financial statistics?
             </header>
 
-            <div class="columns">
+            <div class="columns mb-5">
                 <div class="column">
                     <label class="checkbox">
                         <input type="checkbox" />
@@ -108,15 +100,21 @@
                 </header>
                 <textarea
                     class="textarea"
+                    style="height: 24vh;"
                     value={text_evidence}
                     on:input={(e) =>
                         (text_evidence = e.currentTarget?.value ?? "")} />
             </div>
             <div class="block">
-                <a
-                    href={stepUrl(3, currentState)}
-                    class="button is-info"
-                    on:click={() => goto(stepUrl(3, currentState))}>Continue</a>
+                <div class="columns">
+                    <div class="column" style="text-align:right;">
+                        <a
+                            href={stepUrl(3, currentState)}
+                            class="button is-info"
+                            on:click={() => goto(stepUrl(3, currentState))}
+                            >Continue</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
