@@ -68,15 +68,16 @@
 
 <br />
 <br />
-<div class="columns mt-5" style="height: 17rem; width: calc(100vw + 12px);">
+<div class="columns" style="height: 17rem; width: calc(100vw + 12px);">
     <div class="column" />
     <div class="column is-four-fifths">
-        <div class="box mx-5 has-background-grey-darker">
+        <div class="box p-6 has-background-grey-darker">
             <Steps {steps} currentIndex={step - 1} {currentState} />
+            <br />
             {#if step === 1}
                 <StockSearch {initialState} />
             {:else if step === 2}
-                <AddEvidence bind:currentState {initialState} />
+                <AddEvidence {initialState} bind:currentState />
             {/if}
         </div>
     </div>
