@@ -5,11 +5,8 @@
     import api from "$lib/api";
     import type { Holding, PortfolioStats } from "$lib/api/portfolio";
     import type { Trade } from "$lib/api/trades";
-    import {
-        calculatePercentage,
-        convertValueToMoney,
-        findTicker,
-    } from "$lib/functions";
+    import { calculatePercentage, convertValueToMoney } from "$lib/functions";
+    import { stocks } from "$lib/stores";
     import { browser } from "$app/environment";
 
     let requestHoldings = api.pendingRequest<Holding[]>();
@@ -25,12 +22,6 @@
         requestHoldings = newRequestHoldings();
         requestTrades = newRequestTrades();
         requestStats = newRequestStats();
-    }
-
-    function getCompanyNameFromTicker(ticker: string) {
-        const stockDetail = findTicker(ticker);
-        if (stockDetail !== undefined) return stockDetail.name;
-        throw new Error(`Company name not found for ticker ${ticker}`);
     }
 </script>
 
@@ -136,7 +127,7 @@
             {#each response as holding, i}
                 <Asset
                     data={{
-                        company: getCompanyNameFromTicker(holding.ticker),
+                        company: $stocks.get(holding.ticker).name,
                         symbol: holding.ticker,
                         qty: holding.units,
                         currentVal: holding.value,

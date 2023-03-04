@@ -1,11 +1,13 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { currentStock } from "$lib/stores";
-    import { findTicker } from "$lib/functions";
+    import { stocks } from "$lib/stores";
+    import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
 
+    export let selected: boolean;
+    export let onClick: (stock: Stock) => void;
     export let ticker: string;
-    const stock = findTicker(ticker);
+    const stock = $stocks.get(ticker);
 
     let request = api.pendingRequest<{
         last: number;
@@ -32,25 +34,23 @@
         });
 
     $: if (browser) request = newRequest();
-
-    $: selected = stock.ticker === $currentStock.ticker;
-
-    function click() {
-        if ($currentStock !== stock) {
-            currentStock.set(stock);
-        }
-    }
 </script>
 
 {#await request}
-    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+    <tr
+        class:is-selected={selected}
+        style="cursor: pointer;"
+        on:click={() => onClick(stock)}>
         <th class="has-text-left">{stock.ticker}</th>
         <td class="has-text-right">-</td>
         <td class="has-text-right has-text-grey">-</td>
         <td class="has-text-right has-text-grey">-</td>
     </tr>
 {:then data}
-    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+    <tr
+        class:is-selected={selected}
+        style="cursor: pointer;"
+        on:click={() => onClick(stock)}>
         <th class="has-text-left">{stock.ticker}</th>
         <td class="has-text-right">{data.last.toFixed(2)}</td>
         <td class="has-text-right has-text-{data.color}"
@@ -58,8 +58,11 @@
         <td class="has-text-right has-text-{data.color}"
             >{data.percentChange.toFixed(2)}%</td>
     </tr>
-{:catch error}
-    <tr class:is-selected={selected} style="cursor: pointer;" on:click={click}>
+{:catch}
+    <tr
+        class:is-selected={selected}
+        style="cursor: pointer;"
+        on:click={() => onClick(stock)}>
         <th class="has-text-left">-</th>
         <td class="has-text-right">-</td>
         <td class="has-text-right has-text-grey">-</td>

@@ -1,9 +1,10 @@
 <script lang="ts">
-    import NewsTile from "$components/NewsTile.svelte";
+    import NewsTile from "$components/news/NewsTile.svelte";
     import api from "$lib/api";
     import type { TickerPrice } from "$lib/api/price";
     import type { News } from "$lib/api/news";
-    import { findTicker } from "$lib/functions";
+    import { stocks } from "$lib/stores";
+    import { browser } from "$app/environment";
 
     export let close: () => void;
 
@@ -21,15 +22,15 @@
         totalValue !== undefined && !isNaN(totalValue) && totalValue > 0;
 
     export let ticker: string;
-    const stock = findTicker(ticker);
+    $: stock = $stocks.get(ticker);
 
     let priceRequest = api.pendingRequest<TickerPrice>();
-    const newPriceRequest = () => api.price(stock.ticker).recent();
-    priceRequest = newPriceRequest();
+    $: newPriceRequest = () => api.price(stock.ticker).recent();
+    $: if (browser) priceRequest = newPriceRequest();
 
     let newsRequest = api.pendingRequest<News[]>();
-    const newNewsRequest = () => api.news().get(stock.ticker, 20);
-    newsRequest = newNewsRequest();
+    $: newNewsRequest = () => api.news().get(stock.ticker, 20);
+    $: if (browser) newsRequest = newNewsRequest();
 
     let articles: string[] = [];
     let textEvidence = "";
@@ -245,14 +246,14 @@
                                 </div>
                             {:then responses}
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.filter((element, index) => index % 2 === 0) as response}
+                                    {#each responses.filter((_element, index) => index % 2 === 0) as response}
                                         <NewsTile
                                             data={response}
                                             bind:articles />
                                     {/each}
                                 </div>
                                 <div class="tile is-parent is-vertical">
-                                    {#each responses.filter((element, index) => index % 2 === 1) as response}
+                                    {#each responses.filter((_element, index) => index % 2 === 1) as response}
                                         <NewsTile
                                             data={response}
                                             bind:articles />

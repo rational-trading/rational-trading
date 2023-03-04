@@ -3,9 +3,14 @@ import type { Stock } from "$lib/types";
 
 export const user: Writable<{ username: string } | null> = writable(null);
 
-export const currentStock: Writable<Stock> = writable({ ticker: "AAPL", name: "Apple Inc.", exchange: "XNAS" });
-
-export const stocksDetails: Writable<Map<string, Stock> | null> = writable(null);
+export const stocks: Writable<{ get: (ticker: string) => Stock, all: Stock[] }> = writable({
+    get: (ticker) => ({
+        ticker,
+        name: "Loading...",
+        exchange: "Loading...",
+    }),
+    all: [],
+});
 
 export const defaultWatchlist: Writable<string[]> = writable(["AAPL", "TSLA"]);
 

@@ -1,9 +1,6 @@
 <script lang="ts">
     import type { News } from "$lib/api/news";
-    import { capitalize } from "$lib/functions";
-    import TimeAgo from "javascript-time-ago";
-
-    const timeAgo = new TimeAgo("en-US");
+    import { capitalize, timeAgo } from "$lib/functions";
 
     let selected = false;
 
@@ -39,8 +36,8 @@
                     class="subtitle is-6 has-text-{color}"
                     href={data.url}
                     target="_blank"
-                    rel="noopener noreferrer">
-                    {capitalize(timeAgo.format(new Date(data.date * 1000)))} · {data.publisher}
+                    rel="noreferrer">
+                    {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
                 </a>
             </div>
         </div>
