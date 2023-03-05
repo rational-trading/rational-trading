@@ -1,20 +1,26 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
-    import { goto } from "$app/navigation";
     import NewsTile from "$components/news/NewsTile.svelte";
     import api from "$lib/api";
     import type { Article } from "$lib/api/news";
     import type { MakeTrade } from "$lib/api/trades";
     import { ApiError } from "$lib/request";
+    import { goto } from "$app/navigation";
+    import { browser } from "$app/environment";
     import { stepUrl } from "./Steps.svelte";
 
     export let initialState: MakeTrade;
 
-    $: ({ side, ticker, text_evidence, amount, article_evidence, type } =
-        initialState);
+    $: ({
+        side,
+        ticker,
+        text_evidence: textEvidence,
+        amount,
+        article_evidence: articleEvidence,
+        type,
+    } = initialState);
 
     let articlesRequest = api.pendingRequest<Article[]>();
-    $: if (browser) articlesRequest = api.news().articles(article_evidence);
+    $: if (browser) articlesRequest = api.news().articles(articleEvidence);
 
     let errorMessage = "";
 
@@ -104,7 +110,7 @@
             <br />
             <h3 class="title is-4">Justification</h3>
             <div class="box has-background-grey-dark content">
-                <p>{text_evidence}</p>
+                <p>{textEvidence}</p>
             </div>
             <br />
             <div class="block">

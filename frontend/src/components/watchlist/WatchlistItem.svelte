@@ -2,8 +2,8 @@
     import api from "$lib/api";
     import { stocks } from "$lib/stores";
     import type { Stock } from "$lib/types";
-    import { browser } from "$app/environment";
     import type { DailyChange } from "$lib/api/price";
+    import { browser } from "$app/environment";
 
     export let selected: boolean;
     export let onClick: (stock: Stock) => void;
@@ -13,22 +13,18 @@
     let recentPriceRequest = api.pendingRequest<number>();
     let changeRequest = api.pendingRequest<DailyChange & { color: string }>();
 
-    $: newRecentPriceRequest = () =>
-        api
-            .price(stock.ticker)
-            .recent()
-            .then((response) => response.close);
+    $: newRecentPriceRequest = () => api
+        .price(stock.ticker)
+        .recent()
+        .then((response) => response.close);
 
-    $: newChangeRequest = () =>
-        api
-            .price(stock.ticker)
-            .daily_change()
-            .then((change) => {
-                return {
-                    ...change,
-                    color: change.price >= 0 ? "success" : "warning",
-                };
-            });
+    $: newChangeRequest = () => api
+        .price(stock.ticker)
+        .daily_change()
+        .then((change) => ({
+            ...change,
+            color: change.price >= 0 ? "success" : "warning",
+        }));
 
     $: if (browser) recentPriceRequest = newRecentPriceRequest();
     $: if (browser) changeRequest = newChangeRequest();

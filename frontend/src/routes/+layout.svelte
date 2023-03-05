@@ -11,7 +11,9 @@
     // Attempt to re-authenticate on refresh.
     if (browser) {
         loadTickerDetails();
-        authenticate().catch(() => {});
+        authenticate().catch(() => {
+            // Ignore if authentication fails.
+        });
     }
 </script>
 

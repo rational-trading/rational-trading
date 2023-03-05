@@ -3,12 +3,12 @@
     import { capitalize, timeAgo } from "$lib/functions";
 
     export let data: Article;
-    export let selected: boolean = false;
+    export let selected = false;
     export let toggleArticle: ((id: string) => void) | null;
-    export let description: boolean = true;
+    export let description = true;
 
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
-    let hovered: boolean = false;
+    let hovered = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -43,9 +43,9 @@
         <div class="level-right">
             <span class="icon has-text-{color}">
                 <i
-                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0
-                        ? 'up'
-                        : 'down'}" />
+                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0 ?
+                        'up' :
+                        'down'}" />
             </span>
         </div>
     </div>

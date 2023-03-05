@@ -1,29 +1,37 @@
 <script lang="ts">
     import type { MakeTrade } from "$lib/api/trades";
-    import { stepUrl } from "./Steps.svelte";
     import api from "$lib/api";
-    import { browser } from "$app/environment";
     import type { Article } from "$lib/api/news";
     import NewsTile from "$components/news/NewsTile.svelte";
+    import { browser } from "$app/environment";
+    import { stepUrl } from "./Steps.svelte";
 
     export let initialState: MakeTrade;
     export let currentState: MakeTrade;
 
-    $: ({ ticker, article_evidence, text_evidence } = initialState);
-    $: currentState = { ...initialState, article_evidence, text_evidence };
+    $: ({
+        ticker,
+        article_evidence: articleEvidence,
+        text_evidence: textEvidence,
+    } = initialState);
+    $: currentState = {
+        ...initialState,
+        article_evidence: articleEvidence,
+        text_evidence: textEvidence,
+    };
 
     let newsRequest = api.pendingRequest<Article[]>();
     $: newNewsRequest = () => api.news().about(ticker, 20);
     $: if (browser) newsRequest = newNewsRequest();
 
     function toggleArticle(id: string) {
-        const index = article_evidence.indexOf(id);
+        const index = articleEvidence.indexOf(id);
         if (index === -1) {
-            article_evidence.push(id);
+            articleEvidence.push(id);
         } else {
-            article_evidence.splice(index, 1);
+            articleEvidence.splice(index, 1);
         }
-        article_evidence = article_evidence;
+        articleEvidence = articleEvidence;
     }
 </script>
 
@@ -48,8 +56,8 @@
                                 <NewsTile
                                     {toggleArticle}
                                     data={response}
-                                    selected={article_evidence.includes(
-                                        response.article_id
+                                    selected={articleEvidence.includes(
+                                        response.article_id,
                                     )} />
                             {/each}
                         </div>
@@ -102,9 +110,8 @@
                 <textarea
                     class="textarea"
                     style="height: 24vh;"
-                    value={text_evidence}
-                    on:input={(e) =>
-                        (text_evidence = e.currentTarget?.value ?? "")} />
+                    value={textEvidence}
+                    on:input={(e) => (textEvidence = e.currentTarget?.value ?? "")} />
             </div>
             <div class="block">
                 <div class="columns">

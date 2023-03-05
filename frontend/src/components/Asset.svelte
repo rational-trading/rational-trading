@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
     import { calculatePercentage, convertValueToMoney } from "$lib/functions";
+    import { goto } from "$app/navigation";
     import { nextStepUrl } from "../routes/trade/SelectStock.svelte";
 
     interface Asset {
@@ -52,7 +52,7 @@
                     {convertValueToMoney(Math.abs(data.glToday))}
                     ({calculatePercentage(
                         data.glToday,
-                        data.currentVal - data.glToday
+                        data.currentVal - data.glToday,
                     )})
                 </p>
             </div>
@@ -65,7 +65,7 @@
                     {convertValueToMoney(Math.abs(data.glOverall))}
                     ({calculatePercentage(
                         data.glOverall,
-                        data.currentVal - data.glOverall
+                        data.currentVal - data.glOverall,
                     )})
                 </p>
             </div>

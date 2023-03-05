@@ -15,8 +15,9 @@
 </script>
 
 <script lang="ts">
+    import { user } from "$lib/stores";
     import { page } from "$app/stores";
-
+    
     import Steps from "./Steps.svelte";
     import SelectStock from "./SelectStock.svelte";
     import { browser } from "$app/environment";
@@ -24,7 +25,6 @@
     import ChooseAmount from "./ChooseAmount.svelte";
     import Review from "./Review.svelte";
     import Confirmation from "./Confirmation.svelte";
-    import { user } from "$lib/stores";
     import { goto } from "$app/navigation";
 
     const steps = [
@@ -57,9 +57,9 @@
         const stepString =
             (browser ? $page.url.searchParams.get("step") : null) ?? "";
         const parsed = parseInt(stepString, 10);
-        step = Number.isNaN(parsed)
-            ? 1
-            : Math.max(1, Math.min(parsed, steps.length));
+        step = Number.isNaN(parsed) ?
+            1 :
+            Math.max(1, Math.min(parsed, steps.length));
     }
 
     let initialState = defaultForm();
