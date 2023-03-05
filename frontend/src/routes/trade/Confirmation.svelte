@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { MakeTrade } from "$lib/api/trades";
 </script>
 
 <div class="columns">

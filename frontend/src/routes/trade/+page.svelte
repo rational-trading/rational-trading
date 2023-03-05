@@ -51,7 +51,7 @@
     ];
     let step: number;
 
-    $: if (browser && !$user) goto("/");
+    $: if (browser && $user === false) goto("/");
 
     $: {
         const stepString =

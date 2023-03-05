@@ -12,7 +12,7 @@ class AuthError extends Error {
 
 async function logout() {
     localStorage.removeItem("access_token");
-    user.set(null);
+    user.set(false);
 }
 
 /**
@@ -28,7 +28,7 @@ async function authenticate(token: string | null = null) {
     try {
         user.set(await api.user().whoami());
     } catch {
-        user.set(null);
+        user.set(false);
         throw new AuthError("Invalid access token!");
     }
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import { calculatePercentage, convertValueToMoney } from "$lib/functions";
-    import TradePanel from "./TradePanel.svelte";
+    import { nextStepUrl } from "../routes/trade/SelectStock.svelte";
 
     interface Asset {
         company: string;
@@ -12,12 +13,6 @@
     }
 
     export let data: Asset;
-
-    let activeTrade = false;
-
-    function click() {
-        activeTrade = true;
-    }
 
     const colorToday = data.glToday >= 0 ? "success" : "warning";
     const colorOverall = data.glOverall >= 0 ? "success" : "warning";
@@ -57,7 +52,7 @@
                     {convertValueToMoney(Math.abs(data.glToday))}
                     ({calculatePercentage(
                         data.glToday,
-                        data.currentVal - data.glToday,
+                        data.currentVal - data.glToday
                     )})
                 </p>
             </div>
@@ -70,17 +65,16 @@
                     {convertValueToMoney(Math.abs(data.glOverall))}
                     ({calculatePercentage(
                         data.glOverall,
-                        data.currentVal - data.glOverall,
+                        data.currentVal - data.glOverall
                     )})
                 </p>
             </div>
         </div>
         <div class="column has-text-centered">
-            <button class="button is-info" on:click={click}>Buy / Sell</button>
+            <button
+                class="button is-info"
+                on:click={() => goto(nextStepUrl(data.symbol))}
+                >Buy / Sell</button>
         </div>
     </div>
 </div>
-
-{#if activeTrade}
-    <TradePanel ticker={data.symbol} close={() => (activeTrade = false)} />
-{/if}

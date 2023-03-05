@@ -19,7 +19,7 @@
     let requestStats = api.pendingRequest<PortfolioStats>();
     const newRequestStats = () => api.portfolio().stats();
 
-    $: if (browser && !$user) goto("/");
+    $: if (browser && $user === false) goto("/");
 
     $: if (browser) {
         requestHoldings = newRequestHoldings();
