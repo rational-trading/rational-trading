@@ -13,7 +13,6 @@
     import { browser } from "$app/environment";
     import SearchBar from "./SearchBar.svelte";
     import { goto } from "$app/navigation";
-    import { nextStepUrl } from "../trade/SelectStock.svelte";
 
     let currentStock: Stock = {
         ticker: "AAPL",
@@ -181,7 +180,7 @@
                 class="button is-medium is-info"
                 disabled={!$user}
                 style="width: 100%"
-                on:click={() => goto(nextStepUrl(currentStock.ticker))}>
+                on:click={() => goto("/trade/")}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
