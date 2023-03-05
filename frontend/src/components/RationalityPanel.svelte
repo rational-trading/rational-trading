@@ -8,7 +8,7 @@
     // values should be somewhat normalized - i.e. it should be guaranteed that they fall within a constant range
     const controversy = 300;
     const risk = 500;
-    const evidence = 700;
+    const evidence = 70;
 
     let responses: News[] = [];
     const newNewsRequest = () => {
@@ -18,6 +18,8 @@
     };
 
     $: if (browser) newNewsRequest();
+
+    import ProgressBar from "./progressbar/ProgressBar.svelte";
 </script>
 
 <div class="modal is-active">
@@ -40,7 +42,7 @@
         <div class="block mx-5">
             <header class="title is-5">Scores</header>
 
-            <div class="columns" style="height: 30vh">
+            <div class="columns" style="height: 40vh">
                 <div class="column">
                     <!-- workaround for weird spacing of the speedometer -->
                     <div style="height: 5vh" />
@@ -54,14 +56,37 @@
                             needleTransitionDuration={3000}
                             needleTransition="easeElastic"
                             needleHeightRatio={0.7}
-                            startColor="#e91e63"
-                            endColor="#276cb0"
+                            startColor="#276cb0"
+                            endColor="#e91e63"
                             ringWidth={5}
                             textColor="#f5f5f5"
                             currentValueText="Controversy: {controversy > 500
                                 ? 'High'
                                 : 'Low'}"
                             paddingVertical={20} />
+                    </div>
+                    <p>
+                        Placeholder: maybe some sort of explanation about what
+                        this means?
+                    </p>
+                </div>
+                <div class="column">
+                    <div
+                        style="display: flex; justify-content: center; align-items: center;">
+                        <ProgressBar
+                            series={[evidence]}
+                            thresholds={[
+                                { till: 0, color: "#ffdd57" },
+                                { till: 50, color: "#60c689" },
+                            ]}
+                            style="radial"
+                            width="50%"
+                            thickness={2}
+                            bgColor="#f5f5f5" />
+                    </div>
+                    <div
+                        style="margin-top: 1em; display: flex; justify-content: center; align-items: center;">
+                        <header class="title is-6">Evidence</header>
                     </div>
                     <p>
                         Placeholder: maybe some sort of explanation about what
@@ -80,37 +105,11 @@
                             needleTransitionDuration={3000}
                             needleTransition="easeElastic"
                             needleHeightRatio={0.7}
-                            startColor="#e91e63"
-                            endColor="#276cb0"
-                            ringWidth={5}
-                            textColor="#f5f5f5"
-                            currentValueText="Risk: {risk > 500
-                                ? 'High'
-                                : 'Low'}"
-                            paddingVertical={20} />
-                    </div>
-                    <p>
-                        Placeholder: maybe some sort of explanation about what
-                        this means?
-                    </p>
-                </div>
-                <div class="column">
-                    <div style="height: 5vh" />
-                    <div
-                        style="height: 15vh; display: flex; justify-content: center; align-items: center;">
-                        <Speedometer
-                            value={evidence}
-                            segments={1000}
-                            maxSegmentLabels={0}
-                            needleColor="#f5f5f5"
-                            needleTransitionDuration={3000}
-                            needleTransition="easeElastic"
-                            needleHeightRatio={0.7}
                             startColor="#ffdd57"
                             endColor="#60c689"
                             ringWidth={5}
                             textColor="#f5f5f5"
-                            currentValueText="Evidence: {evidence > 500
+                            currentValueText="Risk: {risk > 500
                                 ? 'High'
                                 : 'Low'}"
                             paddingVertical={20} />
