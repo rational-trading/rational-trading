@@ -3,7 +3,6 @@ import en from "javascript-time-ago/locale/en";
 
 TimeAgo.addDefaultLocale(en);
 
-
 export function matchAny(search: string, options: string[]): boolean {
     const searchLower = search.toLowerCase();
     return (
@@ -55,4 +54,55 @@ export function fromHex<T>(hex: string): T {
         .filter((p) => !!p)
         .map((c) => String.fromCharCode(parseInt(c, 16)))
         .join(""));
+}
+
+// Adopted from https://stackblitz.com/edit/color-interpolation-multiple-colors?file=app%2Fapp.component.ts
+
+/**
+ * Interpolate two colors
+ *
+ * @param color1 - The starting color
+ * @param color2 - The end color
+ * @return The interpolated color
+ */
+function interpolateColor(color1: number[], color2: number[], factor = 0.5): number[] {
+    const result: number[] = [];
+    const factorInc = factor;
+
+    for (let i = 0; i < color1.length; i++) {
+        result.push(Math.round(color1[i] + factorInc * (color2[i] - color1[i])));
+    }
+
+    return result;
+}
+
+/**
+ * Create an array of color values between two colors
+ *
+ * @param color1 - The starting color
+ * @param color2 - The end color
+ * @param steps - The number of desired colors
+ * @return The array of color values
+ */
+export function interpolateColors(color1: string, color2: string, steps: number): string[] | undefined {
+    if (!color1 || !color2 || !steps) {
+        return;
+    }
+    const interpolatedColorArray: string[] = [];
+    const stepFactor: number = 1 / (steps - 1);
+    const color1Strings: RegExpMatchArray | null = color1.match(/\d+/g);
+    const color2Strings: RegExpMatchArray | null = color2.match(/\d+/g);
+    const color1Numbers: number[] | null = color1Strings ? color1Strings.map(Number) : null;
+    const color2Numbers: number[] | null = color2Strings ? color2Strings.map(Number) : null;
+
+    if (!color1Numbers || !color2Numbers) {
+        return;
+    }
+
+    for (let i = 0; i < steps; i++) {
+        const color = interpolateColor(color1Numbers, color2Numbers, stepFactor * i);
+        interpolatedColorArray.push(`rgb(${color})`);
+    }
+
+    return interpolatedColorArray;
 }

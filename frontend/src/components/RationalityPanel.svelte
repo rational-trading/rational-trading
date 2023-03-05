@@ -4,11 +4,12 @@
     import Speedometer from "svelte-speedometer";
     import NewsTileStatic from "./NewsTileStatic.svelte";
     import type { News } from "$lib/api/news";
+    import ArcGauge from "./ArcGauge.svelte";
 
     // values should be somewhat normalized - i.e. it should be guaranteed that they fall within a constant range
     const controversy = 300;
     const risk = 500;
-    const evidence = 700;
+    const evidence = 70;
 
     let responses: News[] = [];
     const newNewsRequest = () => {
@@ -40,10 +41,10 @@
         <div class="block mx-5">
             <header class="title is-5">Scores</header>
 
-            <div class="columns" style="height: 30vh">
+            <div class="columns" style="height: 55vh">
                 <div class="column">
                     <!-- workaround for weird spacing of the speedometer -->
-                    <div style="height: 5vh" />
+                    <div style="height: 10vh" />
                     <div
                         style="height: 15vh; display: flex; justify-content: center; align-items: center;">
                         <Speedometer
@@ -69,7 +70,18 @@
                     </p>
                 </div>
                 <div class="column">
-                    <div style="height: 5vh" />
+                    <div style="height: 15vh" />
+                    <div
+                        style="height: 30vh; display: flex; justify-content: center; align-items: center;">
+                        <ArcGauge gaugeValue={evidence} size={3} />
+                    </div>
+                    <p>
+                        Placeholder: maybe some sort of explanation about what
+                        this means?
+                    </p>
+                </div>
+                <div class="column">
+                    <div style="height: 10vh" />
                     <div
                         style="height: 15vh; display: flex; justify-content: center; align-items: center;">
                         <Speedometer
@@ -85,32 +97,6 @@
                             ringWidth={5}
                             textColor="#f5f5f5"
                             currentValueText="Risk: {risk > 500
-                                ? 'High'
-                                : 'Low'}"
-                            paddingVertical={20} />
-                    </div>
-                    <p>
-                        Placeholder: maybe some sort of explanation about what
-                        this means?
-                    </p>
-                </div>
-                <div class="column">
-                    <div style="height: 5vh" />
-                    <div
-                        style="height: 15vh; display: flex; justify-content: center; align-items: center;">
-                        <Speedometer
-                            value={evidence}
-                            segments={1000}
-                            maxSegmentLabels={0}
-                            needleColor="#f5f5f5"
-                            needleTransitionDuration={3000}
-                            needleTransition="easeElastic"
-                            needleHeightRatio={0.7}
-                            startColor="#ffdd57"
-                            endColor="#60c689"
-                            ringWidth={5}
-                            textColor="#f5f5f5"
-                            currentValueText="Evidence: {evidence > 500
                                 ? 'High'
                                 : 'Low'}"
                             paddingVertical={20} />
