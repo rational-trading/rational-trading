@@ -201,8 +201,9 @@ class PolygonAPI():
         return TickerPrice.from_agg(aggs[0])
 
     def previous_daily_price(self, ticker: str) -> TickerPrice:
+        # The library type annotations are actually wrong for this function!
         aggs: List[PreviousCloseAgg] | HTTPResponse = self.client.get_previous_close_agg(
-            ticker)
+            ticker)  # type: ignore
         assert not isinstance(aggs, HTTPResponse)
         return TickerPrice.from_agg(aggs[0])
 
