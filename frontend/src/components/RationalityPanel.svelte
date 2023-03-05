@@ -6,8 +6,6 @@
     import NewsTileStatic from "./NewsTileStatic.svelte";
     import ArcGauge from "./ArcGauge.svelte";
 
-    // TODO
-    export let close: () => "Pretend that I'm now closed";
     // values should be somewhat normalized - i.e. it should be guaranteed that they fall within a constant range
     const controversy = 300;
     const risk = 500;
@@ -25,10 +23,10 @@
 
 <div class="modal is-active">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="modal-background" on:click={close} />
+    <div class="modal-background" />
     <div class="modal-content">
         <div style="display: flex; justify-content: right;">
-            <button class="button is-ghost" on:click={close}>
+            <button class="button is-ghost">
                 <span class="icon is-large">
                     <i class="fas fa-xmark" />
                 </span>
@@ -148,17 +146,17 @@
             <div class="block">
                 <div class="tile is-ancestor">
                     <div class="tile is-parent is-vertical">
-                        {#each responses.filter((element, index) => index % 3 === 0) as response}
+                        {#each responses.filter((_element, index) => index % 3 === 0) as response}
                             <NewsTileStatic data={response} />
                         {/each}
                     </div>
                     <div class="tile is-parent is-vertical">
-                        {#each responses.filter((element, index) => index % 3 === 1) as response}
+                        {#each responses.filter((_element, index) => index % 3 === 1) as response}
                             <NewsTileStatic data={response} />
                         {/each}
                     </div>
                     <div class="tile is-parent is-vertical">
-                        {#each responses.filter((element, index) => index % 3 === 2) as response}
+                        {#each responses.filter((_element, index) => index % 3 === 2) as response}
                             <NewsTileStatic data={response} />
                         {/each}
                     </div>
