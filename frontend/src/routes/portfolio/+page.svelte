@@ -58,7 +58,11 @@
                     <div class="column">
                         <div>
                             <p class="heading">Overall gain/loss</p>
-                            <p class="subtitle has-text-success">
+                            <p
+                                class="subtitle has-text-{response.unrealised_gain >=
+                                0
+                                    ? 'success'
+                                    : 'warning'}">
                                 {convertValueToMoney(response.unrealised_gain)}
                                 (
                                 {calculatePercentage(
