@@ -23,7 +23,7 @@
 <ul class="steps is-medium has-content-centered is-centered">
     {#each entries as [index, step]}
         <li class="steps-segment" class:is-active={index === currentIndex}>
-            {#if index < currentIndex}
+            {#if index < currentIndex && currentIndex != steps.length - 1}
                 <a href={stepUrl(index + 1, currentState)}
                     ><span class="steps-marker">
                         <span class="icon">

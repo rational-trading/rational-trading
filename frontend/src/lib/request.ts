@@ -76,4 +76,4 @@ function post<TReq, TRes>({
     });
 }
 
-export { get, post };
+export { get, post, ApiError };

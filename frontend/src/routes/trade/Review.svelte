@@ -1,9 +1,11 @@
 <script lang="ts">
     import { browser } from "$app/environment";
+    import { goto } from "$app/navigation";
     import NewsTile from "$components/news/NewsTile.svelte";
     import api from "$lib/api";
     import type { Article } from "$lib/api/news";
     import type { MakeTrade } from "$lib/api/trades";
+    import { ApiError } from "$lib/request";
     import { stepUrl } from "./Steps.svelte";
 
     export let initialState: MakeTrade;
@@ -13,9 +15,31 @@
 
     let articlesRequest = api.pendingRequest<Article[]>();
     $: if (browser) articlesRequest = api.news().articles(article_evidence);
+
+    let errorMessage = "";
+
+    let makingTrade = false;
+    async function makeTrade() {
+        errorMessage = "";
+        makingTrade = true;
+        try {
+            await api.trades().make(initialState);
+        } catch (e) {
+            makingTrade = false;
+            if (e instanceof ApiError) {
+                errorMessage = e.message;
+            } else {
+                errorMessage = "Something went wrong!";
+            }
+            return;
+        }
+
+        makingTrade = false;
+        await goto(stepUrl(5, initialState));
+    }
 </script>
 
-<div class="block mr-5">
+<div class="block">
     <div class="columns">
         <div class="column" />
         <div class="column is-two-thirds">
@@ -82,12 +106,15 @@
             <div class="box has-background-grey-dark content">
                 <p>{text_evidence}</p>
             </div>
+            <br />
             <div class="block">
                 <div class="columns">
                     <div class="column" style="text-align:right;">
-                        <a
-                            href={stepUrl(5, initialState)}
-                            class="button is-info">Continue</a>
+                        <button
+                            class="block button is-info"
+                            class:is-loading={makingTrade}
+                            on:click={makeTrade}>Make Trade Now</button>
+                        <p class="block has-text-danger">{errorMessage}</p>
                     </div>
                 </div>
             </div>

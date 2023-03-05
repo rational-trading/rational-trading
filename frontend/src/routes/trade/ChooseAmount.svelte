@@ -10,7 +10,7 @@
     export let currentState: MakeTrade;
 
     $: ({ ticker, type, amount: initialAmount, side } = initialState);
-    $: currentState = { ...initialState, type, amount };
+    $: currentState = { ...initialState, type, amount, side };
 
     $: stock = $stocks.get(ticker);
     $: BUY = side === "BUY";

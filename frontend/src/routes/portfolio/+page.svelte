@@ -6,8 +6,9 @@
     import type { Holding, PortfolioStats } from "$lib/api/portfolio";
     import type { Trade } from "$lib/api/trades";
     import { calculatePercentage, convertValueToMoney } from "$lib/functions";
-    import { stocks } from "$lib/stores";
+    import { stocks, user } from "$lib/stores";
     import { browser } from "$app/environment";
+    import { goto } from "$app/navigation";
 
     let requestHoldings = api.pendingRequest<Holding[]>();
     const newRequestHoldings = () => api.portfolio().holdings();
@@ -17,6 +18,8 @@
 
     let requestStats = api.pendingRequest<PortfolioStats>();
     const newRequestStats = () => api.portfolio().stats();
+
+    $: if (browser && !$user) goto("/");
 
     $: if (browser) {
         requestHoldings = newRequestHoldings();
@@ -60,7 +63,7 @@
                                 (
                                 {calculatePercentage(
                                     response.unrealised_gain,
-                                    response.holdings_value,
+                                    response.holdings_value
                                 )})
                             </p>
                         </div>
