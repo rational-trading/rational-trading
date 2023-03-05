@@ -1,11 +1,13 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { browser } from "$app/environment";
     import Speedometer from "svelte-speedometer";
-    import NewsTileStatic from "./NewsTileStatic.svelte";
     import type { News } from "$lib/api/news";
+    import { browser } from "$app/environment";
+    import NewsTileStatic from "./NewsTileStatic.svelte";
     import ArcGauge from "./ArcGauge.svelte";
 
+    // TODO
+    export let close: () => "Pretend that I'm now closed";
     // values should be somewhat normalized - i.e. it should be guaranteed that they fall within a constant range
     const controversy = 300;
     const risk = 500;
@@ -59,9 +61,9 @@
                             endColor="#276cb0"
                             ringWidth={5}
                             textColor="#f5f5f5"
-                            currentValueText="Controversy: {controversy > 500
-                                ? 'High'
-                                : 'Low'}"
+                            currentValueText="Controversy: {controversy > 500 ?
+                                'High' :
+                                'Low'}"
                             paddingVertical={20} />
                     </div>
                     <p>
@@ -96,9 +98,9 @@
                             endColor="#276cb0"
                             ringWidth={5}
                             textColor="#f5f5f5"
-                            currentValueText="Risk: {risk > 500
-                                ? 'High'
-                                : 'Low'}"
+                            currentValueText="Risk: {risk > 500 ?
+                                'High' :
+                                'Low'}"
                             paddingVertical={20} />
                     </div>
                     <p>

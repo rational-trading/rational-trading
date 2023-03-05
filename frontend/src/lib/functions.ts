@@ -69,7 +69,7 @@ function interpolateColor(color1: number[], color2: number[], factor = 0.5): num
     const result: number[] = [];
     const factorInc = factor;
 
-    for (let i = 0; i < color1.length; i++) {
+    for (let i = 0; i < color1.length; i += 1) {
         result.push(Math.round(color1[i] + factorInc * (color2[i] - color1[i])));
     }
 
@@ -99,10 +99,11 @@ export function interpolateColors(color1: string, color2: string, steps: number)
         return;
     }
 
-    for (let i = 0; i < steps; i++) {
+    for (let i = 0; i < steps; i += 1) {
         const color = interpolateColor(color1Numbers, color2Numbers, stepFactor * i);
         interpolatedColorArray.push(`rgb(${color})`);
     }
 
+    // eslint-disable-next-line consistent-return
     return interpolatedColorArray;
 }

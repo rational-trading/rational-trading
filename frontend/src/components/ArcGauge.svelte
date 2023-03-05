@@ -15,9 +15,7 @@
 
     // Adopted from https://svelte.dev/repl/82e6803a2e3e4862ba292838fb7ace50?version=3.44.2
 
-    import { writable } from "svelte/store";
-    import { tweened, spring } from "svelte/motion";
-    import { backInOut } from "svelte/easing";
+    import { spring } from "svelte/motion";
     import { arc as d3arc } from "d3-shape";
     import { scaleLinear } from "d3-scale";
     import { onMount } from "svelte";
@@ -25,20 +23,20 @@
 
     export let size = 1;
 
-    let width = 150 * size;
-    let height = 150 * size;
+    const width = 150 * size;
+    const height = 150 * size;
 
     let value = spring(0, { stiffness: 0.1 });
     export let gaugeValue = 0;
 
-    let min = 0;
-    let max = 100;
+    const min = 0;
+    const max = 100;
 
-    let startAngle = -120;
-    let endAngle = 120;
-    let cornerRadius = 5;
-    let innerRadius = 50 * size;
-    let outerRadius = 50 * size + cornerRadius;
+    const startAngle = -120;
+    const endAngle = 120;
+    const cornerRadius = 5;
+    const innerRadius = 50 * size;
+    const outerRadius = 50 * size + cornerRadius;
 
     $: scale = scaleLinear().domain([min, max]).range([startAngle, endAngle]);
 
@@ -79,15 +77,15 @@
     };
     // $: console.log(textArcBottomOffset)
 
-    let showTextSvgCenter = false;
-    let showTextArcCenter = false;
-    let showTextArcBottom = true;
-    let showTextArcCentroid = false;
-    let showCenterGuide = false;
+    const showTextSvgCenter = false;
+    const showTextArcCenter = false;
+    const showTextArcBottom = true;
+    const showTextArcCentroid = false;
+    const showCenterGuide = false;
 
     export let startColor = "rgb(255,221,87)";
     export let endColor = "rgb(96,198,137)";
-    let colors = interpolateColors(startColor, endColor, 100);
+    const colors = interpolateColors(startColor, endColor, 100);
 
     onMount(() => {
         $value = gaugeValue;

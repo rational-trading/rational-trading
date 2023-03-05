@@ -63,7 +63,7 @@
                                 (
                                 {calculatePercentage(
                                     response.unrealised_gain,
-                                    response.holdings_value
+                                    response.holdings_value,
                                 )})
                             </p>
                         </div>
