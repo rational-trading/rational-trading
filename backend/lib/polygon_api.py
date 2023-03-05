@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from http.client import HTTPResponse
 from typing import Generator, Iterator, List
 from polygon import RESTClient
-from polygon.rest.models import Sort, TickerNews, Agg, Order
+from polygon.rest.models import Sort, TickerNews, Agg, Order, PreviousCloseAgg
 
 from config.env import env
 from lib.exceptions import FriendlyClientException
@@ -56,16 +56,14 @@ class TickerPrice():
     close: float
 
     @staticmethod
-    def from_agg(agg: Agg) -> 'TickerPrice':
-        assert isinstance(agg, Agg)
-
+    def from_agg(agg: Agg | PreviousCloseAgg) -> 'TickerPrice':
         assert agg.timestamp is not None
         assert agg.open is not None
         assert agg.low is not None
         assert agg.high is not None
         assert agg.close is not None
 
-        return TickerPrice(time=agg.timestamp // 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
+        return TickerPrice(time=int(agg.timestamp) // 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
 
 
 @dataclass
@@ -200,6 +198,12 @@ class PolygonAPI():
 
         assert not isinstance(aggs, HTTPResponse)
 
+        return TickerPrice.from_agg(aggs[0])
+
+    def previous_daily_price(self, ticker: str) -> TickerPrice:
+        aggs: List[PreviousCloseAgg] | HTTPResponse = self.client.get_previous_close_agg(
+            ticker)
+        assert not isinstance(aggs, HTTPResponse)
         return TickerPrice.from_agg(aggs[0])
 
     def price_history(self, ticker: str) -> List[TickerPrice]:
