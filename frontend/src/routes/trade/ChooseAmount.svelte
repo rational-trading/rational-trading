@@ -10,7 +10,9 @@
     export let initialState: MakeTrade;
     export let currentState: MakeTrade;
 
-    $: ({ ticker, type, amount: initialAmount, side } = initialState);
+    $: ({
+        ticker, type, amount: initialAmount, side,
+    } = initialState);
     $: currentState = {
         ...initialState,
         type,
@@ -23,9 +25,9 @@
     $: UNITS = type === "UNITS";
 
     $: textAmount = initialAmount === 0 ? "" : initialAmount.toString();
-    $: amount = Number.isNaN(parseFloat(textAmount))
-        ? 0
-        : parseFloat(textAmount);
+    $: amount = Number.isNaN(parseFloat(textAmount)) ?
+        0 :
+        parseFloat(textAmount);
     $: validAmount =
         textAmount.match(/^\d+(\.\d+)?$/) &&
         !Number.isNaN(amount) &&
@@ -40,7 +42,7 @@
     function onTypeChange(
         e: Event & {
             currentTarget: EventTarget & HTMLSelectElement;
-        }
+        },
     ) {
         type = e.currentTarget.value as "PRICE" | "UNITS";
     }
@@ -93,14 +95,13 @@
             <div class="field has-addons">
                 <div class="control is-expanded">
                     <input
-                        class="input  is-fullwidth {validAmount
-                            ? ''
-                            : 'is-danger'} "
+                        class="input  is-fullwidth {validAmount ?
+                            '' :
+                            'is-danger'} "
                         type="text"
                         placeholder={UNITS ? "Units" : "Total Value"}
                         value={textAmount}
-                        on:keyup={(e) =>
-                            (textAmount = e.currentTarget.value)} />
+                        on:keyup={(e) => (textAmount = e.currentTarget.value)} />
                 </div>
                 <div class="control">
                     <div class="select  {validAmount ? '' : 'is-danger'}">
@@ -133,11 +134,11 @@
 
                     <div style="vertical-align: baseline; ">
                         <strong>
-                            {!validAmount
-                                ? "-"
-                                : (UNITS
-                                      ? amount
-                                      : amount / getTradePrice(price)
+                            {!validAmount ?
+                                "-" :
+                                (UNITS ?
+                                      amount :
+                                      amount / getTradePrice(price)
                                   ).toFixed(6)}
                         </strong>
                     </div>
@@ -156,11 +157,11 @@
                     <div style="vertical-align: baseline; ">Total value</div>
                     <div style="vertical-align: baseline; ">
                         <strong>
-                            {!validAmount
-                                ? "-"
-                                : `$${(UNITS
-                                      ? amount * getTradePrice(price)
-                                      : amount
+                            {!validAmount ?
+                                "-" :
+                                `$${(UNITS ?
+                                      amount * getTradePrice(price) :
+                                      amount
                                   ).toFixed(2)}`}</strong>
                     </div>
                 </div>

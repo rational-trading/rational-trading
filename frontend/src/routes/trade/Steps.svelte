@@ -20,7 +20,7 @@
     $: entries = Array.from(steps.entries());
 </script>
 
-<ul class="steps is-medium has-content-centered is-centered">
+<ul class="steps is-medium has-content-centered is-centered mx-3">
     {#each entries as [index, step]}
         <li class="steps-segment" class:is-active={index === currentIndex}>
             {#if index < currentIndex && currentIndex !== steps.length - 1}

@@ -58,7 +58,7 @@
                                     {toggleArticle}
                                     data={response}
                                     selected={articleEvidence.includes(
-                                        response.article_id
+                                        response.article_id,
                                     )} />
                             {/each}
                         </div>
@@ -113,8 +113,7 @@
                     style="height: 24vh;"
                     placeholder="Share your insights..."
                     value={textEvidence}
-                    on:input={(e) =>
-                        (textEvidence = e.currentTarget?.value ?? "")} />
+                    on:input={(e) => (textEvidence = e.currentTarget?.value ?? "")} />
             </div>
             <div class="block">
                 <div class="columns">

@@ -17,7 +17,7 @@
 <script lang="ts">
     import { user } from "$lib/stores";
     import { page } from "$app/stores";
-    
+
     import Steps from "./Steps.svelte";
     import SelectStock from "./SelectStock.svelte";
     import { browser } from "$app/environment";
@@ -76,24 +76,18 @@
 <br />
 <br />
 
-<div class="columns" style="height: 17rem; width: calc(100vw + 12px);">
-    <div class="column" />
-    <div class="column is-four-fifths">
-        <div class="box p-6 has-background-grey-darker mb-6">
-            <Steps {steps} currentIndex={step - 1} {currentState} />
-            <br />
-            {#if step === 1}
-                <SelectStock {initialState} />
-            {:else if step === 2}
-                <AddEvidence {initialState} bind:currentState />
-            {:else if step === 3}
-                <ChooseAmount {initialState} bind:currentState />
-            {:else if step === 4}
-                <Review {initialState} bind:currentState />
-            {:else if step === 5}
-                <Confirmation />
-            {/if}
-        </div>
-    </div>
-    <div class="column" />
+<div class="box p-6 has-background-grey-darker mx-6 mb-6">
+    <Steps {steps} currentIndex={step - 1} {currentState} />
+    <br />
+    {#if step === 1}
+        <SelectStock {initialState} />
+    {:else if step === 2}
+        <AddEvidence {initialState} bind:currentState />
+    {:else if step === 3}
+        <ChooseAmount {initialState} bind:currentState />
+    {:else if step === 4}
+        <Review {initialState} bind:currentState />
+    {:else if step === 5}
+        <Confirmation />
+    {/if}
 </div>
