@@ -55,6 +55,12 @@
                 <nav class="level">
                     <div class="level-item has-text-centered">
                         <div>
+                            <p class="heading">Ticker</p>
+                            <p class="title">{ticker}</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
                             <p class="heading">Side</p>
                             <p class="title">{side}</p>
                         </div>
@@ -71,12 +77,6 @@
                             <p class="title">
                                 {type === "PRICE" ? "$" : "UNITS"}
                             </p>
-                        </div>
-                    </div>
-                    <div class="level-item has-text-centered">
-                        <div>
-                            <p class="heading">Ticker</p>
-                            <p class="title">{ticker}</p>
                         </div>
                     </div>
                 </nav>
