@@ -89,7 +89,7 @@
             {:else if step === 3}
                 <ChooseAmount {initialState} bind:currentState />
             {:else if step === 4}
-                <Review {initialState} />
+                <Review {initialState} bind:currentState />
             {:else if step === 5}
                 <Confirmation />
             {/if}

@@ -5,13 +5,12 @@
     import { stocks } from "$lib/stores";
     import { browser } from "$app/environment";
     import { stepUrl } from "./Steps.svelte";
+    import { goto } from "$app/navigation";
 
     export let initialState: MakeTrade;
     export let currentState: MakeTrade;
 
-    $: ({
-        ticker, type, amount: initialAmount, side,
-    } = initialState);
+    $: ({ ticker, type, amount: initialAmount, side } = initialState);
     $: currentState = {
         ...initialState,
         type,
@@ -24,10 +23,13 @@
     $: UNITS = type === "UNITS";
 
     $: textAmount = initialAmount === 0 ? "" : initialAmount.toString();
-    $: amount = Number.isNaN(parseFloat(textAmount)) ?
-        0 :
-        parseFloat(textAmount);
-    $: validAmount = !Number.isNaN(amount) && amount > 0;
+    $: amount = Number.isNaN(parseFloat(textAmount))
+        ? 0
+        : parseFloat(textAmount);
+    $: validAmount =
+        textAmount.match(/^\d+(\.\d+)?$/) &&
+        !Number.isNaN(amount) &&
+        amount > 0;
 
     let priceRequest = api.pendingRequest<TickerPrice>();
     $: newPriceRequest = () => api.price(stock.ticker).recent();
@@ -38,7 +40,7 @@
     function onTypeChange(
         e: Event & {
             currentTarget: EventTarget & HTMLSelectElement;
-        },
+        }
     ) {
         type = e.currentTarget.value as "PRICE" | "UNITS";
     }
@@ -91,13 +93,14 @@
             <div class="field has-addons">
                 <div class="control is-expanded">
                     <input
-                        class="input  is-fullwidth {validAmount ?
-                            '' :
-                            'is-danger'} "
+                        class="input  is-fullwidth {validAmount
+                            ? ''
+                            : 'is-danger'} "
                         type="text"
                         placeholder={UNITS ? "Units" : "Total Value"}
                         value={textAmount}
-                        on:keyup={(e) => (textAmount = e.currentTarget.value)} />
+                        on:keyup={(e) =>
+                            (textAmount = e.currentTarget.value)} />
                 </div>
                 <div class="control">
                     <div class="select  {validAmount ? '' : 'is-danger'}">
@@ -109,7 +112,9 @@
                 </div>
             </div>
             {#if !validAmount}
-                <p class="help is-danger">Please enter a valid number.</p>
+                <p class="help is-danger">
+                    Please enter a valid number greater than 0.
+                </p>
             {:else}
                 <p class="help"><wbr /></p>
             {/if}
@@ -128,11 +133,11 @@
 
                     <div style="vertical-align: baseline; ">
                         <strong>
-                            {!validAmount ?
-                                "-" :
-                                (UNITS ?
-                                      amount :
-                                      amount / getTradePrice(price)
+                            {!validAmount
+                                ? "-"
+                                : (UNITS
+                                      ? amount
+                                      : amount / getTradePrice(price)
                                   ).toFixed(6)}
                         </strong>
                     </div>
@@ -151,11 +156,11 @@
                     <div style="vertical-align: baseline; ">Total value</div>
                     <div style="vertical-align: baseline; ">
                         <strong>
-                            {!validAmount ?
-                                "-" :
-                                `$${(UNITS ?
-                                      amount * getTradePrice(price) :
-                                      amount
+                            {!validAmount
+                                ? "-"
+                                : `$${(UNITS
+                                      ? amount * getTradePrice(price)
+                                      : amount
                                   ).toFixed(2)}`}</strong>
                     </div>
                 </div>
@@ -166,8 +171,11 @@
         <div class="block">
             <div class="columns">
                 <div class="column" style="text-align:right;">
-                    <a href={stepUrl(4, currentState)} class="button is-info"
-                        >Continue</a>
+                    <button
+                        class="button is-info"
+                        disabled={!validAmount}
+                        on:click={() => goto(stepUrl(4, currentState))}
+                        >Continue</button>
                 </div>
             </div>
         </div>
