@@ -172,6 +172,10 @@
             <div class="columns">
                 <div class="column" style="text-align:right;">
                     <button
+                        class="button is-text"
+                        on:click={() => goto(stepUrl(2, currentState))}
+                        >Back (Add Evidence)</button>
+                    <button
                         class="button is-info"
                         disabled={!validAmount}
                         on:click={() => goto(stepUrl(4, currentState))}

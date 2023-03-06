@@ -128,7 +128,11 @@
                 <div class="columns">
                     <div class="column" style="text-align:right;">
                         <button
-                            class="block button is-info"
+                            class="button is-text"
+                            on:click={() => goto(stepUrl(3, currentState))}
+                            >Back (Choose Amount)</button>
+                        <button
+                            class="button is-info"
                             class:is-loading={makingTrade}
                             on:click={makeTrade}>Make Trade Now</button>
                         <p class="block has-text-danger">{errorMessage}</p>

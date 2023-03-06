@@ -5,6 +5,7 @@
     import NewsTile from "$components/news/NewsTile.svelte";
     import { browser } from "$app/environment";
     import { stepUrl } from "./Steps.svelte";
+    import { goto } from "$app/navigation";
 
     export let initialState: MakeTrade;
     export let currentState: MakeTrade;
@@ -118,6 +119,10 @@
             <div class="block">
                 <div class="columns">
                     <div class="column" style="text-align:right;">
+                        <button
+                            class="button is-text"
+                            on:click={() => goto(stepUrl(1, currentState))}
+                            >Back (Select Stock)</button>
                         <a
                             href={stepUrl(3, currentState)}
                             class="button is-info">Continue</a>

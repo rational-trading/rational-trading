@@ -4,7 +4,7 @@
 <div class="columns">
     <div class="column" />
     <div class="column">
-        <section class="box has-background-primary">
+        <section class="box has-background-info">
             <div class="hero-body">
                 <p class="title">Success</p>
                 <p class="subtitle">Your trade has been made!</p>
