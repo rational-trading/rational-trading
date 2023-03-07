@@ -31,9 +31,9 @@
         <div class="level-right">
             <span class="icon has-text-{color}">
                 <i
-                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0
-                        ? 'up'
-                        : 'down'}" />
+                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0 ?
+                        'up' :
+                        'down'}" />
             </span>
         </div>
     </nav>
