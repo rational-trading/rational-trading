@@ -1,6 +1,6 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.10-slim
 
+FROM node:18 AS builder
+RUN echo "Stage 1"
 EXPOSE 8000
 
 
@@ -14,25 +14,17 @@ ENV NODE_VERSION=18.13.0
 
 # Build frontend
 WORKDIR /app/frontend
-COPY frontend/package.json frontend/*yarn* ./
 COPY ./frontend .
-RUN apt-get -y update && apt-get -y install curl gnupg2
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-ENV NVM_DIR=/root/.nvm
-RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update -qq && apt-get install -y yarn
-#RUN echo $(ls -la)
+
 RUN yarn install
-RUN yarn build
+RUN yarn build # builds to ../backend/static
 
 #COPY . ..
 #RUN ../run yarn:build:js && ../run yarn:build:css
 
+FROM python:3.10-slim
+
+RUN echo "Stage 2"
 # Install pip requirements
 COPY backend/requirements.txt .
 RUN python -m pip install -r requirements.txt
@@ -40,8 +32,9 @@ RUN python -m pip install -r requirements.txt
 WORKDIR /app
 COPY ./backend /app
 
+COPY --from=builder /app/backend/static /app/static
 
-RUN apt-get update && apt-get install net-tools
+
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
