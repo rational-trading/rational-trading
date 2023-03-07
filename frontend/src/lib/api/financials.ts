@@ -9,7 +9,7 @@ interface Financials {
 }
 
 class FinancialsRoute {
-    about(ticker: string): Promise<Financials> {
+    get(ticker: string): Promise<Financials> {
         return get<Financials>({ endpoint: "/financials/", queryString: `ticker=${ticker}` });
     }
 }

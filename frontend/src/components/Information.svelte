@@ -7,7 +7,7 @@
     export let stock: Stock;
 
     let requestFinancials = api.pendingRequest<Financials>();
-    const newRequestFinancials = () => api.financials().about(stock.ticker);
+    const newRequestFinancials = () => api.financials().get(stock.ticker);
 
     $: if (browser) requestFinancials = newRequestFinancials();
 </script>
