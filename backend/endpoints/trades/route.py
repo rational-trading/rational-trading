@@ -38,7 +38,7 @@ class TradeSchema(Schema):
             text_evidence=model.text_evidence,
             article_evidence=article_evidence,
             evidence=trade_score_evidence(model.text_evidence, article_evidence),
-            controversy=trade_score_controversy(),
+            controversy=trade_score_controversy(model.stock.ticker),
             financial_risk=trade_score_financial_risk(model.stock.ticker))
 
 
