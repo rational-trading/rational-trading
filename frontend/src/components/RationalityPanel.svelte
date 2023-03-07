@@ -1,12 +1,12 @@
 <script lang="ts">
     import api from "$lib/api";
     import Speedometer from "svelte-speedometer";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
+    import type { Trade } from "$lib/api/trades";
+    import { convertUnixDate } from "$lib/functions";
     import { browser } from "$app/environment";
     import NewsTileStatic from "./NewsTileStatic.svelte";
     import ArcGauge from "./ArcGauge.svelte";
-    import { convertUnixDate } from "$lib/functions";
-    import type { Trade } from "$lib/api/trades";
 
     let active = false;
     export let data: Trade;
@@ -16,10 +16,10 @@
     const risk = 500;
     const evidence = 70;
 
-    let responses: News[] = [];
+    let responses: Article[] = [];
     const newNewsRequest = () => {
         api.news()
-            .get("AAPL", 5)
+            .articles(data.article_evidence)
             .then((response) => (responses = response));
     };
 
@@ -42,7 +42,7 @@
             </div>
 
             <div class="block mx-5">
-                <header class="title is-3">Trade #86149</header>
+                <header class="title is-3">Feedback</header>
                 <hr style="background: #4a4a4a; height: 1px" />
             </div>
 
@@ -68,9 +68,9 @@
                                 ringWidth={5}
                                 textColor="#f5f5f5"
                                 currentValueText="Controversy: {controversy >
-                                500
-                                    ? 'High'
-                                    : 'Low'}"
+                                500 ?
+                                    'High' :
+                                    'Low'}"
                                 paddingVertical={20} />
                         </div>
                         <p>
@@ -105,9 +105,9 @@
                                 endColor="#276cb0"
                                 ringWidth={5}
                                 textColor="#f5f5f5"
-                                currentValueText="Risk: {risk > 500
-                                    ? 'High'
-                                    : 'Low'}"
+                                currentValueText="Risk: {risk > 500 ?
+                                    'High' :
+                                    'Low'}"
                                 paddingVertical={20} />
                         </div>
                         <p>
@@ -144,7 +144,7 @@
                                 >{Math.abs(data.units_change).toFixed(2)}</td>
                             <td class="has-text-right"
                                 >{Math.abs(
-                                    data.balance_change / data.units_change
+                                    data.balance_change / data.units_change,
                                 ).toFixed(2)}</td>
                             <td class="has-text-right"
                                 >{Math.abs(data.balance_change).toFixed(2)}</td>
@@ -154,35 +154,57 @@
                 <hr style="background: #4a4a4a; height: 1px" />
             </div>
 
-            <div class="block mx-5 mb-5">
-                <header class="title is-5">Rationalization</header>
+            <div class="block mx-5">
+                <header class="title is-5">Articles</header>
 
-                <div class="block">
-                    <div class="tile is-ancestor">
-                        <div class="tile is-parent is-vertical">
-                            {#each responses.filter((_element, index) => index % 3 === 0) as response}
-                                <NewsTileStatic data={response} />
-                            {/each}
-                        </div>
-                        <div class="tile is-parent is-vertical">
-                            {#each responses.filter((_element, index) => index % 3 === 1) as response}
-                                <NewsTileStatic data={response} />
-                            {/each}
-                        </div>
-                        <div class="tile is-parent is-vertical">
-                            {#each responses.filter((_element, index) => index % 3 === 2) as response}
-                                <NewsTileStatic data={response} />
-                            {/each}
+                {#if data.article_evidence.length > 0}
+                    <div class="block">
+                        <div class="tile is-ancestor">
+                            <div class="tile is-parent is-vertical">
+                                {#each responses.filter((_element, index) => index % 3 === 0) as response}
+                                    <NewsTileStatic data={response} />
+                                {/each}
+                            </div>
+                            <div class="tile is-parent is-vertical">
+                                {#each responses.filter((_element, index) => index % 3 === 1) as response}
+                                    <NewsTileStatic data={response} />
+                                {/each}
+                            </div>
+                            <div class="tile is-parent is-vertical">
+                                {#each responses.filter((_element, index) => index % 3 === 2) as response}
+                                    <NewsTileStatic data={response} />
+                                {/each}
+                            </div>
                         </div>
                     </div>
-                </div>
+                {:else}
+                    <div class="notification is-warning">
+                        No articles were provided to support this trade.
+                    </div>
+                {/if}
 
-                <p>{data.text_evidence}</p>
+                <hr style="background: #4a4a4a; height: 1px" />
+            </div>
+
+            <div class="block mx-5 mb-5">
+                <header class="title is-5">Justification</header>
+
+                {#if data.text_evidence !== ""}
+                    <div class="box has-background-grey-dark content">
+                        <p>{data.text_evidence}</p>
+                    </div>
+                {:else}
+                    <div class="notification is-warning">
+                        No explanation was provided to support this trade.
+                    </div>
+                {/if}
             </div>
         </div>
     </div>
 {/if}
 
+<!-- svelte-ignore a11y-missing-attribute -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <a on:click={() => (active = true)}>View</a>
 
 <style>

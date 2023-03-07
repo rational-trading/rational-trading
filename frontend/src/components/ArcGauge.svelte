@@ -84,7 +84,7 @@
     const showCenterGuide = false;
 
     export let startColor = "rgb(255,221,87)";
-    export let endColor = "rgb(96,198,137)";
+    export let endColor = "rgb(35,209,96)";
     const colors = interpolateColors(startColor, endColor, 100);
 
     onMount(() => {

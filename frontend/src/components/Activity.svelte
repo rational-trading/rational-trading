@@ -16,10 +16,3 @@
     <td class="has-text-right">{Math.abs(data.balance_change).toFixed(2)}</td>
     <td class="has-text-left"><RationalityPanel {data} /></td>
 </tr>
-
-<style>
-    a.hover {
-        text-decoration: underline;
-        color: #276bb0;
-    }
-</style>

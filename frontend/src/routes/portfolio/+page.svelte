@@ -70,7 +70,7 @@
                                 (
                                 {calculatePercentage(
                                     response.unrealised_gain,
-                                    response.holdings_value
+                                    response.holdings_value,
                                 )})
                             </p>
                         </div>
@@ -89,8 +89,9 @@
             style="height: 85%; overflow-y: auto;">
             {#await requestTrades}
                 <div
+                    class="mt-3"
                     style="height: 20%; display: flex; justify-content: center; align-items: center;">
-                    <p>Fetching your trades ...</p>
+                    <p>Fetching your trades...</p>
                 </div>
             {:then response}
                 <table class="table is-fullwidth is-dark">
