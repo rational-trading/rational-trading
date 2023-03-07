@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
     import { capitalize } from "$lib/functions";
     import TimeAgo from "javascript-time-ago";
 
     const timeAgo = new TimeAgo("en-US");
 
-    export let data: News;
+    export let data: Article;
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
 </script>
 
@@ -31,9 +31,9 @@
         <div class="level-right">
             <span class="icon has-text-{color}">
                 <i
-                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0 ?
-                        'up' :
-                        'down'}" />
+                    class="fas fa-arrow-trend-{data.normalised_sentiment >= 0
+                        ? 'up'
+                        : 'down'}" />
             </span>
         </div>
     </nav>
