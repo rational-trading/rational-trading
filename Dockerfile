@@ -46,7 +46,8 @@ USER appuser
 #CMD ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi"]
 
 
-CMD ["python", "manage.py", "makemigrations"]
+CMD ["python", "manage.py", "makemigrations", "models"]
 CMD ["python", "manage.py", "migrate"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload", "--settings", "config.production"]
+
 #RUN python manage.py runserver 0.0.0.0:8000
