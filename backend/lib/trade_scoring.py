@@ -29,12 +29,12 @@ def trade_score_evidence(text_evidence: str, article_evidence: list[str]) -> flo
 
     return (num_articles_score + relevance + len_score) / 3
 
-def trade_score_controversy() -> float:
+def trade_score_controversy(ticker: str) -> float:
     """
     Controversy score, between 0 and 1
     """
     
-    articles = ArticleModel.objects.all()
+    articles = ArticleModel.objects.get(ticker=ticker)
     scores = [a.normalised_sentiment for a in articles]
     return min(statistics.variance(scores)*10, 1.0)
 
