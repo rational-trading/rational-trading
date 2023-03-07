@@ -1,44 +1,55 @@
 <script lang="ts">
     import type { Stock } from "$lib/types";
+    import api from "$lib/api";
+    import type { Financials } from "$lib/api/financials";
+    import { browser } from "$app/environment";
 
     export let stock: Stock;
 
-    let keyStats = true;
+    let requestFinancials = api.pendingRequest<Financials>();
+    const newRequestFinancials = () => api.financials().about(stock.ticker);
 
-    function ksClick() {
-        keyStats = true;
-    }
-
-    function fClick() {
-        keyStats = false;
-    }
+    $: if (browser) requestFinancials = newRequestFinancials();
 </script>
 
-<div class="tabs">
-    <ul>
-        <li class:is-active={keyStats}>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <a on:click={ksClick}>Key Stats</a>
-        </li>
-        <li class:is-active={!keyStats}>
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <a on:click={fClick}>Finances</a>
-        </li>
-    </ul>
-</div>
-
-{#if keyStats}
-    <!-- Key Stats -->
-    <div class="block mx-2">
-        <p>
-            Current stock: {stock.ticker}, {stock.name}, {stock.exchange}
-        </p>
-    </div>
-{:else}
-    <!-- Finances -->
-    <div class="block mx-2">
-        <p>Here is some other text.</p>
-    </div>
-{/if}
+<!-- Finances -->
+{#await requestFinancials}
+    <p>Retrieving stocks financial details...</p>
+{:then response}
+    <nav class="level" style="width: 80%">
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Price - Earning Ratio</p>
+                <p class="title">
+                    {response.price_earning_ratio.toFixed(3)}
+                </p>
+            </div>
+        </div>
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Earnings per share</p>
+                <p class="title">
+                    {response.earnings_per_share.toFixed(3)}
+                </p>
+            </div>
+        </div>
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Debt to equity</p>
+                <p class="title">
+                    {response.debt_to_equity.toFixed(3)}
+                </p>
+            </div>
+        </div>
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Current ratio</p>
+                <p class="title">
+                    {response.current_ratio.toFixed(3)}
+                </p>
+            </div>
+        </div>
+    </nav>
+{:catch error}
+    console.log({error.message})
+{/await}
