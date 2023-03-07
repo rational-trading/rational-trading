@@ -190,7 +190,7 @@
                 <header class="title is-5">Justification</header>
 
                 {#if data.text_evidence !== ""}
-                    <div class="box has-background-grey-dark content">
+                    <div class="box has-background-dark content">
                         <p>{data.text_evidence}</p>
                     </div>
                 {:else}

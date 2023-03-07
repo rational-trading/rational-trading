@@ -52,7 +52,7 @@
     <div class="column" />
     <div class="column is-one-third ml-5">
         <header class="title is-3 mb-0">
-            {stock.exchange} : {stock.ticker}
+            {stock.exchange}: {stock.ticker}
         </header>
 
         <hr style="background: #4a4a4a; height: 1px" />
