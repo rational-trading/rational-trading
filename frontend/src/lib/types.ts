@@ -3,7 +3,6 @@ export interface Activity {
     symbol: string;
     quantity_bought: number;
     price: number;
-    status: "Filled" | "Pending" | "Rejected";
 }
 
 export interface Stock {
