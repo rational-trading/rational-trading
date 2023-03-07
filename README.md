@@ -107,6 +107,12 @@ Whilst coding, you should commit often. A good guideline is to commit whenever y
 If there are multiple members of the team collaborating on a single issue, you should all create spin-off branches from the issue branch. For example, I might create the branch `1-create-template-for-frontend-miles` as a spin-off of `1-create-template-for-frontend-miles`. Any changes you make should be done on your personal branch, and then synced with the feature branch in the manner described above (replacing any occurences of `main` with the feature branch). Once all team members are happy that the feature branch is finished, you can then sync it with `main` in the manner described above. 
 
 
+## Docker
 
+## 1
+To run the project in Docker, update the contents of `docker-compose.yml` with the Polygon API key and JWT secret key.
+
+## 2
+Save the file then run `docker compose up --build -d` from `rational-trading/`
 
 
