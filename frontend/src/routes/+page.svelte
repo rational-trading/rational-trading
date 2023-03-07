@@ -3,7 +3,8 @@
     <h2 class="subtitle is-3">And maybe a little elaboration.</h2>
     <br />
     <br />
-    <a class="button is-large is-info" href="/"><strong>Get started</strong></a>
+    <a class="button is-large is-info" href="/explore/"
+        ><strong>Get started</strong></a>
 </div>
 
 <div class="bg-img" />

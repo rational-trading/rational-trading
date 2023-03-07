@@ -77,8 +77,9 @@ class HoldingSchema(Schema):
         return HoldingSchema(
             ticker=model.stock.ticker,
             units=float(model.units),
-            value=current_price * float(model.units),
-            unrealised_gain=calculate_unrealised_gain(model, current_price))
+            value=round(current_price * float(model.units), 2),
+            unrealised_gain=round(
+                calculate_unrealised_gain(model, current_price), 2))
 
 
 @router.get("/holdings", response=List[HoldingSchema])

@@ -3,17 +3,15 @@ Polygon API class to get stock financials and news articles
 https://polygon.io/docs
 https://polygon-api-client.readthedocs.io/en/latest/index.html
 """
-import pickle
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from http.client import HTTPResponse
-from typing import Iterator, List
+from typing import Generator, Iterator, List
 from polygon import RESTClient
-
-from polygon.rest.models import Sort, TickerNews, Agg
+from polygon.rest.models import Sort, TickerNews, Agg, Order, PreviousCloseAgg
 
 from config.env import env
-from lib.nlp import get_text_score
+from lib.exceptions import FriendlyClientException
 from lib.utils import guardNone
 
 
@@ -38,18 +36,15 @@ class TickerFinancials():
     basic_earnings_per_share: float
 
 
+@dataclass
 class TickerArticle():
-    def __init__(self, title: str, description: str, url: str, date: str, publisher: str, tickers: list[str]) -> None:
-        self.title = title
-        self.description = description
-        self.url = url
-        self.date = date
-        self.publisher = publisher
-        self.score = get_text_score(" ".join([title, description]))
-        self.tickers = tickers
-
-    def __repr__(self) -> str:
-        return f"{self.score:>6.3f} | {self.date[5:7]}/{self.date[8:10]} {self.date[11:16]} | {self.publisher[:8]:<8}... {self.title[:40]}..."
+    article_id: str
+    title: str
+    description: str
+    url: str
+    date: str
+    publisher: str
+    tickers: list[str]
 
 
 @dataclass
@@ -61,16 +56,21 @@ class TickerPrice():
     close: float
 
     @staticmethod
-    def from_agg(agg: Agg) -> 'TickerPrice':
-        assert isinstance(agg, Agg)
-
+    def from_agg(agg: Agg | PreviousCloseAgg) -> 'TickerPrice':
         assert agg.timestamp is not None
         assert agg.open is not None
         assert agg.low is not None
         assert agg.high is not None
         assert agg.close is not None
 
-        return TickerPrice(time=agg.timestamp // 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
+        return TickerPrice(time=int(agg.timestamp) // 1000, open=agg.open, low=agg.low, high=agg.high, close=agg.close)
+
+
+@dataclass
+class TickerDetails():
+    ticker: str
+    company_name: str
+    exchange: str
 
 
 class PolygonAPI():
@@ -78,6 +78,15 @@ class PolygonAPI():
         # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
         POLYGON_API_KEY = env("POLYGON_API_KEY")
         self.client = RESTClient(api_key=POLYGON_API_KEY)
+
+    def get_ticker_details(self, ticker: str) -> TickerDetails:
+        ticker_details = self.client.get_ticker_details(ticker)
+
+        assert isinstance(ticker_details.ticker, str)
+        assert isinstance(ticker_details.name, str)
+        assert isinstance(ticker_details.primary_exchange, str)
+
+        return TickerDetails(ticker=ticker_details.ticker, company_name=ticker_details.name, exchange=ticker_details.primary_exchange)
 
     def get_dividend(self, ticker: str) -> TickerDividend:
         dividends = self.client.list_dividends(
@@ -91,11 +100,17 @@ class PolygonAPI():
         return f
 
     def get_financials(self, ticker: str) -> TickerFinancials:
+
         financials = self.client.vx.list_stock_financials(
             ticker=ticker, limit=1, timeframe="annual", include_sources=True)
+
         assert not isinstance(financials, HTTPResponse)
 
-        latest = next(financials).financials
+        try:
+            latest = next(financials).financials
+        except Exception as e:
+            raise FriendlyClientException("Financials not found!")
+
         assert latest is not None
 
         assert latest.balance_sheet is not None
@@ -118,19 +133,19 @@ class PolygonAPI():
         )
         return f
 
-    def get_news(self, ticker: str, max_items: int) -> list[TickerArticle]:
+    def get_recent_news(self, ticker: str, max_items: int) -> Generator[TickerArticle, None, None]:
         """
-        Returns a list of N annotated news articles (i.e. 'TickerArticle's)
+        Returns a generator that yeilds at most "max_items" `TickerArticle`s.
         """
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
-            ticker=ticker, limit=1)
-        articles = []
+            ticker=ticker,
+            sort="published_utc", limit=max_items, order=Order.DESC)
 
         for _ in range(max_items):
             n = news_generator.__next__()
             # We only get bytes if calling list_ticker_news with raw=True, so can assert TickerNews
             assert isinstance(n, TickerNews)
-
+            assert isinstance(n.id, str)
             assert isinstance(n.title, str)
             assert isinstance(n.article_url, str)
             assert isinstance(n.published_utc, str)
@@ -139,15 +154,13 @@ class PolygonAPI():
             assert isinstance(n.publisher.name, str)
             assert n.tickers is not None
 
-            article = TickerArticle(n.title, desc, n.article_url,
-                                    n.published_utc, n.publisher.name, n.tickers)
-            articles.append(article)
+            article = TickerArticle(article_id=n.id, title=n.title, description=desc, url=n.article_url,
+                                    date=n.published_utc, publisher=n.publisher.name, tickers=n.tickers)
+            yield article
 
-        return articles
-
-    def get_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
+    def search_all_recent_news(self, N: int, tickers: list[str]) -> list[TickerArticle]:
         """
-        Gets the N most recent news articles that talk about any of the stocks in tickers
+        Searches for the N most recent news articles that talk about any of the stocks in tickers
         """
         news_generator: Iterator[TickerNews] | HTTPResponse = self.client.list_ticker_news(
             sort="published_utc")
@@ -161,6 +174,7 @@ class PolygonAPI():
             assert n.tickers is not None
             if len(set(n.tickers).intersection(set(tickers))) == 0:
                 continue
+            assert isinstance(n.id, str)
             assert isinstance(n.title, str)
             assert isinstance(n.article_url, str)
             assert isinstance(n.published_utc, str)
@@ -168,8 +182,8 @@ class PolygonAPI():
             assert n.publisher is not None
             assert isinstance(n.publisher.name, str)
 
-            article = TickerArticle(n.title, desc, n.article_url,
-                                    n.published_utc, n.publisher.name, n.tickers)
+            article = TickerArticle(article_id=n.id, title=n.title, description=desc, url=n.article_url,
+                                    date=n.published_utc, publisher=n.publisher.name, tickers=n.tickers)
             articles.append(article)
 
             print(f"{len(articles)} articles collected.")
@@ -186,6 +200,13 @@ class PolygonAPI():
 
         return TickerPrice.from_agg(aggs[0])
 
+    def previous_daily_price(self, ticker: str) -> TickerPrice:
+        # The library type annotations are actually wrong for this function!
+        aggs: List[PreviousCloseAgg] | HTTPResponse = self.client.get_previous_close_agg(
+            ticker)  # type: ignore
+        assert not isinstance(aggs, HTTPResponse)
+        return TickerPrice.from_agg(aggs[0])
+
     def price_history(self, ticker: str) -> List[TickerPrice]:
         from_ = datetime.utcnow() - timedelta(days=365*5)
         to = datetime.utcnow()
@@ -196,26 +217,6 @@ class PolygonAPI():
 
         prices = list(map(TickerPrice.from_agg, aggs))
         return prices
-
-
-def normalise_scores(articles: list[TickerArticle]) -> list[TickerArticle]:
-    f = open("lib/precomputed_result", "rb")
-    pre = pickle.load(f)
-    f.close()
-    ret = articles.copy()
-
-    def rank(article: TickerArticle) -> float:
-        # Normalises a singular article
-        # Naive linear scan
-        for i, rank_score in enumerate(pre):
-            if article.score < rank_score:
-                return i/len(pre)
-        return 1
-
-    for article in ret:
-        article.score = rank(article)
-                        
-    return ret
 
 
 # Testing

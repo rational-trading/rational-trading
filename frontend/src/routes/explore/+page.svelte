@@ -1,35 +1,27 @@
 <script lang="ts">
-    import WatchlistItem from "$components/WatchlistItem.svelte";
-    import WatchlistAdd from "$components/WatchlistAdd.svelte";
-    import WatchlistMinus from "$components/WatchlistMinus.svelte";
-    import Search from "$components/Search.svelte";
+    import WatchlistItem from "$components/watchlist/WatchlistItem.svelte";
+    import WatchlistAdd from "$components/watchlist/WatchlistAdd.svelte";
+    import WatchlistMinus from "$components/watchlist/WatchlistMinus.svelte";
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
-    import News from "$components/News.svelte";
-    import NewsPanel from "$components/NewsPanel.svelte";
-    import TradePanel from "$components/TradePanel.svelte";
+    import NewsCard from "$components/news/NewsCard.svelte";
+    import type { Article } from "$lib/api/news";
 
-    import {
-        defaultWatchlist,
-        currentStock,
-        user,
-        userWatchlist,
-    } from "$lib/stores";
+    import { defaultWatchlist, user, userWatchlist } from "$lib/stores";
     import api from "$lib/api";
+    import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
+    import SearchBar from "./SearchBar.svelte";
+    import { goto } from "$app/navigation";
+
+    let currentStock: Stock = {
+        ticker: "AAPL",
+        name: "Apple Inc.",
+        exchange: "XNAS",
+    };
 
     let graphWidth = 0;
     let graphHeight = 0;
-
-    let activeTrade = false;
-
-    function click() {
-        if ($user) {
-            activeTrade = true;
-        } else {
-            alert("Please log in first.");
-        }
-    }
 
     const newWatchlistRequest = () => api
         .user()
@@ -41,41 +33,21 @@
 
     $: if ($user && browser) newWatchlistRequest();
 
-    $: news = [
-        {
-            title: "Why one strategist sees a real risk of World War 3.1, whose battleground will be microchips",
-            publisher: "MarketWatch",
-            published_utc: "2023-02-26T13:56:00Z",
-            description:
-                "Peter Tchir, head of macro strategy at Academy Securities, dubs a potential war over semiconductors World War 3.1",
-            url: "https://www.marketwatch.com/story/why-one-strategist-sees-a-real-risk-of-world-war-3-1-whose-battleground-will-be-microchips-8eec0e96",
-            sentiment: true,
-        },
-        {
-            title: `Some Negative News About ${$currentStock.name}`,
-            publisher: "Newswires",
-            published_utc: "2023-02-21T10:00:00Z",
-            description: "Some description",
-            url: "/",
-            sentiment: false,
-        },
-        {
-            title: `Some Negative News About ${$currentStock.name}`,
-            publisher: "Newswires",
-            published_utc: "2023-02-20T18:11:51Z",
-            description: "Some description",
-            url: "/",
-            sentiment: false,
-        },
-        {
-            title: `Some Positive News About ${$currentStock.name}`,
-            publisher: "Newswires",
-            published_utc: "2023-02-20T13:00:00Z",
-            description: "Some description",
-            url: "/",
-            sentiment: true,
-        },
-    ];
+    let n = 5;
+
+    let newsRequest = api.pendingRequest<Article[]>();
+    $: newNewsRequest = () => api.news().about(currentStock.ticker, n);
+    $: if (browser) newsRequest = newNewsRequest();
+
+    function clickNews() {
+        n += 5;
+    }
+
+    function setCurrentStock(stock: Stock) {
+        if (currentStock !== stock) {
+            currentStock = stock;
+        }
+    }
 </script>
 
 <!-- this fixes the issue of weird extra space to the right of the page -->
@@ -93,10 +65,10 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    <WatchlistMinus />
+                    <WatchlistMinus {setCurrentStock} {currentStock} />
                 </div>
                 <div class="level-item">
-                    <WatchlistAdd />
+                    <WatchlistAdd {currentStock} onAdd={setCurrentStock} />
                 </div>
             </div>
         </nav>
@@ -116,15 +88,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#if $user}
-                            {#each $userWatchlist as ticker (ticker)}
-                                <WatchlistItem {ticker} />
-                            {/each}
-                        {:else}
-                            {#each $defaultWatchlist as ticker (ticker)}
-                                <WatchlistItem {ticker} />
-                            {/each}
-                        {/if}
+                        {#each $user ? $userWatchlist : $defaultWatchlist as ticker (ticker)}
+                            <WatchlistItem
+                                {ticker}
+                                onClick={setCurrentStock}
+                                selected={ticker === currentStock.ticker} />
+                        {/each}
                     </tbody>
                 </table>
             </div>
@@ -136,20 +105,26 @@
         <!-- graph side header bar -->
         <nav class="level mx-2" style="width: 100%">
             <div class="level-left">
-                <div class="level-item">
-                    <h1 class="subtitle is-5">{$currentStock.name}</h1>
-                </div>
-                <div class="level-item">
-                    <h1 class="subtitle is-5">•</h1>
-                </div>
-                <div class="level-item">
-                    <h1 class="subtitle is-5">{$currentStock.exchange}</h1>
-                </div>
+                {#if currentStock.name === "Loading..."}
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">{currentStock.name}</h1>
+                    </div>
+                {:else}
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">{currentStock.name}</h1>
+                    </div>
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">•</h1>
+                    </div>
+                    <div class="level-item">
+                        <h1 class="subtitle is-5">{currentStock.exchange}</h1>
+                    </div>
+                {/if}
             </div>
 
             <div class="level-right" style="width: 50%">
                 <div class="level-item mr-3" style="width: 100%">
-                    <Search />
+                    <SearchBar onSelected={setCurrentStock} />
                 </div>
             </div>
         </nav>
@@ -159,11 +134,13 @@
             style="height: 50vh; display: flex; justify-content: center; align-items: center;"
             bind:clientWidth={graphWidth}
             bind:clientHeight={graphHeight}>
-            <Graph dimensions={{ width: graphWidth, height: graphHeight }} />
+            <Graph
+                stock={currentStock}
+                dimensions={{ width: graphWidth, height: graphHeight }} />
         </div>
 
         <!-- information tab -->
-        <Information />
+        <Information stock={currentStock} />
     </div>
 
     <!-- news column -->
@@ -173,24 +150,39 @@
         <div style="height: calc(100vh - 53px - 10rem); overflow: auto;">
             <div class="block">
                 <h1 class="title is-5">News</h1>
-                {#each news as item}
-                    <News data={item} />
-                {/each}
-
-                <div class="block is-flex is-justify-content-center">
-                    <NewsPanel />
-                </div>
+                {#await newsRequest}
+                    <div
+                        style="width: 100%; height: 3vh; display: flex; justify-content: center; align-items: center;">
+                        <p>Loading...</p>
+                    </div>
+                {:then responses}
+                    {#each responses as response}
+                        <NewsCard data={response} />
+                    {/each}
+                    <div class="block is-flex is-justify-content-center">
+                        <button
+                            class="button is-outline is-small is-rounded"
+                            on:click={clickNews}>
+                            More news
+                        </button>
+                    </div>
+                {:catch error}
+                    <div
+                        style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;">
+                        <p>{error.message}</p>
+                    </div>
+                {/await}
             </div>
         </div>
         <hr style="background: #4a4a4a; height: 1px" />
         <div class="block is-flex is-justify-content-center">
-            <button class="button is-medium is-info" on:click={click}>
+            <button
+                class="button is-medium is-info"
+                disabled={!$user}
+                style="width: 100%"
+                on:click={() => goto("/trade/")}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
     </div>
 </div>
-
-{#if activeTrade}
-    <TradePanel close={() => (activeTrade = false)} />
-{/if}

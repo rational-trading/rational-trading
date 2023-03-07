@@ -1,49 +1,31 @@
 <script lang="ts">
     import Activity from "$components/Activity.svelte";
     import Asset from "$components/Asset.svelte";
-    import type { Activity as ActivityData } from "$lib/types";
 
-    const activities: ActivityData[] = [
-        {
-            time: "2023-02-08 21:09:19",
-            symbol: "AAPL",
-            quantity_bought: 10,
-            price: 151.66,
-            status: "Pending",
-        },
-        {
-            time: "2023-02-08 21:09:19",
-            symbol: "AAPL",
-            quantity_bought: 10,
-            price: 151.66,
-            status: "Filled",
-        },
-        {
-            time: "2023-02-08 21:09:19",
-            symbol: "AAPL",
-            quantity_bought: 10,
-            price: 151.66,
-            status: "Rejected",
-        },
-    ];
-    const assets = [
-        {
-            company: "Tesla, Inc.",
-            symbol: "TSLA",
-            qty: 10,
-            currentVal: 1996.82,
-            glToday: -53.28,
-            glOverall: -18.02,
-        },
-        {
-            company: "Apple, Inc.",
-            symbol: "AAPL",
-            qty: 10,
-            currentVal: 1996.82,
-            glToday: 53.28,
-            glOverall: 18.02,
-        },
-    ];
+    import api from "$lib/api";
+    import type { Holding, PortfolioStats } from "$lib/api/portfolio";
+    import type { Trade } from "$lib/api/trades";
+    import { calculatePercentage, convertValueToMoney } from "$lib/functions";
+    import { stocks, user } from "$lib/stores";
+    import { browser } from "$app/environment";
+    import { goto } from "$app/navigation";
+
+    let requestHoldings = api.pendingRequest<Holding[]>();
+    const newRequestHoldings = () => api.portfolio().holdings();
+
+    let requestTrades = api.pendingRequest<Trade[]>();
+    const newRequestTrades = () => api.trades().personal();
+
+    let requestStats = api.pendingRequest<PortfolioStats>();
+    const newRequestStats = () => api.portfolio().stats();
+
+    $: if (browser && $user === false) goto("/");
+
+    $: if (browser) {
+        requestHoldings = newRequestHoldings();
+        requestTrades = newRequestTrades();
+        requestStats = newRequestStats();
+    }
 </script>
 
 <div class="block mt-5 ml-5">
@@ -56,27 +38,44 @@
         <div
             class="box mx-5 has-background-grey-darker"
             style="height: 85%; overflow-y: auto;">
-            <div>
-                <p class="heading">Current value</p>
-                <p class="title">£13,267.39</p>
-            </div>
-            <div class="block" style="height: 20%" />
-            <div class="columns">
-                <div class="column">
-                    <div>
-                        <p class="heading">Today's gain/loss</p>
-                        <p class="subtitle has-text-success">£28.27 (1.50%)</p>
+            {#await requestStats}
+                <p>Retrieving your portfolio summary...</p>
+            {:then response}
+                <div>
+                    <p class="heading">Current value</p>
+                    <p class="title">
+                        {convertValueToMoney(response.holdings_value)}
+                    </p>
+                </div>
+                <div class="block" style="height: 20%" />
+                <div class="columns">
+                    <div class="column">
+                        <div>
+                            <p class="heading">Today's gain/loss</p>
+                            <p class="subtitle has-text-success">TODO</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div>
+                            <p class="heading">Overall gain/loss</p>
+                            <p
+                                class="subtitle has-text-{response.unrealised_gain >=
+                                0 ?
+                                    'success' :
+                                    'warning'}">
+                                {convertValueToMoney(response.unrealised_gain)}
+                                (
+                                {calculatePercentage(
+                                    response.unrealised_gain,
+                                    response.holdings_value,
+                                )})
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="column">
-                    <div>
-                        <p class="heading">Overall gain/loss</p>
-                        <p class="subtitle has-text-success">
-                            £1,937.25 (14.60%)
-                        </p>
-                    </div>
-                </div>
-            </div>
+            {:catch error}
+                console.log({error.message});
+            {/await}
         </div>
     </div>
 
@@ -85,25 +84,38 @@
         <div
             class="box mx-5 py-2 has-background-grey-darker"
             style="height: 85%; overflow-y: auto;">
-            <table class="table is-fullwidth is-dark">
-                <thead>
-                    <tr>
-                        <th class="has-text-left">Time</th>
-                        <th class="has-text-left">Symbol</th>
-                        <th class="has-text-left">Side</th>
-                        <th class="has-text-left"
-                            ><abbr title="Quantity">Qty</abbr></th>
-                        <th>Price</th>
-                        <th>Total value</th>
-                        <th class="has-text-left">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each activities as item}
-                        <Activity data={item} />
-                    {/each}
-                </tbody>
-            </table>
+            {#await requestTrades}
+                <p>Fetching your trades ...</p>
+            {:then response}
+                <table class="table is-fullwidth is-dark">
+                    <thead>
+                        <tr>
+                            <th class="has-text-left">Time</th>
+                            <th class="has-text-left">Symbol</th>
+                            <th class="has-text-left">Side</th>
+                            <th class="has-text-left"
+                                ><abbr title="Quantity">Qty</abbr></th>
+                            <th>Price</th>
+                            <th>Total value</th>
+                            <th class="has-text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each response as trade}
+                            <Activity
+                                data={{
+                                    time: trade.time,
+                                    symbol: trade.ticker,
+                                    quantity_bought: trade.units_change,
+                                    price: trade.balance_change,
+                                    status: "Filled",
+                                }} />
+                        {/each}
+                    </tbody>
+                </table>
+            {:catch error}
+                <p>{error.message}</p>
+            {/await}
         </div>
     </div>
 </div>
@@ -113,11 +125,25 @@
     <div
         class="box mx-5 has-background-grey-darker"
         style="height: 85%; overflow-y: auto;">
-        {#each assets as item, i}
-            <Asset data={item} />
-            {#if i < assets.length - 1}
-                <hr style="background: #4a4a4a;" />
-            {/if}
-        {/each}
+        {#await requestHoldings}
+            <p>Fetching your portfolio ...</p>
+        {:then response}
+            {#each response as holding, i}
+                <Asset
+                    data={{
+                        company: $stocks.get(holding.ticker).name,
+                        symbol: holding.ticker,
+                        qty: holding.units,
+                        currentVal: holding.value,
+                        glToday: 0,
+                        glOverall: holding.unrealised_gain,
+                    }} />
+                {#if i < response.length - 1}
+                    <hr style="background: #4a4a4a;" />
+                {/if}
+            {/each}
+        {:catch error}
+            <p>{error.message}</p>
+        {/await}
     </div>
 </div>
