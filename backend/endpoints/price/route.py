@@ -22,6 +22,21 @@ def recent_price(request: HttpRequest, ticker: str) -> TickerPrice:
     return price
 
 
+class DailyChangeSchema(Schema):
+    price: float
+    percentage: float
+
+
+@router.get("/change", response=DailyChangeSchema)
+def daily_change(request: HttpRequest, ticker: str) -> DailyChangeSchema:
+    api = PolygonAPI()
+    prev_close = api.previous_daily_price(ticker).close
+    current = api.recent_price(ticker).close
+    price_change = current - prev_close
+    percentage_change = 100 * price_change / prev_close
+    return DailyChangeSchema(price=price_change, percentage=percentage_change)
+
+
 @router.get("/history", response=List[PriceSchema])
 def price_history(request: HttpRequest, ticker: str) -> List[TickerPrice]:
     api = PolygonAPI()

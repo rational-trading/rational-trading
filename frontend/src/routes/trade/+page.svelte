@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import { fromHex, toHex } from "$lib/functions";
+    import { fromHex } from "$lib/functions";
     import type { MakeTrade } from "$lib/api/trades";
 
     export function defaultForm(): MakeTrade {
@@ -12,21 +12,46 @@
             article_evidence: [],
         };
     }
-
-    export function stepUrl(step: number, currentForm: MakeTrade) {
-        return `/trade/?step=${step}&state=${toHex<MakeTrade>(currentForm)}`;
-    }
 </script>
 
 <script lang="ts">
+    import { user } from "$lib/stores";
     import { page } from "$app/stores";
 
     import Steps from "./Steps.svelte";
-    import StockSearch from "./StockSearch.svelte";
+    import SelectStock from "./SelectStock.svelte";
     import { browser } from "$app/environment";
+    import AddEvidence from "./AddEvidence.svelte";
+    import ChooseAmount from "./ChooseAmount.svelte";
+    import Review from "./Review.svelte";
+    import Confirmation from "./Confirmation.svelte";
+    import { goto } from "$app/navigation";
 
-    const steps = ["Select Stock", "Add Evidence", "Create Order", "Confirm"];
+    const steps = [
+        {
+            title: "Select Stock",
+            icon: "mouse-pointer",
+        },
+        {
+            title: "Add Evidence",
+            icon: "plus",
+        },
+        {
+            title: "Choose Amount",
+            icon: "dollar",
+        },
+        {
+            title: "Review",
+            icon: "shopping-cart",
+        },
+        {
+            title: "Confirmation",
+            icon: "check",
+        },
+    ];
     let step: number;
+
+    $: if (browser && $user === false) goto("/");
 
     $: {
         const stepString =
@@ -44,21 +69,25 @@
             initialState = fromHex<MakeTrade>(stateParam);
         }
     }
+
+    let currentState: MakeTrade = defaultForm();
 </script>
 
-<div class="block mt-5 ml-5">
-    <h1 class="title is-2">Select Trade</h1>
-</div>
+<br />
+<br />
 
-<div class="columns mt-5" style="height: 17rem; width: calc(100vw + 12px);">
-    <div class="column is-one-fifth" />
-    <div class="column is-three-fifths">
-        <div class="box mx-5 has-background-grey-darker">
-            <Steps {steps} currentIndex={step - 1} />
-            {#if step === 1}
-                <StockSearch {initialState} />
-            {/if}
-        </div>
-    </div>
-    <div class="column is-one-fifth" />
+<div class="box p-6 has-background-grey-darker mx-6 mb-6">
+    <Steps {steps} currentIndex={step - 1} {currentState} />
+    <br />
+    {#if step === 1}
+        <SelectStock {initialState} />
+    {:else if step === 2}
+        <AddEvidence {initialState} bind:currentState />
+    {:else if step === 3}
+        <ChooseAmount {initialState} bind:currentState />
+    {:else if step === 4}
+        <Review {initialState} bind:currentState />
+    {:else if step === 5}
+        <Confirmation />
+    {/if}
 </div>

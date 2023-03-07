@@ -1,8 +1,8 @@
 <script lang="ts">
     import { capitalize, timeAgo } from "$lib/functions";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
 
-    export let data: News;
+    export let data: Article;
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
 </script>
 

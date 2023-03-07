@@ -8,6 +8,11 @@ interface TickerPrice {
     close: number,
 }
 
+interface DailyChange {
+    price: number,
+    percentage: number,
+}
+
 class PriceRoute {
     ticker: string;
 
@@ -22,6 +27,10 @@ class PriceRoute {
     history(): Promise<TickerPrice[]> {
         return get<TickerPrice[]>({ endpoint: "/price/history", queryString: `ticker=${this.ticker}` });
     }
+
+    daily_change(): Promise<DailyChange> {
+        return get<DailyChange>({ endpoint: "/price/change", queryString: `ticker=${this.ticker}` });
+    }
 }
 
-export { PriceRoute, type TickerPrice };
+export { PriceRoute, type TickerPrice, type DailyChange };

@@ -11,11 +11,9 @@
     // Attempt to re-authenticate on refresh.
     if (browser) {
         loadTickerDetails();
-        try {
-            authenticate();
-        } catch {
-            // Silently ignore if token has expired (authenticate automatically logs them out).
-        }
+        authenticate().catch(() => {
+            // Ignore if authentication fails.
+        });
     }
 </script>
 

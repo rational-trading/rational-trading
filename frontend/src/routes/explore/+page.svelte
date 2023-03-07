@@ -5,14 +5,14 @@
     import Graph from "$components/Graph.svelte";
     import Information from "$components/Information.svelte";
     import NewsCard from "$components/news/NewsCard.svelte";
-    import TradePanel from "$components/TradePanel.svelte";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
 
     import { defaultWatchlist, user, userWatchlist } from "$lib/stores";
     import api from "$lib/api";
     import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
     import SearchBar from "./SearchBar.svelte";
+    import { goto } from "$app/navigation";
 
     let currentStock: Stock = {
         ticker: "AAPL",
@@ -35,21 +35,12 @@
 
     let n = 5;
 
-    let newsRequest = api.pendingRequest<News[]>();
-    $: newNewsRequest = () => api.news().get(currentStock.ticker, n);
+    let newsRequest = api.pendingRequest<Article[]>();
+    $: newNewsRequest = () => api.news().about(currentStock.ticker, n);
     $: if (browser) newsRequest = newNewsRequest();
 
     function clickNews() {
         n += 5;
-    }
-
-    let activeTrade = false;
-    function clickTrade() {
-        if ($user) {
-            activeTrade = true;
-        } else {
-            alert("Please log in first.");
-        }
     }
 
     function setCurrentStock(stock: Stock) {
@@ -187,16 +178,11 @@
         <div class="block is-flex is-justify-content-center">
             <button
                 class="button is-medium is-info"
+                disabled={!$user}
                 style="width: 100%"
-                on:click={clickTrade}>
+                on:click={() => goto("/trade/")}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
     </div>
 </div>
-
-{#if activeTrade}
-    <TradePanel
-        ticker={currentStock.ticker}
-        close={() => (activeTrade = false)} />
-{/if}

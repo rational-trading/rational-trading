@@ -1,34 +1,30 @@
 <script lang="ts">
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
     import { capitalize, timeAgo } from "$lib/functions";
 
-    let selected = false;
+    export let data: Article;
+    export let selected = false;
+    export let toggleArticle: ((id: string) => void) | null;
+    export let description = true;
 
-    export let data: News;
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
-
-    export let articles: string[];
-    function click() {
-        selected = !selected;
-        if (selected) {
-            articles = [...articles, data.article_id];
-        } else {
-            const index = articles.indexOf(data.article_id);
-            if (index !== -1) {
-                articles.splice(index, 1);
-            }
-        }
-    }
+    let hovered = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <article
-    class="tile is-child box"
-    on:click={click}
-    style="background-color: {selected ? '#2C4869' : ''}">
+    class="box"
+    class:has-background-grey-dark={!toggleArticle || (!selected && !hovered)}
+    class:has-background-info={selected && !hovered}
+    class:has-background-info-dark={selected && hovered}
+    on:click={() => (toggleArticle ? toggleArticle(data.article_id) : null)}
+    on:mouseenter={() => (hovered = true)}
+    on:mouseleave={() => (hovered = false)}
+    style:cursor={toggleArticle ? "pointer" : ""}
+    class:hoverable={toggleArticle}>
     <p class="title is-5 mb-1">{data.title}</p>
 
-    <nav class="level">
+    <div class="level">
         <!-- Left side -->
         <div class="level-left">
             <div class="level-item">
@@ -36,7 +32,8 @@
                     class="subtitle is-6 has-text-{color}"
                     href={data.url}
                     target="_blank"
-                    rel="noreferrer">
+                    rel="noreferrer"
+                    on:click={(e) => e.stopPropagation()}>
                     {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
                 </a>
             </div>
@@ -51,20 +48,18 @@
                         'down'}" />
             </span>
         </div>
-    </nav>
-
-    <div class="content">
-        <p>{data.description}</p>
     </div>
+
+    {#if description}
+        <div class="content">
+            <p>{data.description}</p>
+        </div>
+    {/if}
 </article>
 
 <style>
     article {
         transition: background-color 0s;
-    }
-
-    article:hover {
-        background-color: #181818;
     }
 
     a:hover {
