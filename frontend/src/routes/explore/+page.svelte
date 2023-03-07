@@ -53,8 +53,7 @@
 <!-- this fixes the issue of weird extra space to the right of the page -->
 <div
     class="columns my-0"
-    style="width: calc(100vw + 12px); height: calc(100vh - 53px);"
->
+    style="width: calc(100vw + 12px); height: calc(100vh - 53px);">
     <!-- watchlist column -->
     <div class="column is-one-quarter has-background-grey-darker px-0">
         <nav class="level ml-5 mr-4 mt-2 mb-0">
@@ -78,8 +77,7 @@
             <!-- Went very explicit on the alignment because it's never what you expect -->
             <div
                 class="table-container"
-                style="height: 100%; overflow-y: auto;"
-            >
+                style="height: 100%; overflow-y: auto;">
                 <table class="table is-hoverable is-fullwidth is-dark">
                     <thead>
                         <tr>
@@ -94,8 +92,7 @@
                             <WatchlistItem
                                 {ticker}
                                 onClick={setCurrentStock}
-                                selected={ticker === currentStock.ticker}
-                            />
+                                selected={ticker === currentStock.ticker} />
                         {/each}
                     </tbody>
                 </table>
@@ -136,18 +133,16 @@
         <div
             style="height: 50vh; display: flex; justify-content: center; align-items: center;"
             bind:clientWidth={graphWidth}
-            bind:clientHeight={graphHeight}
-        >
+            bind:clientHeight={graphHeight}>
             <Graph
                 stock={currentStock}
-                dimensions={{ width: graphWidth, height: graphHeight }}
-            />
+                dimensions={{ width: graphWidth, height: graphHeight }} />
         </div>
 
+        <hr style="background: #4a4a4a; height: 1px" />
+
         <!-- information tab -->
-        <div
-            style="height: 30vh; width: 100%; display: flex; justify-content: center; align-items: center;"
-        >
+        <div style="height: 30vh; width: 100%;">
             <Information stock={currentStock} />
         </div>
     </div>
@@ -155,15 +150,13 @@
     <!-- news column -->
     <div
         class="column is-one-quarter mt-2"
-        style="border-left: 1px solid #4a4a4a;"
-    >
+        style="border-left: 1px solid #4a4a4a;">
         <div style="height: calc(100vh - 53px - 10rem); overflow: auto;">
             <div class="block">
                 <h1 class="title is-5">News</h1>
                 {#await newsRequest}
                     <div
-                        style="width: 100%; height: 3vh; display: flex; justify-content: center; align-items: center;"
-                    >
+                        style="width: 100%; height: 3vh; display: flex; justify-content: center; align-items: center;">
                         <p>Loading...</p>
                     </div>
                 {:then responses}
@@ -173,15 +166,13 @@
                     <div class="block is-flex is-justify-content-center">
                         <button
                             class="button is-outline is-small is-rounded"
-                            on:click={clickNews}
-                        >
+                            on:click={clickNews}>
                             More news
                         </button>
                     </div>
                 {:catch error}
                     <div
-                        style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;"
-                    >
+                        style="width: 100%; height: 5vh; display: flex; justify-content: center; align-items: center;">
                         <p>{error.message}</p>
                     </div>
                 {/await}
@@ -193,8 +184,7 @@
                 class="button is-medium is-info"
                 disabled={!$user}
                 style="width: 100%"
-                on:click={() => goto("/trade/")}
-            >
+                on:click={() => goto("/trade/")}>
                 <strong>Make a Rational Trade</strong>
             </button>
         </div>
