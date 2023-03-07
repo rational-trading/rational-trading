@@ -86,7 +86,7 @@ function interpolateColor(color1: number[], color2: number[], factor = 0.5): num
  */
 export function interpolateColors(color1: string, color2: string, steps: number): string[] | undefined {
     if (!color1 || !color2 || !steps) {
-        return;
+        return undefined;
     }
     const interpolatedColorArray: string[] = [];
     const stepFactor: number = 1 / (steps - 1);
@@ -96,7 +96,7 @@ export function interpolateColors(color1: string, color2: string, steps: number)
     const color2Numbers: number[] | null = color2Strings ? color2Strings.map(Number) : null;
 
     if (!color1Numbers || !color2Numbers) {
-        return;
+        return undefined;
     }
 
     for (let i = 0; i < steps; i += 1) {
@@ -104,6 +104,5 @@ export function interpolateColors(color1: string, color2: string, steps: number)
         interpolatedColorArray.push(`rgb(${color})`);
     }
 
-    // eslint-disable-next-line consistent-return
     return interpolatedColorArray;
 }

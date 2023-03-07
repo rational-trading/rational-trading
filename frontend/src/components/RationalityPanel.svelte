@@ -4,16 +4,16 @@
     import type { Article } from "$lib/api/news";
     import type { Trade } from "$lib/api/trades";
     import { convertUnixDate } from "$lib/functions";
+    import ArcGauge from "$components/ArcGauge.svelte";
+    import NewsTile from "$components/news/NewsTile.svelte";
     import { browser } from "$app/environment";
-    import NewsTileStatic from "./NewsTileStatic.svelte";
-    import ArcGauge from "./ArcGauge.svelte";
 
     let active = false;
     export let data: Trade;
 
     // values should be somewhat normalized - i.e. it should be guaranteed that they fall within a constant range
     const controversy = 300;
-    const risk = 500;
+    const risk = 200;
     const evidence = 70;
 
     let responses: Article[] = [];
@@ -63,8 +63,8 @@
                                 needleTransitionDuration={3000}
                                 needleTransition="easeElastic"
                                 needleHeightRatio={0.7}
-                                startColor="#e91e63"
-                                endColor="#276cb0"
+                                startColor="#276cb0"
+                                endColor="#e91e63"
                                 ringWidth={5}
                                 textColor="#f5f5f5"
                                 currentValueText="Controversy: {controversy >
@@ -74,8 +74,9 @@
                                 paddingVertical={20} />
                         </div>
                         <p>
-                            Placeholder: maybe some sort of explanation about
-                            what this means?
+                            A low controversy score means that the nature of the
+                            trade aligns more with the overall media sentiment
+                            at the moment.
                         </p>
                     </div>
                     <div class="column">
@@ -85,8 +86,9 @@
                             <ArcGauge gaugeValue={evidence} size={3} />
                         </div>
                         <p>
-                            Placeholder: maybe some sort of explanation about
-                            what this means?
+                            A high evidence score means that your justifications
+                            provided are likely to be well-structured and
+                            reasonable.
                         </p>
                     </div>
                     <div class="column">
@@ -101,8 +103,8 @@
                                 needleTransitionDuration={3000}
                                 needleTransition="easeElastic"
                                 needleHeightRatio={0.7}
-                                startColor="#e91e63"
-                                endColor="#276cb0"
+                                startColor="#276cb0"
+                                endColor="#e91e63"
                                 ringWidth={5}
                                 textColor="#f5f5f5"
                                 currentValueText="Risk: {risk > 500 ?
@@ -111,8 +113,8 @@
                                 paddingVertical={20} />
                         </div>
                         <p>
-                            Placeholder: maybe some sort of explanation about
-                            what this means?
+                            A low risk score means that the company has a lower
+                            financial risk based on its financial data.
                         </p>
                     </div>
                 </div>
@@ -162,17 +164,23 @@
                         <div class="tile is-ancestor">
                             <div class="tile is-parent is-vertical">
                                 {#each responses.filter((_element, index) => index % 3 === 0) as response}
-                                    <NewsTileStatic data={response} />
+                                    <NewsTile
+                                        toggleArticle={null}
+                                        data={response} />
                                 {/each}
                             </div>
                             <div class="tile is-parent is-vertical">
                                 {#each responses.filter((_element, index) => index % 3 === 1) as response}
-                                    <NewsTileStatic data={response} />
+                                    <NewsTile
+                                        toggleArticle={null}
+                                        data={response} />
                                 {/each}
                             </div>
                             <div class="tile is-parent is-vertical">
                                 {#each responses.filter((_element, index) => index % 3 === 2) as response}
-                                    <NewsTileStatic data={response} />
+                                    <NewsTile
+                                        toggleArticle={null}
+                                        data={response} />
                                 {/each}
                             </div>
                         </div>
@@ -208,6 +216,15 @@
 <a on:click={() => (active = true)}>View</a>
 
 <style>
+    a {
+        color: #ffdd57;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: #f5f5f5;
+    }
+
     .modal-content {
         width: 90vw;
         height: 90vh;
