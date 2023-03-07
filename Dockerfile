@@ -4,11 +4,7 @@ RUN echo "Stage 1"
 EXPOSE 8000
 
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
 
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
 #ENV NODE_OPTIONS=--openssl-legacy-provider
 ENV NODE_VERSION=18.13.0
 
@@ -25,6 +21,12 @@ RUN yarn build # builds to ../backend/static
 FROM python:3.10-slim
 
 RUN echo "Stage 2"
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
 # Install pip requirements
 COPY backend/requirements.txt .
 RUN python -m pip install -r requirements.txt
