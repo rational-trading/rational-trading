@@ -80,10 +80,9 @@
                                 type="password"
                                 placeholder="Repeat password"
                                 bind:value={confirmPassword}
-                                on:keydown={(e) =>
-                                    e.key === "Enter"
-                                        ? handleSignup()
-                                        : null} />
+                                on:keydown={(e) => (e.key === "Enter" ?
+                                        handleSignup() :
+                                        null)} />
                         </div>
                     </div>
 

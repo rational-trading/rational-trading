@@ -65,8 +65,7 @@
                                 type="password"
                                 placeholder="Password"
                                 bind:value={password}
-                                on:keydown={(e) =>
-                                    e.key === "Enter" ? handleLogin() : null} />
+                                on:keydown={(e) => (e.key === "Enter" ? handleLogin() : null)} />
                         </div>
                     </div>
 
