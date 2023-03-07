@@ -64,7 +64,9 @@
                                 class="input"
                                 type="password"
                                 placeholder="Password"
-                                bind:value={password} />
+                                bind:value={password}
+                                on:keydown={(e) =>
+                                    e.key === "Enter" ? handleLogin() : null} />
                         </div>
                     </div>
 
@@ -77,7 +79,7 @@
                             <div class="control">
                                 <button
                                     class="button is-link is-medium"
-                                    on:click={() => handleLogin()}
+                                    on:click={handleLogin}
                                     ><p class="px-3">
                                         <strong>Log in</strong>
                                     </p></button>
