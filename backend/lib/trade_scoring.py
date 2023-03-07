@@ -34,7 +34,8 @@ def trade_score_controversy(ticker: str) -> float:
     Controversy score, between 0 and 1
     """
     
-    articles = ArticleModel.objects.get(ticker=ticker)
+    articles = list(ArticleModel.objects.filter(
+        stocks__in=[ticker]).order_by('-published'))
     scores = [a.normalised_sentiment for a in articles]
     return min(statistics.variance(scores)*10, 1.0)
 
