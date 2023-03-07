@@ -1,15 +1,15 @@
 <script lang="ts">
     import api from "$lib/api";
-    import type { News } from "$lib/api/news";
+    import type { Article } from "$lib/api/news";
 
     import { browser } from "$app/environment";
 
     let ticker = "AAPL";
     let n = 5;
 
-    let request = api.pendingRequest<News[]>();
+    let request = api.pendingRequest<Article[]>();
 
-    const newRequest = () => api.news().get(ticker, n);
+    const newRequest = () => api.news().about(ticker, n);
 
     $: if (browser) request = newRequest();
 </script>

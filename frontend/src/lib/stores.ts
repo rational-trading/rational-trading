@@ -1,7 +1,7 @@
 import { writable, type Writable } from "svelte/store";
 import type { Stock } from "$lib/types";
 
-export const user: Writable<{ username: string } | null> = writable(null);
+export const user: Writable<{ username: string } | null | false> = writable(null);
 
 export const stocks: Writable<{ get: (ticker: string) => Stock, all: Stock[] }> = writable({
     get: (ticker) => ({
