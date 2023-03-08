@@ -29,7 +29,8 @@ class TradeSchema(Schema):
 
     @staticmethod
     def from_model(model: TradeModel) -> 'TradeSchema':
-        article_evidence=[article.article_id for article in model.article_evidence.all()]
+        article_evidence = [
+            article.article_id for article in model.article_evidence.all()]
         buy_side = model.units_change > 0
         return TradeSchema(
             ticker=model.stock.ticker,
@@ -38,7 +39,8 @@ class TradeSchema(Schema):
             time=int(model.time.timestamp()),
             text_evidence=model.text_evidence,
             article_evidence=article_evidence,
-            evidence=trade_score_evidence(model.text_evidence, article_evidence),
+            evidence=trade_score_evidence(
+                model.text_evidence, article_evidence),
             controversy=trade_score_controversy(model.stock.ticker, buy_side),
             financial_risk=trade_score_financial_risk(model.stock.ticker, buy_side))
 
@@ -47,7 +49,7 @@ class TradeSchema(Schema):
 @transaction.atomic
 def personal_trades(request: AuthenticatedRequest) -> List[TradeSchema]:
     user = UserModel.objects.get(username=request.auth)
-    trades = TradeModel.objects.filter(user=user)
+    trades = TradeModel.objects.filter(user=user).order_by('-time')
 
     return [TradeSchema.from_model(trade) for trade in trades]
 
