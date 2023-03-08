@@ -30,6 +30,7 @@ class TradeSchema(Schema):
     @staticmethod
     def from_model(model: TradeModel) -> 'TradeSchema':
         article_evidence=[article.article_id for article in model.article_evidence.all()]
+        buy_side = model.units_change > 0
         return TradeSchema(
             ticker=model.stock.ticker,
             units_change=model.units_change,
@@ -38,8 +39,8 @@ class TradeSchema(Schema):
             text_evidence=model.text_evidence,
             article_evidence=article_evidence,
             evidence=trade_score_evidence(model.text_evidence, article_evidence),
-            controversy=trade_score_controversy(model.stock.ticker, (model.units_change>0)),
-            financial_risk=trade_score_financial_risk(model.stock.ticker))
+            controversy=trade_score_controversy(model.stock.ticker, buy_side),
+            financial_risk=trade_score_financial_risk(model.stock.ticker, buy_side))
 
 
 @router.get("/personal", response=List[TradeSchema])
