@@ -47,13 +47,14 @@ def trade_score_financial_risk(ticker: str, buy: bool) -> float:
     Financial risk score, between 0 and 1
     """
     financials = Financials.create(ticker)
-    # Low numerical score => Low RISK for sell, High RISK for buy
-
-    # 1 - numerical score = High risk score (correct for buy)
-    # numerical score = Low risk score (correct for sell)
-    # High numerical score => High RISK for sell, Low RISK for buy
-
-    # 1 - numerical score = Low risk score (correct for buy)
-    # numerical score = High risk score (correct for sell)
+    """
+    Low numerical score => Low RISK for sell, High RISK for buy
+        1 - numerical score = High risk score (correct for buy)
+        numerical score = Low risk score (correct for sell)
+    
+    High numerical score => High RISK for sell, Low RISK for buy
+        1 - numerical score = Low risk score (correct for buy)
+        numerical score = High risk score (correct for sell)
+    """
     return 1-financials.score if buy else financials.score
     
