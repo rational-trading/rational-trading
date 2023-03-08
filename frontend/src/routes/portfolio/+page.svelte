@@ -39,7 +39,10 @@
             class="box mx-5 has-background-grey-darker"
             style="height: 85%; overflow-y: auto;">
             {#await requestStats}
-                <p>Retrieving your portfolio summary...</p>
+                <div
+                    style="height: 20%; display: flex; justify-content: center; align-items: center;">
+                    <p>Retrieving your portfolio summary...</p>
+                </div>
             {:then response}
                 <div>
                     <p class="heading">Current value</p>
@@ -85,7 +88,11 @@
             class="box mx-5 py-2 has-background-grey-darker"
             style="height: 85%; overflow-y: auto;">
             {#await requestTrades}
-                <p>Fetching your trades ...</p>
+                <div
+                    class="mt-3"
+                    style="height: 20%; display: flex; justify-content: center; align-items: center;">
+                    <p>Fetching your trades...</p>
+                </div>
             {:then response}
                 <table class="table is-fullwidth is-dark">
                     <thead>
@@ -97,19 +104,12 @@
                                 ><abbr title="Quantity">Qty</abbr></th>
                             <th>Price</th>
                             <th>Total value</th>
-                            <th class="has-text-left">Status</th>
+                            <th class="has-text-left">Feedback</th>
                         </tr>
                     </thead>
                     <tbody>
                         {#each response as trade}
-                            <Activity
-                                data={{
-                                    time: trade.time,
-                                    symbol: trade.ticker,
-                                    quantity_bought: trade.units_change,
-                                    price: trade.balance_change,
-                                    status: "Filled",
-                                }} />
+                            <Activity data={trade} />
                         {/each}
                     </tbody>
                 </table>
@@ -126,7 +126,10 @@
         class="box mx-5 has-background-grey-darker"
         style="height: 85%; overflow-y: auto;">
         {#await requestHoldings}
-            <p>Fetching your portfolio ...</p>
+            <div
+                style="height: 20%; display: flex; justify-content: center; align-items: center;">
+                <p>Fetching your portfolio...</p>
+            </div>
         {:then response}
             {#each response as holding, i}
                 <Asset
