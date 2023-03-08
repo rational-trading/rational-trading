@@ -139,8 +139,12 @@
                 dimensions={{ width: graphWidth, height: graphHeight }} />
         </div>
 
+        <hr style="background: #4a4a4a; height: 1px" />
+
         <!-- information tab -->
-        <Information stock={currentStock} />
+        <div style="height: 30vh; width: 100%;">
+            <Information stock={currentStock} />
+        </div>
     </div>
 
     <!-- news column -->
