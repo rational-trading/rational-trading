@@ -20,10 +20,6 @@ class Api {
         return new NewsRoute();
     }
 
-    financials(): FinancialsRoute {
-        return new FinancialsRoute();
-    }
-
     portfolio(): PortfolioRoute {
         return new PortfolioRoute();
     }
