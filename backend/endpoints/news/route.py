@@ -1,6 +1,8 @@
 from typing import List
-from ninja import Router, Schema
+from ninja import Query, Router, Schema
 from django.http.request import HttpRequest
+from pydantic import conlist
+from lib.exceptions import FriendlyClientException
 from lib.nlp.scoring import current_article_recency, current_article_relevance, current_article_reputation
 from models.models import ArticleModel
 
@@ -34,8 +36,8 @@ class ArticleSchema(Schema):
             recency=current_article_recency(model))
 
 
-@router.get("/get", response=List[ArticleSchema])
-def get_news(request: HttpRequest, ticker: str, n: int = 20) -> List[ArticleSchema]:
+@router.get("/about", response=List[ArticleSchema])
+def about_ticker(request: HttpRequest, ticker: str, n: int = 20) -> List[ArticleSchema]:
     """
     Gets the list of the n most objective articles about ticker.
     """
@@ -46,3 +48,10 @@ def get_news(request: HttpRequest, ticker: str, n: int = 20) -> List[ArticleSche
     articles.sort(key=lambda x: current_article_relevance(x), reverse=True)
 
     return [ArticleSchema.from_model(article) for article in articles[:n]]
+
+
+@router.get("/articles", response=List[ArticleSchema])
+def articles(request: HttpRequest, article_ids: List[str] = Query([])) -> List[ArticleSchema]:
+    articles = ArticleModel.objects.filter(article_id__in=article_ids)
+    print([ArticleSchema.from_model(model) for model in articles])
+    return [ArticleSchema.from_model(model) for model in articles]

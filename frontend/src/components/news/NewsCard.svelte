@@ -1,18 +1,19 @@
 <script lang="ts">
-    import { capitalize } from "$lib/functions";
-    import type { News } from "$lib/api/news";
-    import TimeAgo from "javascript-time-ago";
-    
-    const timeAgo = new TimeAgo("en-US");
+    import { capitalize, timeAgo } from "$lib/functions";
+    import type { Article } from "$lib/api/news";
 
-    export let data: News;
+    export let data: Article;
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
 </script>
 
-<div class="block card" style="cursor: pointer;">
+<div class="block card">
     <header class="card-header">
-        <a class="card-header-title has-text-{color}" href={data.url}>
-            {capitalize(timeAgo.format(new Date(data.date * 1000)))} · {data.publisher}
+        <a
+            class="card-header-title has-text-{color}"
+            href={data.url}
+            rel="noreferrer"
+            target="_blank">
+            {capitalize(timeAgo(new Date(data.date * 1000)))} · {data.publisher}
         </a>
         <div class="card-header-icon has-text-{color}">
             <span class="icon">
@@ -31,3 +32,9 @@
         <p>{data.description}</p>
     </div>
 </div>
+
+<style>
+    a:hover {
+        text-decoration: underline;
+    }
+</style>

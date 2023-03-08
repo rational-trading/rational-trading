@@ -5,14 +5,23 @@ import { PortfolioRoute } from "./portfolio";
 import { TradesRoute } from "./trades";
 import { NewsRoute } from "./news";
 import { StocksRoute } from "./stocks";
+import { FinancialsRoute } from "./financials";
 
 class Api {
     auth(): AuthEndpoint {
         return new AuthEndpoint();
     }
 
+    financials(): FinancialsRoute {
+        return new FinancialsRoute();
+    }
+
     news(): NewsRoute {
         return new NewsRoute();
+    }
+
+    financials(): FinancialsRoute {
+        return new FinancialsRoute();
     }
 
     portfolio(): PortfolioRoute {

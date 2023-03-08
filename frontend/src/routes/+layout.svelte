@@ -3,23 +3,17 @@
     import { user } from "$lib/stores";
     import { authenticate } from "$lib/auth";
     import { loadTickerDetails } from "$lib/stocks";
-    import Login from "$components/Login.svelte";
-    import Signup from "$components/Signup.svelte";
-    import Logout from "$components/Logout.svelte";
-    import TimeAgo from "javascript-time-ago";
-    import en from "javascript-time-ago/locale/en";
+    import Login from "$components/auth/Login.svelte";
+    import Signup from "$components/auth/Signup.svelte";
+    import Logout from "$components/auth/Logout.svelte";
     import { browser } from "$app/environment";
-
-    TimeAgo.addDefaultLocale(en);
 
     // Attempt to re-authenticate on refresh.
     if (browser) {
         loadTickerDetails();
-        try {
-            authenticate();
-        } catch {
-            // Silently ignore if token has expired (authenticate automatically logs them out).
-        }
+        authenticate().catch(() => {
+            // Ignore if authentication fails.
+        });
     }
 </script>
 
@@ -35,10 +29,11 @@
         <div class="navbar-start">
             <a class="navbar-item" href="/"> Home </a>
 
-            <a class="navbar-item" href="/explore"> Explore </a>
+            <a class="navbar-item" href="/explore/"> Explore </a>
 
             {#if $user}
-                <a class="navbar-item" href="/portfolio"> Portfolio </a>
+                <a class="navbar-item" href="/portfolio/"> Portfolio </a>
+                <a class="navbar-item" href="/trade/"> Trade </a>
             {/if}
         </div>
 

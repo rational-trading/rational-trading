@@ -1,6 +1,5 @@
 <script lang="ts">
     import api from "$lib/api";
-    import { currentStock } from "$lib/stores";
 
     import {
         ColorType,
@@ -10,6 +9,7 @@
     } from "lightweight-charts";
     import { Chart, CandlestickSeries } from "svelte-lightweight-charts";
 
+    import type { Stock } from "$lib/types";
     import { browser } from "$app/environment";
 
     interface Dimensions {
@@ -17,12 +17,13 @@
         height: number;
     }
 
+    export let stock: Stock;
     export let dimensions: Dimensions;
 
     let request = api.pendingRequest<CandlestickData[]>();
 
     $: newRequest = () => api
-        .price($currentStock.ticker)
+        .price(stock.ticker)
         .history()
         .then((response) => response.map((price) => ({
             ...price,
@@ -68,8 +69,8 @@
         {...options}>
         <CandlestickSeries
             {data}
-            upColor="#60c689"
-            borderUpColor="#60c689"
+            upColor="#23d160"
+            borderUpColor="#23d160"
             wickUpColor="#60c689"
             downColor="#e91e63"
             borderDownColor="#e91e63"

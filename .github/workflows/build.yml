@@ -15,11 +15,19 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Check
+        working-directory: ./frontend
+        run: |
+          yarn run check
+
       - name: Build
         working-directory: ./frontend
         run: |
-
-          yarn install --frozen-lockfile
           yarn build
 
       - name: Lint
