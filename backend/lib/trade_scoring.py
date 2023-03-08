@@ -30,7 +30,7 @@ def trade_score_evidence(text_evidence: str, article_evidence: list[str]) -> flo
 
     return (num_articles_score + relevance + len_score) / 3
 
-def trade_score_controversy(ticker: str, buy: True) -> float:
+def trade_score_controversy(ticker: str, buy: bool) -> float:
     """
     Controversy score, between 0 and 1.
     0 is very uncontroversial, 1 is controversial
@@ -42,11 +42,18 @@ def trade_score_controversy(ticker: str, buy: True) -> float:
         return abs(-1 - sentiment)/2
 
 
-def trade_score_financial_risk(ticker: str) -> float:
+def trade_score_financial_risk(ticker: str, buy: bool) -> float:
     """
     Financial risk score, between 0 and 1
     """
     financials = Financials.create(ticker)
+    # Low numerical score => Low RISK for sell, High RISK for buy
 
-    # High financial score = low risk score
-    return 1-financials.score
+    # 1 - numerical score = High risk score (correct for buy)
+    # numerical score = Low risk score (correct for sell)
+    # High numerical score => High RISK for sell, Low RISK for buy
+
+    # 1 - numerical score = Low risk score (correct for buy)
+    # numerical score = High risk score (correct for sell)
+    return 1-financials.score if buy else financials.score
+    
