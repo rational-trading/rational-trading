@@ -12,6 +12,10 @@ class Api {
         return new AuthEndpoint();
     }
 
+    financials(): FinancialsRoute {
+        return new FinancialsRoute();
+    }
+
     news(): NewsRoute {
         return new NewsRoute();
     }
