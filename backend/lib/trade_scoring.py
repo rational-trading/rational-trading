@@ -2,6 +2,7 @@
 import math
 import statistics
 from typing import Literal
+from models.models import StockModel
 from lib.financials.scoring import Financials
 from models.models import ArticleModel
 from endpoints.trades.route import MakeTradeSchema
@@ -29,15 +30,17 @@ def trade_score_evidence(text_evidence: str, article_evidence: list[str]) -> flo
 
     return (num_articles_score + relevance + len_score) / 3
 
-def trade_score_controversy(ticker: str) -> float:
+def trade_score_controversy(ticker: str, side: Literal) -> float:
     """
-    Controversy score, between 0 and 1
+    Controversy score, between 0 and 1.
+    0 is very uncontroversial, 1 is controversial
     """
-    
-    articles = list(ArticleModel.objects.filter(
-        stocks__in=[ticker]).order_by('-published'))
-    scores = [a.normalised_sentiment for a in articles]
-    return min(statistics.variance(scores)*10, 1.0)
+    sentiment = current_media_sentiment(StockModel.objects.get(ticker=ticker))
+    if side==Literal['BUY']:
+        return (1 - sentiment)/2
+    else:
+        return abs(-1 - sentiment)/2
+
 
 def trade_score_financial_risk(ticker: str) -> float:
     """
