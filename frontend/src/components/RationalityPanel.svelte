@@ -68,9 +68,9 @@
                                 ringWidth={5}
                                 textColor="#f5f5f5"
                                 currentValueText="Controversy: {controversy >
-                                500
-                                    ? 'High'
-                                    : 'Low'}"
+                                500 ?
+                                    'High' :
+                                    'Low'}"
                                 paddingVertical={20} />
                         </div>
                         <p>
@@ -107,9 +107,9 @@
                                 endColor="#e91e63"
                                 ringWidth={5}
                                 textColor="#f5f5f5"
-                                currentValueText="Risk: {risk > 500
-                                    ? 'High'
-                                    : 'Low'}"
+                                currentValueText="Risk: {risk > 500 ?
+                                    'High' :
+                                    'Low'}"
                                 paddingVertical={20} />
                         </div>
                         <p>
@@ -146,7 +146,7 @@
                                 >{Math.abs(data.units_change).toFixed(2)}</td>
                             <td class="has-text-right"
                                 >{Math.abs(
-                                    data.balance_change / data.units_change
+                                    data.balance_change / data.units_change,
                                 ).toFixed(2)}</td>
                             <td class="has-text-right"
                                 >{Math.abs(data.balance_change).toFixed(2)}</td>
