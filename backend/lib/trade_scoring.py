@@ -30,13 +30,13 @@ def trade_score_evidence(text_evidence: str, article_evidence: list[str]) -> flo
 
     return (num_articles_score + relevance + len_score) / 3
 
-def trade_score_controversy(ticker: str, side: Literal) -> float:
+def trade_score_controversy(ticker: str, buy: True) -> float:
     """
     Controversy score, between 0 and 1.
     0 is very uncontroversial, 1 is controversial
     """
     sentiment = current_media_sentiment(StockModel.objects.get(ticker=ticker))
-    if side==Literal['BUY']:
+    if buy:
         return (1 - sentiment)/2
     else:
         return abs(-1 - sentiment)/2
