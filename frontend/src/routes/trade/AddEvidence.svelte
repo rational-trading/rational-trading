@@ -80,25 +80,25 @@
                 <div class="column">
                     <label class="checkbox">
                         <input type="checkbox" />
-                        Remember me
+                        EPS
                     </label>
                 </div>
                 <div class="column">
                     <label class="checkbox">
                         <input type="checkbox" />
-                        Remember me
+                        P/E ratio
                     </label>
                 </div>
                 <div class="column">
                     <label class="checkbox">
                         <input type="checkbox" />
-                        Remember me
+                        D/E ratio
                     </label>
                 </div>
                 <div class="column">
                     <label class="checkbox">
                         <input type="checkbox" />
-                        Remember me
+                        Current ratio
                     </label>
                 </div>
             </div>

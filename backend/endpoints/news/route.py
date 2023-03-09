@@ -53,5 +53,4 @@ def about_ticker(request: HttpRequest, ticker: str, n: int = 20) -> List[Article
 @router.get("/articles", response=List[ArticleSchema])
 def articles(request: HttpRequest, article_ids: List[str] = Query([])) -> List[ArticleSchema]:
     articles = ArticleModel.objects.filter(article_id__in=article_ids)
-    print([ArticleSchema.from_model(model) for model in articles])
     return [ArticleSchema.from_model(model) for model in articles]

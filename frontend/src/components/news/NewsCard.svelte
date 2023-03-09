@@ -6,7 +6,7 @@
     const color = data.normalised_sentiment >= 0 ? "success" : "warning";
 </script>
 
-<div class="block card" style="cursor: pointer;">
+<div class="block card">
     <header class="card-header">
         <a
             class="card-header-title has-text-{color}"
@@ -32,3 +32,9 @@
         <p>{data.description}</p>
     </div>
 </div>
+
+<style>
+    a:hover {
+        text-decoration: underline;
+    }
+</style>

@@ -1,5 +1,4 @@
 from datetime import datetime
-from decimal import Decimal
 from typing import List
 from django.db import models
 from django.db.models import Model
@@ -88,13 +87,9 @@ class TradeModel(Model):  # type: ignore
     time = models.DateTimeField()
     text_evidence = models.TextField()
     article_evidence = models.ManyToManyField(ArticleModel, blank=True)
-
-    @staticmethod
-    def create_typed(user: UserModel, stock: StockModel, units_change: Decimal, balance_change: Decimal, time: datetime, text_evidence: str, article_evidence: List[ArticleModel]) -> 'TradeModel':
-        trade = TradeModel.objects.create(
-            user=user, stock=stock, units_change=units_change, balance_change=balance_change, time=time, text_evidence=text_evidence)
-        trade.article_evidence.set(article_evidence)
-        return trade
+    controversy = models.FloatField(default=0.5)
+    evidence = models.FloatField(default=0.5)
+    financial_risk = models.FloatField(default=0.5)
 
 
 class WatchlistItemModel(Model):

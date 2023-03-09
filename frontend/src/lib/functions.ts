@@ -3,7 +3,6 @@ import en from "javascript-time-ago/locale/en";
 
 TimeAgo.addDefaultLocale(en);
 
-
 export function matchAny(search: string, options: string[]): boolean {
     const searchLower = search.toLowerCase();
     return (
@@ -24,7 +23,7 @@ export function convertUnixDate(unixDate: number): string {
     const date = new Date(unixDate);
 
     const year = `${date.getFullYear()}`;
-    const month = `0${date.getMonth()}`.slice(-2);
+    const month = `0${date.getMonth() + 1}`.slice(-2);
     const day = `0${date.getDate()}`.slice(-2);
 
     const hour = `0${date.getHours()}`.slice(-2);
@@ -55,4 +54,55 @@ export function fromHex<T>(hex: string): T {
         .filter((p) => !!p)
         .map((c) => String.fromCharCode(parseInt(c, 16)))
         .join(""));
+}
+
+// Adopted from https://stackblitz.com/edit/color-interpolation-multiple-colors?file=app%2Fapp.component.ts
+
+/**
+ * Interpolate two colors
+ *
+ * @param color1 - The starting color
+ * @param color2 - The end color
+ * @return The interpolated color
+ */
+function interpolateColor(color1: number[], color2: number[], factor = 0.5): number[] {
+    const result: number[] = [];
+    const factorInc = factor;
+
+    for (let i = 0; i < color1.length; i += 1) {
+        result.push(Math.round(color1[i] + factorInc * (color2[i] - color1[i])));
+    }
+
+    return result;
+}
+
+/**
+ * Create an array of color values between two colors
+ *
+ * @param color1 - The starting color
+ * @param color2 - The end color
+ * @param steps - The number of desired colors
+ * @return The array of color values
+ */
+export function interpolateColors(color1: string, color2: string, steps: number): string[] | undefined {
+    if (!color1 || !color2 || !steps) {
+        return undefined;
+    }
+    const interpolatedColorArray: string[] = [];
+    const stepFactor: number = 1 / (steps - 1);
+    const color1Strings: RegExpMatchArray | null = color1.match(/\d+/g);
+    const color2Strings: RegExpMatchArray | null = color2.match(/\d+/g);
+    const color1Numbers: number[] | null = color1Strings ? color1Strings.map(Number) : null;
+    const color2Numbers: number[] | null = color2Strings ? color2Strings.map(Number) : null;
+
+    if (!color1Numbers || !color2Numbers) {
+        return undefined;
+    }
+
+    for (let i = 0; i < steps; i += 1) {
+        const color = interpolateColor(color1Numbers, color2Numbers, stepFactor * i);
+        interpolatedColorArray.push(`rgb(${color})`);
+    }
+
+    return interpolatedColorArray;
 }

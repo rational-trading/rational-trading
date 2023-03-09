@@ -69,8 +69,8 @@
         {...options}>
         <CandlestickSeries
             {data}
-            upColor="#60c689"
-            borderUpColor="#60c689"
+            upColor="#23d160"
+            borderUpColor="#23d160"
             wickUpColor="#60c689"
             downColor="#e91e63"
             borderDownColor="#e91e63"
