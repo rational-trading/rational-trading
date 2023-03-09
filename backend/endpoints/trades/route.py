@@ -4,13 +4,13 @@ from decimal import ROUND_DOWN, ROUND_UP, Decimal
 from ninja import Schema, Router
 from django.utils import timezone
 from django.db import transaction
+from lib.trade_scoring import create_trade
 
 from models.models import ArticleModel, HoldingModel, StockModel, TradeModel
 from models.models import UserModel
 from endpoints.auth import AuthBearer, AuthenticatedRequest
 from lib.exceptions import FriendlyClientException
 from lib.polygon_api import PolygonAPI
-from lib.trade_scoring import trade_score_controversy, trade_score_evidence, trade_score_financial_risk
 
 
 router = Router(auth=AuthBearer())
@@ -39,10 +39,9 @@ class TradeSchema(Schema):
             time=int(model.time.timestamp()),
             text_evidence=model.text_evidence,
             article_evidence=article_evidence,
-            evidence=trade_score_evidence(
-                model.text_evidence, article_evidence),
-            controversy=trade_score_controversy(model.stock.ticker, buy_side),
-            financial_risk=trade_score_financial_risk(model.stock.ticker, buy_side))
+            evidence=model.evidence,
+            controversy=model.controversy,
+            financial_risk=model.financial_risk)
 
 
 @router.get("/personal", response=List[TradeSchema])
@@ -119,7 +118,7 @@ def make_trade(request: AuthenticatedRequest, order: MakeTradeSchema) -> TradeSc
     if holding.units < 0:
         raise FriendlyClientException('Current holding is too small!')
 
-    trade = TradeModel.create_typed(
+    trade = create_trade(
         user=user, stock=stock, units_change=units_change, balance_change=balance_change, time=time, text_evidence=order.text_evidence, article_evidence=articles)
 
     user.save()
