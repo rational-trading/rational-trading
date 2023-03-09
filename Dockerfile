@@ -34,8 +34,9 @@ RUN python -m pip install -r requirements.txt
 WORKDIR /app
 COPY ./backend /app
 
-COPY --from=builder /app/backend/static /app/static
+RUN mv docker-db-template.sqlite3 db.sqlite3
 
+COPY --from=builder /app/backend/static /app/static
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
@@ -45,9 +46,6 @@ USER appuser
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 #CMD ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi"]
 
-
-CMD ["python", "manage.py", "makemigrations", "models"]
-CMD ["python", "manage.py", "migrate"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload", "--settings", "config.production"]
 
 #RUN python manage.py runserver 0.0.0.0:8000

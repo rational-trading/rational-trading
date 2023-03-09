@@ -1,5 +1,21 @@
 # rational-trading
 
+
+## Docker
+
+1) To run the project in Docker, copy `docker-compose.yml.TEMPLATE` to `docker-compose.yml`
+
+2) Change the contents of `docker-compose.yml` so that `POLYGON_API_KEY` and `JWT_SIGNING_KEY` are up to date.
+
+3) Save the file then run `docker-compose up --build` from this directory.
+
+4) The website can be accessed from http://localhost:8000, the admin interface (`admin`, `Password01!`) from http://localhost:8000/admin, and the API docs from http://localhost:8000/api/docs#/
+
+5) You can stop the container by pressing `Ctrl+C` in your terminal.
+
+6) If you want to restart with a fresh database, append `--force-recreate` at the end of the docker compose command.
+
+
 ## Setup
 
 ### 1. Install NodeJS + NPM
@@ -105,14 +121,3 @@ Whilst coding, you should commit often. A good guideline is to commit whenever y
 ### What if multiple people are working on the same issue?
 
 If there are multiple members of the team collaborating on a single issue, you should all create spin-off branches from the issue branch. For example, I might create the branch `1-create-template-for-frontend-miles` as a spin-off of `1-create-template-for-frontend-miles`. Any changes you make should be done on your personal branch, and then synced with the feature branch in the manner described above (replacing any occurences of `main` with the feature branch). Once all team members are happy that the feature branch is finished, you can then sync it with `main` in the manner described above. 
-
-
-## Docker
-
-## 1
-To run the project in Docker, update the contents of `docker-compose.yml` with the Polygon API key and JWT secret key.
-
-## 2
-Save the file then run `docker compose up --build -d` from `rational-trading/`
-
-

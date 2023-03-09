@@ -32,7 +32,7 @@ def signup(request: HttpRequest, data: UserInput) -> TokenSchema:
         raise AuthenticationError("Username has been taken.")
     except UserModel.DoesNotExist:
         UserModel.create_typed(
-            username=data.username, password=make_password(data.password), balance=0.)
+            username=data.username, password=make_password(data.password), balance=1000)
         return TokenSchema(access_token=create_token(data.username))
 
 
