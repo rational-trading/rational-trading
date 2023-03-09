@@ -128,7 +128,7 @@
                                     'Low'}"
                                 paddingVertical={20} />
                         </div>
-                        {#if evidence > 500}
+                        {#if risk > 500}
                             <p>
                                 A higher risk score means that the company has a
                                 higher financial risk based on its financial
