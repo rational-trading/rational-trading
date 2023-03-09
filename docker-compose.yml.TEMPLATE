@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  django:
+
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - POLYGON_API_KEY=
+      - JWT_SIGNING_KEY=
+      - JWT_ACCESS_EXPIRY=3600
+    ports:
+      - 8000:8000
