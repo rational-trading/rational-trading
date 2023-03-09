@@ -60,7 +60,9 @@
         <div class="block">
             <div class="buttons has-addons is-centered mb-2">
                 <button
-                    class="button is-large {BUY ? 'is-info is-selected' : ''}"
+                    class="button py-6 is-large {BUY ?
+                        'is-info is-selected' :
+                        ''}"
                     on:click={() => (side = "BUY")}
                     style="height: 8vh; width: 50%; justify-content: left; text-align: left">
                     <div>
@@ -75,7 +77,9 @@
                     </div>
                 </button>
                 <button
-                    class="button is-large {BUY ? '' : 'is-info is-selected'}"
+                    class="button py-6 is-large {BUY ?
+                        '' :
+                        'is-info is-selected'}"
                     on:click={() => (side = "SELL")}
                     style="height: 8vh; width: 50%; justify-content: right; text-align: right">
                     <div>

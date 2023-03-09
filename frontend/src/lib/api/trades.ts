@@ -6,7 +6,10 @@ interface Trade {
     balance_change: number,
     time: number,
     text_evidence: string,
-    article_evidence: string[]
+    article_evidence: string[],
+    controversy: number,
+    evidence: number,
+    financial_risk: number,
 }
 
 interface MakeTrade {

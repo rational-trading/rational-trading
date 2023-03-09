@@ -5,6 +5,8 @@ Scroll to bottom to see usage and testing.
 
 import math
 from django.utils import timezone
+from scipy.stats import norm
+import numpy as np
 
 from models.models import ArticleModel, StockModel
 
@@ -55,10 +57,31 @@ def current_media_sentiment(stock: StockModel) -> float:
     articles = list(ArticleModel.objects.filter(
         stocks__in=[stock]).order_by('-published'))
 
-    # weight article sentiments by relevance and publisher
-    total_impact = sum([
-        current_article_impact(article) for article in articles])
-    total_relevance = sum([current_article_relevance(article)
-                           for article in articles])
+    weights = np.array([current_article_relevance(article)
+                       for article in articles])
+    weights /= np.sum(weights)
 
-    return total_impact / total_relevance
+    impact = np.array([article.normalised_sentiment for article in articles])
+
+    weighted_average = np.sum(impact * weights)
+
+    # Here we estimate the number of samples that contributed to the average. For example, [0, 0.5, 0.5] should give 2, [0.333, 0.333, 0.333] should give 3, and [0.2, 0.4, 0.4] should give somewhere in between 2 and 3. For reference, see when q=1 on https://en.wikipedia.org/wiki/Diversity_index
+    effective_samples = math.exp(-np.sum(weights *
+                                 np.log(weights + 0.0000001)))
+
+    # This is the std_dev of the normal distribution approximating the average of n samples from U(-1, 1). We use effective_n instead of the actual n.
+    std_dev = np.sqrt(1 / (3 * effective_samples))
+
+    left_cdf = norm.cdf(-1, loc=0, scale=std_dev)
+    right_cdf = norm.cdf(1, loc=0, scale=std_dev)
+    missed = 1 - (right_cdf - left_cdf)
+
+    # uniformly distributed the x < -1 and 1 < x parts of the cdf
+    normalised = norm.cdf(weighted_average, loc=0, scale=std_dev) - \
+        left_cdf + missed * (weighted_average+1)/2
+
+    assert isinstance(normalised, float)
+
+    # Have visualised with matplotlib and it seems to work shockingly well for any effective_n over around 3
+
+    return 2 * normalised - 1

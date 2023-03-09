@@ -66,7 +66,10 @@
                                 0 ?
                                     'success' :
                                     'warning'}">
-                                {convertValueToMoney(response.unrealised_gain)}
+                                {response.unrealised_gain >= 0 ? "" : "-"}
+                                {convertValueToMoney(
+                                    Math.abs(response.unrealised_gain),
+                                )}
                                 (
                                 {calculatePercentage(
                                     response.unrealised_gain,
