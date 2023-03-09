@@ -73,11 +73,19 @@
                                     'Low'}"
                                 paddingVertical={20} />
                         </div>
-                        <p>
-                            A low controversy score means that the nature of the
-                            trade aligns more with the overall media sentiment
-                            at the moment.
-                        </p>
+                        {#if controversy > 500}
+                            <p>
+                                A higher controversy score means that the nature
+                                of the trade deviates from the overall media
+                                sentiment at the moment.
+                            </p>
+                        {:else}
+                            <p>
+                                A lower controversy score means that the nature
+                                of the trade aligns with the overall media
+                                sentiment at the moment.
+                            </p>
+                        {/if}
                     </div>
                     <div class="column">
                         <div style="height: 15vh" />
@@ -85,11 +93,19 @@
                             style="height: 30vh; display: flex; justify-content: center; align-items: center;">
                             <ArcGauge gaugeValue={evidence} size={3} />
                         </div>
-                        <p>
-                            A high evidence score means that your justifications
-                            provided are likely to be well-structured and
-                            reasonable.
-                        </p>
+                        {#if evidence > 50}
+                            <p>
+                                A higher evidence score means that your
+                                justifications provided are more likely to be
+                                well-structured and reasonable.
+                            </p>
+                        {:else}
+                            <p>
+                                A lower evidence score means that your
+                                justifications provided still have room for
+                                improvements.
+                            </p>
+                        {/if}
                     </div>
                     <div class="column">
                         <div style="height: 10vh" />
@@ -112,10 +128,19 @@
                                     'Low'}"
                                 paddingVertical={20} />
                         </div>
-                        <p>
-                            A low risk score means that the company has a lower
-                            financial risk based on its financial data.
-                        </p>
+                        {#if risk > 500}
+                            <p>
+                                A higher risk score means that the company has a
+                                higher financial risk based on its financial
+                                data.
+                            </p>
+                        {:else}
+                            <p>
+                                A lower risk score means that the company has a
+                                lower financial risk based on its financial
+                                data.
+                            </p>
+                        {/if}
                     </div>
                 </div>
                 <hr style="background: #4a4a4a; height: 1px" />
